@@ -19,6 +19,7 @@ $html = '<style>no_bullet { list-style-type: none; }</style>';
 $html .= '<table>';
 $html .= '<tr>';
 $html .= '<td>';
+$html .= '<br /><a href="/adminer.php">DB Admin</a>';
 $html .= $getChaps();
 $html .= '</td>';
 $html .= '<td>';
