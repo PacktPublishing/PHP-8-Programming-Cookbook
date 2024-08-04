@@ -2,26 +2,31 @@
 . ./docker/secrets.sh
 DIR=`pwd`
 export USAGE="Usage: init.sh up|down|build|ls|init|shell [--show]"
+if ! type "docker-compose" &> /dev/null; then
+  export COMPOSE="docker compose"
+else
+  export COMPOSE=docker-compose
+fi
 if [[ -z "$1" ]]; then
     echo $USAGE
     exit 1
 elif [[ "$1" = "up" ||  "$1" = "start" ]]; then
     if [[ -f "$2" && "$2" = "--show" ]]; then
-        docker-compose up
+        $COMPOSE up
     else
-        docker-compose up -d
+        $COMPOSE up -d
     fi
     docker exec $CONTAINER_NAME /bin/bash -c "/etc/init.d/mysql start"
     docker exec $CONTAINER_NAME /bin/bash -c "/repo/docker/restore.sh"
 elif [[ "$1" = "down" ||  "$1" = "stop" ]]; then
     docker exec $CONTAINER_NAME /bin/bash -c "/etc/init.d/mysql start"
     docker exec $CONTAINER_NAME /bin/bash -c "/repo/docker/backup.sh"
-    docker-compose down
+    $COMPOSE down
     echo "Resetting permissions ..."
     sudo chown -R $USER:$USER *
     sudo chmod -R 775 *
 elif [[ "$1" = "build" ]]; then
-    docker-compose build $2
+    $COMPOSE build $2
 elif [[ "$1" = "ls" ]]; then
     docker container ls
 elif [[ "$1" = "init" ]]; then

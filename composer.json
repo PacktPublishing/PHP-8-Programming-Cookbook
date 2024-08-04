@@ -3,6 +3,11 @@
         "php" : ">= 8.1",
         "phpmailer/phpmailer": "^6.9",
         "phpunit/phpunit": "10.1"
-    }
+    },
+    "autoload" : {
+		"psr-4" : {
+			"Cookbook\\" : "src/"
+		}
+	}
 }
 
