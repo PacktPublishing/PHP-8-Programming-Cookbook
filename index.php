@@ -1,26 +1,12 @@
 <?php
-$getChaps = function () {
-    $style = 'list-style-type: none;';
-    $list = glob('/repo/chapter*');
-    foreach ($list as $item) {
-        $html .= '<br />';
-        $html .= '<a href="/' . $item . '/">' . basename($item) . '</a>';
-    }
-    return $html;
-};
-$getInfo = function () {
-    ob_start();
-    phpinfo();
-    $info = ob_get_contents();
-    ob_end_clean();
-    return $info;
-};
+include __DIR__ . '/src/Chapter01/View/ChapInfo.php';
+use Cookbook\Chapter01\View\ChapInfo;
 $html = '<style>no_bullet { list-style-type: none; }</style>';
 $html .= '<table>';
 $html .= '<tr>';
 $html .= '<td>';
 $html .= '<br /><a href="/adminer.php">DB Admin</a>';
-$html .= $getChaps();
+$html .= ChapInfo::getChaps(__DIR__);
 $html .= '</td>';
 $html .= '<td>';
 $html .= '<h1>';
@@ -28,7 +14,12 @@ $html .= '<img src="/images/logo.jpg" style="float:left;margin-bottom:10px;"/>&n
 $html .= 'PHP 8 Programming Cookbook';
 $html .= '</h1>';
 $html .= '<hr />';
-$html .= $getInfo();
+if (isset($_GET['chap'])) {
+	$chap = trim(strip_tags($_GET['chap']));
+	$html .= ChapInfo::getChapFiles(__DIR__, $chap);
+} else {
+	$html .= ChapInfo::getInfo(__DIR__);
+}
 $html .= '</td>';
 $html .= '</tr>';
 $html .= '</table>';

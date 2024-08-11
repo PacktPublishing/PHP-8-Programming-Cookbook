@@ -24,7 +24,7 @@ RUN chmod +x /tmp/*.sh
 RUN \
     echo "Installing misc tools ..." && \
     apt-get update && \
-    apt-get install -y less vim net-tools wget unzip apt-utils curl
+    apt-get install -y less vim net-tools wget unzip apt-utils curl tree
 RUN \
     echo "Adding/enabling PHP extensions ..." && \
     zendphpctl ext install gd && \

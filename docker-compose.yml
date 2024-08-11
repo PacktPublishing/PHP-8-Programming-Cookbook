@@ -1,4 +1,3 @@
-version: "3"
 services:
   php8cookbook:
     container_name: php8cookbook
