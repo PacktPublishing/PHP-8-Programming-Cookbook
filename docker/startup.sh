@@ -7,6 +7,11 @@ echo "$CONTAINER_IP   $HOST_NAME" >> /etc/hosts
 mv /var/www/html /var/www/html.old
 ln -s /repo /var/www/html
 
+echo "Setting permissions for zendphp user ..."
+cd $REPO_DIR
+chgrp -R -f zendphp .
+chmod -R -f 775 *
+
 # Start the first process
 /etc/init.d/php$PHP_VER-zend-fpm start
 status=$?

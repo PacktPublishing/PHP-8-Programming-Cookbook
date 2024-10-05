@@ -18,8 +18,9 @@ $algo = $argv[3] ?? $_GET['algo'] ?? 'simple';
 // generate primes
 $start = microtime(TRUE);
 $min   = 2**$bits;
-for ($x = 0; $x < $num; $x++) {
-	$generate->getNextPrime($min, $num, $algo);
-	printf('%.0f' . PHP_EOL, $min);
-}
+$gen   = [];
+do {
+	$next = $generate->getNextPrime($min, $gen, $algo);
+	echo 'Next: ' . number_format($next, 0) . PHP_EOL;
+} while ($num-- > 0);
 echo 'Time to generate: ' . (microtime(TRUE) - $start) . PHP_EOL;

@@ -1,14 +1,14 @@
 <?php
 namespace Cookbook\Chapter02\Prime;
 
-use Generator;
-use SplFixedArray;
+use Exception;
 class Generate
 {
-	public ?SplFixedArray $arr = NULL;
+	public float $min = 0;
 	protected function simpleGetNext(float $min) : float
 	{
 		$test = TRUE;
+		$max  = $min;
 		while ($test) {
 			// simple test to see if $min is divisible by any number up to itself
 			for($i = 2; $i < $min; $i++) {
@@ -21,11 +21,15 @@ class Generate
 		}
 		return $min;
 	}
-	public function getNextPrime(float &$min, string $algo = 'simple') : float
+	public function getNextPrime(float $min, array &$gen, string $algo = 'simple') : float
 	{
-		return match ($algo) {
-			'simple' => $this->simpleGetNext($min),
-			default => $this->simpleGetNext($min)
-		};
+		while (!in_array($min, $gen)) {
+			$min = match ($algo) {
+				'simple' => $this->simpleGetNext($min),
+				default => $this->simpleGetNext($min)
+			};
+		}
+		$gen[] = $min;
+		return $min;
 	}
 }

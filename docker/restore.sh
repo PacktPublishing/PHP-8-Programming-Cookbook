@@ -6,9 +6,5 @@ if [[ -f "$FN" ]]; then
     mysql -uroot -ppassword -e "SOURCE $FN;" $DB_NAM
     mysql -uroot -ppassword -e "SOURCE $FN;" "$DB_NAM"_test
 fi
-echo "Setting permissions for zendphp user ..."
-cd $REPO_DIR
-chgrp -R zendphp .
-chmod -R 775 *
 
 
