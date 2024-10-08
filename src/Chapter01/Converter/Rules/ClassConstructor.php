@@ -18,23 +18,25 @@ class ClassConstructor implements RulesInterface
         $search = 'function ' . $match[1];
         if (!str_contains($this->contents, '__construct')
             && stripos($this->contents, $search) !== FALSE) {
-            $txt = Convert::LF_REPLACE . Convert::PROBLEM
-                . 'A method with the same name as the class '
-                . 'is no longer used as a default construct method.' 
-                . 'This method was converted to __construct.'
+            $txt = Convert::LF_REPLACE . Convert::PROBLEM . Convert::LF_REPLACE
+                . '/* '  . Convert::LF_REPLACE
+                . 'A method with the same name as the class ' . Convert::LF_REPLACE
+                . 'is no longer used as a default construct method.'  . Convert::LF_REPLACE
+                . 'This method was converted to __construct.'  . Convert::LF_REPLACE
+                . '*/'  . Convert::LF_REPLACE
                 . $txt;
             // this is a callable class invoked in __destruct()
-            $this->post_op[] = new class ($search) {
-                public function __construct(public string $search) {}
-                public function __invoke(string &$contents)
-                { 
-                    $contents = str_ireplace(
-                        $this->search, 
-                        'function __construct', 
-                        $contents);
-                }
-            };
-        }
-        return $txt;
+        $this->post_op[] = new class ($search) {
+            public function __construct(public string $search) {}
+            public function __invoke(string &$contents)
+            { 
+                $contents = str_ireplace(
+                    $this->search, 
+                    'function __construct', 
+                    $contents);
+            }
+        };
     }
+    return $txt;
+}
 }

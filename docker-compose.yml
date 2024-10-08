@@ -12,7 +12,21 @@ services:
     restart: always
     networks:
       php8cookbook_net:
-        ipv4_address: 10.10.10.10
+        ipv4_address: 10.10.10.88
+  php7test:
+    container_name: php7test
+    hostname: php7test
+    image: unlikelysource/php7test
+    volumes:
+     - ".:/repo"
+    ports:
+     - "7777:80"
+    build: ./docker7
+    command: /tmp/startup.sh
+    restart: always
+    networks:
+      php8cookbook_net:
+        ipv4_address: 10.10.10.77
 networks:
   php8cookbook_net:
     ipam:
