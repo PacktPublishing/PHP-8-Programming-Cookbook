@@ -2,7 +2,7 @@ services:
   php8cookbook:
     container_name: php8cookbook
     hostname: php8cookbook
-    image: unlikelysource/php8cookbook
+    image: unlikelysource/php8_cookbook
     volumes:
      - ".:/repo"
     ports:
@@ -13,20 +13,6 @@ services:
     networks:
       php8cookbook_net:
         ipv4_address: 10.10.10.88
-  php7test:
-    container_name: php7test
-    hostname: php7test
-    image: unlikelysource/php7test
-    volumes:
-     - ".:/repo"
-    ports:
-     - "7777:80"
-    build: ./docker7
-    command: /tmp/startup.sh
-    restart: always
-    networks:
-      php8cookbook_net:
-        ipv4_address: 10.10.10.77
 networks:
   php8cookbook_net:
     ipam:
