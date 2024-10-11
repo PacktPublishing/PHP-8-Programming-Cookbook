@@ -1,0 +1,54 @@
+FROM alpine:latest
+ENV PHP_TAG=php-7.4.33
+RUN \
+    echo "Installing basic utilities ..." && \
+    apk add curl git bash nano
+RUN \
+    echo "Installing libs needed by PHP ..." && \
+    apk add build-base autoconf re2c make pkgconf bison libc-dev curl-dev libxml2 libxml2-dev \
+           sqlite sqlite-dev bzip2 bzip2-dev openssl openssl-dev icu icu-dev oniguruma oniguruma-dev \
+           libffi libffi-dev libpng libpng-dev readline readline-dev libsodium libsodium-dev libzip libzip-dev
+RUN \
+    echo "Installing PHP 7 ..." && \
+    /bin/bash && \
+    mkdir -p /usr/local/php7 && \
+    mkdir -p /usr/local/php7/etc && \
+    mkdir -p /usr/local/php7/etc/conf.d && \
+    cd /opt/php-src && \
+    git checkout $PHP_TAG && \
+    ./buildconf --force && \
+    ./configure \
+        --prefix=/usr/local/php7 \
+        --disable-phpdbg \
+        --enable-opcache  \
+        --enable-bcmath \
+        --enable-calendar \
+        --enable-fpm \
+        --enable-gd \
+        --enable-intl \
+        --enable-mbstring \
+        --enable-simplexml  \
+        --enable-soap  \
+        --enable-sockets  \
+        --enable-xmlreader  \
+        --enable-xmlwriter  \
+        --with-config-file-path=/usr/local/php7/etc \
+        --with-config-file-scan-dir=/usr/local/php7/etc/conf.d \
+        --with-openssl \
+        --with-readline \
+        --with-sodium \
+        --with-zip \
+        --with-bz2 \
+        --with-curl \
+        --with-ffi \
+        --with-openssl  \
+        --with-tidy \
+        --with-zlib && \
+    make && \
+    make install && \
+    ln -s /usr/local/php7/bin/php /usr/local/bin/php7 && \
+    ln -s /usr/local/php7/bin/php /usr/local/bin/php
+COPY php7.startup.sh /tmp/startup.sh
+RUN chmod +x /tmp/*.sh
+WORKDIR /repo
+ENTRYPOINT /tmp/startup.sh

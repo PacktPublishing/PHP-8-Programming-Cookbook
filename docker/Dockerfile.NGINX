@@ -1,0 +1,15 @@
+FROM alpine:latest
+COPY nginx.default.conf /tmp/default.conf
+RUN \
+    echo "Installing basic utilities ..." && \
+    apk add curl git bash nano
+RUN \
+    echo "Installing nginx ..." && \
+    apk add nginx && \
+    mv /etc/nginx/http.d/default.conf /etc/nginx/http.d/default.conf.old && \
+    cp /tmp/default.conf /etc/nginx/http.d/default.conf && \
+    chown -R nginx /var/www
+COPY nginx.startup.sh /tmp/startup.sh
+RUN chmod +x /tmp/*.sh
+WORKDIR /repo
+ENTRYPOINT /tmp/startup.sh

@@ -1,18 +1,49 @@
 services:
-  php8cookbook:
-    container_name: php8cookbook
-    hostname: php8cookbook
-    image: unlikelysource/php8_cookbook
+  nginx:
+    container_name: nginx
+    hostname: nginx
+    image: unlikelysource/nginx_img
     volumes:
      - ".:/repo"
-    ports:
-     - "8888:80"
-    build: ./docker
+    build:
+      context: .
+      dockerfile: Dockerfile.NGINX
+    working_dir: /repo
+    command: /tmp/startup.sh
+    restart: always
+    networks:
+      php8cookbook_net:
+        ipv4_address: 10.10.10.10
+  php8:
+    container_name: php8
+    hostname: php8
+    image: unlikelysource/php8_img
+    volumes:
+     - ".:/repo"
+    build:
+      context: .
+      dockerfile: Dockerfile.PHP8
+    working_dir: /repo
     command: /tmp/startup.sh
     restart: always
     networks:
       php8cookbook_net:
         ipv4_address: 10.10.10.88
+  php7:
+    container_name: php7
+    hostname: php7
+    image: unlikelysource/php7_img
+    volumes:
+     - ".:/repo"
+    build:
+      context: .
+      dockerfile: Dockerfile.PHP7
+    working_dir: /repo
+    command: /tmp/startup.sh
+    restart: always
+    networks:
+      php8cookbook_net:
+        ipv4_address: 10.10.10.77
 networks:
   php8cookbook_net:
     ipam:
