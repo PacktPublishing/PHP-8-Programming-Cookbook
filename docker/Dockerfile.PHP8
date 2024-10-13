@@ -1,13 +1,5 @@
-FROM alpine:latest
+FROM unlikelysource/php_src_base:latest
 ENV PHP_TAG=php-8.4.0beta5
-RUN \
-    echo "Installing basic utilities ..." && \
-    apk add curl git bash nano
-RUN \
-    echo "Installing libs needed by PHP ..." && \
-    apk add build-base autoconf re2c make pkgconf bison libc-dev curl-dev libxml2 libxml2-dev \
-           sqlite sqlite-dev bzip2 bzip2-dev openssl openssl-dev icu icu-dev oniguruma oniguruma-dev \
-           libffi libffi-dev libpng libpng-dev readline readline-dev libsodium libsodium-dev libzip libzip-dev
 RUN \
     echo "Installing PHP 8 ..." && \
     /bin/bash && \
@@ -41,13 +33,12 @@ RUN \
         --with-bz2 \
         --with-curl \
         --with-ffi \
-        --with-openssl  \
         --with-tidy \
         --with-zlib && \
     make && \
     make install && \
     ln -s /usr/local/php8/bin/php /usr/local/bin/php8 && \
-    ln -s /usr/local/php8/bin/php /usr/local/bin/php
+    ln -s /usr/local/php8/bin/php /usr/bin/php
 RUN \
     echo "Installing PHP-FPM ..." && \
     cd /opt/php-src && \
@@ -55,8 +46,8 @@ RUN \
     cp sapi/fpm/www.conf.in /usr/local/php8/etc/php-fpm.d/www.conf && \
     cp sapi/fpm/php-fpm.conf.in /usr/local/php8/etc/php-fpm.conf && \
     sed -i 's/\@php_fpm_sysconfdir\@/\/usr\/local\/php8\/etc/g' /usr/local/php8/etc/php-fpm.conf && \
-    sed -i 's/\@php_fpm_user\@/nginx/g' /usr/local/php8/etc/php-fpm.d/www.conf && \
-    sed -i 's/\@php_fpm_group\@/nginx/g' /usr/local/php8/etc/php-fpm.d/www.conf && \
+    sed -i 's/\@php_fpm_user\@/nobody/g' /usr/local/php8/etc/php-fpm.d/www.conf && \
+    sed -i 's/\@php_fpm_group\@/nobody/g' /usr/local/php8/etc/php-fpm.d/www.conf && \
     sed -i 's/listen\ \=\ 127\.0\.0\.1\:9000/listen\ \=\ 0\.0\.0\.0\:9000/g' /usr/local/php8/etc/php-fpm.d/www.conf
 COPY php8.startup.sh /tmp/startup.sh
 RUN chmod +x /tmp/*.sh

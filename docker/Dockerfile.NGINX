@@ -6,8 +6,6 @@ RUN \
 RUN \
     echo "Installing nginx ..." && \
     apk add nginx && \
-    mv /etc/nginx/http.d/default.conf /etc/nginx/http.d/default.conf.old && \
-    cp /tmp/default.conf /etc/nginx/http.d/default.conf && \
     chown -R nginx /var/www
 COPY nginx.startup.sh /tmp/startup.sh
 RUN chmod +x /tmp/*.sh

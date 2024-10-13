@@ -6,12 +6,12 @@ echo "$CONTAINER_IP_NGINX   $HOST_NAME_NGINX" >> /etc/hosts
 echo "$CONTAINER_IP_PHP8    $HOST_NAME_PHP8" >> /etc/hosts
 echo "$CONTAINER_IP_PHP7    $HOST_NAME_PHP7" >> /etc/hosts
 
-echo "Setting permissions for nginx user ..."
-cd $REPO_DIR
-chgrp -R -f nginx
-chmod -R -f 775 *
+echo "Linking config fikes ..."
+mv -f /etc/nginx/http.d/default.conf /etc/nginx/http.d/default.conf.old
+ln -s -f /tmp/default.conf /etc/nginx/http.d/default.conf
 
-/etc/init.d/nginx start
+echo "Starting nginx ..."
+/usr/sbin/nginx
 status=$?
 if [ $status -ne 0 ]; then
   echo "Failed to start nginx: $status"

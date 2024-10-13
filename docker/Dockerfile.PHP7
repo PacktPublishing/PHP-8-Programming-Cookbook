@@ -1,21 +1,28 @@
-FROM alpine:latest
+FROM unlikelysource/php_src_base:latest
 ENV PHP_TAG=php-7.4.33
+ENV OPENSSL_VER=openssl-3.3.2
 RUN \
-    echo "Installing basic utilities ..." && \
-    apk add curl git bash nano
-RUN \
-    echo "Installing libs needed by PHP ..." && \
-    apk add build-base autoconf re2c make pkgconf bison libc-dev curl-dev libxml2 libxml2-dev \
-           sqlite sqlite-dev bzip2 bzip2-dev openssl openssl-dev icu icu-dev oniguruma oniguruma-dev \
-           libffi libffi-dev libpng libpng-dev readline readline-dev libsodium libsodium-dev libzip libzip-dev
+    echo "Building OpenSSL from source ..." && \
+    apk add wget && \
+    cd /opt && \
+    wget https://github.com/openssl/openssl/releases/download/$OPENSSL_VER/$OPENSSL_VER.tar.gz && \
+    tar xvf $OPENSSL_VER.tar.gz && \
+    cd $OPENSSL_VER && \
+    ./Configure --prefix=/opt/build --openssldir=/opt/build -fPIC -shared linux-x86_64 && \
+    make -j && \
+    make install
 RUN \
     echo "Installing PHP 7 ..." && \
+    echo "TODO: --with-openssl" && \
     /bin/bash && \
     mkdir -p /usr/local/php7 && \
     mkdir -p /usr/local/php7/etc && \
     mkdir -p /usr/local/php7/etc/conf.d && \
     cd /opt/php-src && \
+    git pull && \
     git checkout $PHP_TAG && \
+    export OPENSSL_CONF=/opt/$OPENSSL_VER/apps/openssl.cnf && \
+    export PKG_CONFIG_PATH=/opt/lib/pkgconfig && \
     ./buildconf --force && \
     ./configure \
         --prefix=/usr/local/php7 \
@@ -34,20 +41,18 @@ RUN \
         --enable-xmlwriter  \
         --with-config-file-path=/usr/local/php7/etc \
         --with-config-file-scan-dir=/usr/local/php7/etc/conf.d \
-        --with-openssl \
         --with-readline \
         --with-sodium \
         --with-zip \
         --with-bz2 \
         --with-curl \
         --with-ffi \
-        --with-openssl  \
         --with-tidy \
         --with-zlib && \
     make && \
     make install && \
     ln -s /usr/local/php7/bin/php /usr/local/bin/php7 && \
-    ln -s /usr/local/php7/bin/php /usr/local/bin/php
+    ln -s /usr/local/php7/bin/php /usr/bin/php
 COPY php7.startup.sh /tmp/startup.sh
 RUN chmod +x /tmp/*.sh
 WORKDIR /repo

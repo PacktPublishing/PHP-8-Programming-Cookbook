@@ -8,7 +8,7 @@ echo "$CONTAINER_IP_PHP7    $HOST_NAME_PHP7" >> /etc/hosts
 
 echo "Setting permissions for PHP user ..."
 cd $REPO_DIR
-chgrp -R -f nginx
+chgrp -R -f nobody *
 chmod -R -f 775 *
 cd
 

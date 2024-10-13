@@ -1,3 +1,22 @@
+# Manual Build Procedure:
+To build the images "manually" (without pulling from Docker Hub):
+1. Build unlikelysource/php_src_base:
+```
+podman build -t unlikelysource/php_src_base -f Dockerfile.PHP_SRC_BASE
+```
+2. Build the PHP 7, PHP 8, and nginx containers:
+```
+cd ..
+podman-compose build
+```
+
+# PHP_SRC_BASE Image
+Contains the following libraries:
+* curl git bash nano
+* build-base autoconf re2c make pkgconf bison libc-dev curl-dev libxml2 libxml2-dev  tidyhtml tidyhtml-dev
+* sqlite sqlite-dev bzip2 bzip2-dev openssl openssl-dev icu icu-dev oniguruma oniguruma-dev
+* libffi libffi-dev libpng libpng-dev readline readline-dev libsodium libsodium-dev libzip libzip-dev
+
 # PHP 8 Container
 
 ## Location of PHP files
@@ -44,3 +63,6 @@
     --with-tidy \
     --with-zlib
 ```
+# PHP 7 Container
+Problem building with OpenSSL:
+* https://stackoverflow.com/questions/74988278/how-to-compile-php-7-4-33-correctly-with-openssl-1-1-1-on-ubuntu-22-04

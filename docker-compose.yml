@@ -6,7 +6,7 @@ services:
     volumes:
      - ".:/repo"
     build:
-      context: .
+      context: ./docker
       dockerfile: Dockerfile.NGINX
     working_dir: /repo
     command: /tmp/startup.sh
@@ -21,7 +21,7 @@ services:
     volumes:
      - ".:/repo"
     build:
-      context: .
+      context: ./docker
       dockerfile: Dockerfile.PHP8
     working_dir: /repo
     command: /tmp/startup.sh
@@ -36,7 +36,7 @@ services:
     volumes:
      - ".:/repo"
     build:
-      context: .
+      context: ./docker
       dockerfile: Dockerfile.PHP7
     working_dir: /repo
     command: /tmp/startup.sh
