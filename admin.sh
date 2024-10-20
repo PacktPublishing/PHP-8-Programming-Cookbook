@@ -20,10 +20,12 @@ elif [[ "$1" = "build" ]]; then
 elif [[ "$1" = "ls" ]]; then
     $DOCKER container ls
 elif [[ "$1" = "shell" ]]; then
-    if [[ "$2" = "--php7" ]]; then
-        $DOCKER exec -it $CONTAINER7_NAME /bin/bash
+    if [[ "$2" = "php7" ]]; then
+        $DOCKER exec -it $CONTAINER_PHP7 /bin/bash
+    elif [[ "$1" = "build" ]]; then
+        $DOCKER exec -it $CONTAINER_NGINX /bin/bash
     else
-        $DOCKER exec -it $CONTAINER_NAME /bin/bash
+        $DOCKER exec -it $CONTAINER_PHP8 /bin/bash
     fi
 else
     echo $USAGE

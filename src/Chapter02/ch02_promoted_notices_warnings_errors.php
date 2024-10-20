@@ -44,7 +44,7 @@ $arr = [
         'Attempting to convert an array to string' => 
             function () { $arr = ['A' => 111]; echo (string) $arr; },
         'Attempting to use a resource as an array key' => 
-            function () { $fh = fopen('gettysburg_address.txt', 'r'); 
+            function () { $fh = fopen(__DIR__ . '/gettysburg_address.txt', 'r'); 
                           $arr[$fh] = 'Gettysburg'; 
                           var_dump($arr);
             },

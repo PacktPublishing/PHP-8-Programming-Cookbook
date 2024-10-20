@@ -1,4 +1,4 @@
-FROM unlikelysource/php_src_base:latest
+FROM docker.io/unlikelysource/php_src_base
 ENV PHP_TAG=php-8.4.0beta5
 RUN \
     echo "Installing PHP 8 ..." && \

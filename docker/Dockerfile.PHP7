@@ -1,4 +1,4 @@
-FROM unlikelysource/php_src_base:latest
+FROM docker.io/unlikelysource/php_src_base
 ENV PHP_TAG=php-7.4.33
 ENV OPENSSL_VER=openssl-3.3.2
 RUN \
