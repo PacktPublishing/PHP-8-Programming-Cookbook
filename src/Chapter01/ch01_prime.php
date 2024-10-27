@@ -7,12 +7,13 @@ $min    = $argv[1] ?? 1234567890;
 $num    = $argv[2] ?? 30;
 $across = 5;
 $result = $prime->generate($min, $num);
-foreach ($result as $num) {
+while ($result->valid()) {
     // display 6 across
     for ($x = 0; $x < $across; $x++) {
         if (!$result->valid()) break;
-        echo number_format($num);
+        echo gmp_strval($result->current());
         echo "\t";
+        $result->next();
     }
     echo PHP_EOL;
 }

@@ -4,9 +4,10 @@ RUN \
     apk add curl git bash nano
 RUN \
     echo "Installing libs needed by PHP ..." && \
-    apk add build-base autoconf re2c make pkgconf bison libc-dev curl-dev libxml2 libxml2-dev  tidyhtml tidyhtml-dev \
+    apk add build-base autoconf re2c make pkgconf bison libc-dev curl-dev libxml2 libxml2-dev \
            sqlite sqlite-dev bzip2 bzip2-dev openssl openssl-dev icu icu-dev oniguruma oniguruma-dev \
-           libffi libffi-dev libpng libpng-dev readline readline-dev libsodium libsodium-dev libzip libzip-dev
+           libffi libffi-dev libpng libpng-dev readline readline-dev libsodium libsodium-dev libzip libzip-dev \
+           gmp gmp-dev tidyhtml tidyhtml-dev 
 RUN \
     echo "Installing PHP source ..." && \
     cd /opt && \

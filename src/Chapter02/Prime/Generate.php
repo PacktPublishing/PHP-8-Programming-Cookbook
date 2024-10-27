@@ -1,6 +1,5 @@
 <?php
 namespace Cookbook\Chapter02\Prime;
-
 use Exception;
 class Generate
 {

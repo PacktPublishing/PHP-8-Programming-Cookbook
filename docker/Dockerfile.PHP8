@@ -26,6 +26,7 @@ RUN \
         --enable-xmlwriter  \
         --with-config-file-path=/usr/local/php8/etc \
         --with-config-file-scan-dir=/usr/local/php8/etc/conf.d \
+        --with-gmp \
         --with-openssl \
         --with-readline \
         --with-sodium \
