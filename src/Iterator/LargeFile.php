@@ -57,4 +57,14 @@ class LargeFile
         $iterator = 'fileIterator' . $type;
         return new NoRewindIterator($this->$iterator($numBytes));
     }
+
+    public function fileIteratorCsv()
+    {
+      $count = 0;
+      while (!$this->file->eof()) {
+        yield $this->file->fgetcsv();
+        $count++;
+      }
+      return $count;        
+    }
 }
