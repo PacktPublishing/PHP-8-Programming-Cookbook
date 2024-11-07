@@ -1,5 +1,5 @@
 FROM docker.io/unlikelysource/php_src_base
-ENV PHP_TAG=php-8.4.0RC4
+ENV PHP_TAG=main
 RUN \
     echo "Installing PHP 8 ..." && \
     /bin/bash && \
@@ -7,6 +7,7 @@ RUN \
     mkdir -p /usr/local/php8/etc && \
     mkdir -p /usr/local/php8/etc/conf.d && \
     cd /opt/php-src && \
+    git pull && \
     git checkout $PHP_TAG && \
     ./buildconf --force && \
     ./configure \
