@@ -14,14 +14,16 @@ class GenericRow
     public const ERR_PDO = 'ERROR: unable to build insert';
     public const ERR_COUNT = 'ERROR: header / data count does not match';
     public const ERR_INSERT = 'ERROR: unable to add data to database';
+    // IMPORTANT: $dbCols is the list of database column names
+    //            the column name order must exactly match the order of CSV the columns
     #[GenericRow\__construct(
         "string table : name of the database table",
-        "array headers : derived from CSV file", 
+        "array dbCols : database column names", 
         "PDO pdo : PDO instance",
     )]
     public function __construct(
         public string $table, 
-        public array $headers,
+        public array $mapping,
         public PDO $pdo)
     {
         try {
@@ -47,23 +49,23 @@ class GenericRow
         // build SQL INSERT
         $ok = false;
         $sql = 'INSERT INTO ' . $this->table . ' '
-             . '(' . implode(',', $this->headers) . ') '
+             . '(' . implode(',', $this->dbCols) . ') '
              . 'VALUES '
-             . '(:' . implode(',:', $this->headers) . ');';
+             . '(:' . implode(',:', $this->dbCols) . ');';
         return $pdo->prepare($sql);
    }
     #[GenericRow\ingestRow(
         "Ingests row from CSV",
         "array data: actual data from CSV file",
         "Returns TRUE if row count matches; FALSE otherwise",
-        "Throws OutOfBoundsException if count of headers and data does not match"
+        "Throws OutOfBoundsException if count of dbCols and data does not match"
     )]
     public function ingestRow(array $data) : bool
     {
-        if (count($this->headers) !== count($data)) {
+        if (count($this->dbCols) !== count($data)) {
             throw new OutOfBoundsException(static::ERR_COUNT);
         }
-        $this->row = array_combine($this->headers, $data);
+        $this->row = array_combine($this->dbCols, $data);
     }
     #[GenericRow\insert(
         "Inserts row into database table",
