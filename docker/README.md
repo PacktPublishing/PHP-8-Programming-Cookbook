@@ -16,6 +16,8 @@ Contains the following libraries:
 * build-base autoconf re2c make pkgconf bison libc-dev curl-dev libxml2 libxml2-dev  tidyhtml tidyhtml-dev
 * sqlite sqlite-dev bzip2 bzip2-dev openssl openssl-dev icu icu-dev oniguruma oniguruma-dev
 * libffi libffi-dev libpng libpng-dev readline readline-dev libsodium libsodium-dev libzip libzip-dev
+Also contains the PHP source code from https://github.com/php/php-src
+* Located in: `/tmp/php-src`
 
 # PHP 8 Container
 
@@ -32,6 +34,11 @@ Contains the following libraries:
 * build environment:     /usr/local/php8/lib/php/build/
 * header files:          /usr/local/php8/include/php/
 * helper programs:       /usr/local/php8/bin/
+* php.ini file:          /usr/local/php8/etc/php.ini
+
+The following settings are other than default:
+* `error_log` : /var/log/php/error.log
+* `display_errors' : On
 
 ## Configure Command
 ```
@@ -66,3 +73,6 @@ Contains the following libraries:
 # PHP 7 Container
 Problem building with OpenSSL:
 * https://stackoverflow.com/questions/74988278/how-to-compile-php-7-4-33-correctly-with-openssl-1-1-1-on-ubuntu-22-04
+
+Otherwise the file locations and settings are the same except:
+* Instead of `php8` look for `php7` in all file and directory paths

@@ -54,6 +54,11 @@ RUN \
     make install && \
     ln -s /usr/local/php7/bin/php /usr/local/bin/php7 && \
     ln -s /usr/local/php7/bin/php /usr/bin/php
+RUN \
+    echo "Setting up PHP to log errors to /var/log/php/error.log..." && \
+    cp /opt/php-src/php.ini-development /usr/local/php7/etc/php.ini && \
+    mkdir -p /var/log/php && \
+    sed -i "s/;error_log\ \=\ php_errors.log/error_log\ \=\ \/var\/log\/php\/error\.log/g" /usr/local/php7/etc/php.ini
 COPY php7.startup.sh /tmp/startup.sh
 RUN chmod +x /tmp/*.sh
 WORKDIR /repo

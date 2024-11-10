@@ -10,9 +10,9 @@ use Generator;
 class LargeFile
 {
     const ERROR_UNABLE = 'ERROR: Unable to open file';
-    const ERROR_TYPE   = 'ERROR: Type must be "ByLength", "ByLine" or "Csv"';     
+    const ERROR_TYPE   = 'ERROR: Type must be "ByLength", "ByLine" or "CSV"';     
     protected $file;
-    protected $allowedTypes = ['ByLine', 'ByLength', 'Csv'];
+    protected $allowedTypes = ['ByLine', 'ByLength', 'CSV'];
     public function __construct(string $filename, string $mode = 'r')
     {
         if (!file_exists($filename)) {
@@ -58,11 +58,11 @@ class LargeFile
         return new NoRewindIterator($this->$iterator($numBytes));
     }
 
-    public function fileIteratorCsv()
+    public function fileIteratorCSV()
     {
       $count = 0;
       while (!$this->file->eof()) {
-        yield $this->file->fgetcsv();
+        yield $this->file->fgetcsv(separator:',', enclosure:'"', escape:'\\');
         $count++;
       }
       return $count;        

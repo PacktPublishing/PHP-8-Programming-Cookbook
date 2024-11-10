@@ -1,9 +1,8 @@
 <?php
-// How much data?
+// How many lines of data?
 $how_much = 5000;
 // Name of output files
 $csv_file = 'fake.csv';
-$sql_file = 'fake.sql';
 // Fake Data Generator
 $last_name = file('last_names.txt');
 $female_name = file('female_name.txt');

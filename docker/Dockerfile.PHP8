@@ -51,6 +51,12 @@ RUN \
     sed -i 's/\@php_fpm_user\@/nobody/g' /usr/local/php8/etc/php-fpm.d/www.conf && \
     sed -i 's/\@php_fpm_group\@/nobody/g' /usr/local/php8/etc/php-fpm.d/www.conf && \
     sed -i 's/listen\ \=\ 127\.0\.0\.1\:9000/listen\ \=\ 0\.0\.0\.0\:9000/g' /usr/local/php8/etc/php-fpm.d/www.conf
+RUN \
+    echo "Setting up PHP to log errors to /var/log/php/error.log..." && \
+    cp /usr/local/php8/lib/php.ini /usr/local/php8/etc/php.ini && \
+    mkdir -p /var/log/php && \
+    sed -i "s/display_errors\ \=\ Off/display_errors \=\ On/g" /usr/local/php8/etc/php.ini && \
+    sed -i "s/;error_log\ \=\ php_errors.log/error_log\ \=\ \/var\/log\/php\/error\.log/g" /usr/local/php8/etc/php.ini
 COPY php8.startup.sh /tmp/startup.sh
 RUN chmod +x /tmp/*.sh
 WORKDIR /repo

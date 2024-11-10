@@ -6,14 +6,17 @@ use PDOStatement;
 use Throwable;
 use RuntimeException;
 use OutOfBoundsException;
+use Cookbook\Database\Connect;
 use function array_combine;
+#[GenericRow("Represents a single row in a table")]
 class GenericRow
 {
     public array $row = [];
-    public ?PDOStatement $stmt = null;
-    public const ERR_PDO = 'ERROR: unable to build insert';
-    public const ERR_COUNT = 'ERROR: header / data count does not match';
-    public const ERR_INSERT = 'ERROR: unable to add data to database';
+    public ?PDOStatement $insertStatement = null;
+    public ?PDOStatement $selectStatement = null;
+    public const ERR_INS_STMT = 'ERROR: unable to build insert';
+    public const ERR_COUNT    = 'ERROR: header / data count does not match';
+    public const ERR_INSERT   = 'ERROR: unable to add data to database';
     // IMPORTANT: $dbCols is the list of database column names
     //            the column name order must exactly match the order of CSV the columns
     #[GenericRow\__construct(
@@ -23,23 +26,9 @@ class GenericRow
     )]
     public function __construct(
         public string $table, 
-        public array $mapping,
-        public PDO $pdo)
-    {
-        try {
-            // prepare once
-            $this->stmt = $this->buildInsert();
-        } catch (Throwable) {
-            error_log(__METHOD__ . ':' 
-                . get_class($t) . ':' 
-                . $t->getMessage());
-            throw new RuntimeException(static::ERR_PDO);
-        } finally {
-            if (empty($this->stmt)) {
-                throw new RuntimeException(static::ERR_PDO);
-            }
-        }
-    }
+        public array $dbCols,
+        public ?PDO $pdo)
+    {}
     #[GenericRow\buildInsert(
         "Creates prepared statement to insert row into database table",
         "Returns PDOStatement if successful; FALSE otherwise"
@@ -52,7 +41,28 @@ class GenericRow
              . '(' . implode(',', $this->dbCols) . ') '
              . 'VALUES '
              . '(:' . implode(',:', $this->dbCols) . ');';
-        return $pdo->prepare($sql);
+        $this->insertStatement = $this->pdo->prepare($sql);
+        return $this->insertStatement;
+   }
+    #[GenericRow\buildSelect(
+        "Creates prepared statement for database table select",
+        "array where : key => value pairs where key === col and value == WHERE equivalence",
+        "Returns PDOStatement if successful; FALSE otherwise"
+    )]
+    public function buildSelect(array $where = []) : PDOStatement|false
+    {
+        // build SQL SELECT
+        $ok = false;
+        $sql = 'SELECT ' . implode(',', $this->dbCols) . ' '
+             . 'FROM ' . $this->table . ' ';
+        if (!empty($where)) {
+            $sql .= 'WHERE ';
+            foreach ($where as $col => $value) {
+                $sql .= $col . '=' . ':' . $col;
+            }
+        }
+        $this->selectStatement = $this->pdo->prepare($sql);
+        return $this->selectStatement;
    }
     #[GenericRow\ingestRow(
         "Ingests row from CSV",
@@ -77,13 +87,13 @@ class GenericRow
         // build SQL INSERT
         try {
             $this->ingestRow($data);
-            $ok = $this->stmt->execute($this->row);
-        } catch (Throwable) {
+            $ok = $this->insertStatement->execute($this->row);
+        } catch (Throwable $t) {
             $ok = false;
             error_log(__METHOD__ . ':' 
                 . get_class($t) . ':' 
                 . $t->getMessage());
         }
-        return $ok;    
+        return (bool) $ok;    
     }
 }
