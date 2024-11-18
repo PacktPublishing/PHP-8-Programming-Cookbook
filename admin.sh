@@ -1,10 +1,10 @@
 #!/bin/bash
 . ./docker/secrets.sh
 DIR=`pwd`
-export USAGE="Usage: init.sh up|down|build|ls|shell [php7|php8|nginx] -- 2nd argument is the container (used with shell option)"
+export USAGE="Usage: init.sh up|down|build|ls|shell [php7|php8|nginx|mysql] -- 2nd argument is the container (used with shell option)"
 # If you're using docker instead of podman change "podman" to "docker"
-export DOCKER='podman'
-export COMPOSE='podman-compose'
+export DOCKER=podman
+export COMPOSE=podman-compose
 if [[ -z "$1" ]]; then
     echo $USAGE
     exit 1
@@ -22,8 +22,10 @@ elif [[ "$1" = "ls" ]]; then
 elif [[ "$1" = "shell" ]]; then
     if [[ "$2" = "php7" ]]; then
         $DOCKER exec -it $CONTAINER_PHP7 /bin/bash
-    elif [[ "$1" = "build" ]]; then
+    elif [[ "$2" = "nginx" ]]; then
         $DOCKER exec -it $CONTAINER_NGINX /bin/bash
+    elif [[ "$2" = "mysql" ]]; then
+        $DOCKER exec -it $CONTAINER_MYSQL /bin/bash
     else
         $DOCKER exec -it $CONTAINER_PHP8 /bin/bash
     fi

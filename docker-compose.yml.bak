@@ -14,22 +14,21 @@ services:
     networks:
       php8cookbook_net:
         ipv4_address: 10.10.10.10
-        
   mysql:
     container_name: mysql
     hostname: mysql
     image: unlikelysource/mysql_img
+    volumes:
+     - ".:/repo"
     build:
       context: ./docker
       dockerfile: Dockerfile.MySQL
-    volumes:
-     - .:/repo
-    restart: always
     working_dir: /repo
+    command: 
+    restart: always
     networks:
       php8cookbook_net:
         ipv4_address: 10.10.10.20
-
   php8:
     container_name: php8
     hostname: php8
@@ -45,7 +44,6 @@ services:
     networks:
       php8cookbook_net:
         ipv4_address: 10.10.10.88
-
   php7:
     container_name: php7
     hostname: php7
@@ -61,7 +59,6 @@ services:
     networks:
       php8cookbook_net:
         ipv4_address: 10.10.10.77
-
 networks:
   php8cookbook_net:
     ipam:

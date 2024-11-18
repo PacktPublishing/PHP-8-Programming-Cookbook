@@ -1,16 +1,22 @@
 #!/bin/bash
 export PHP_VER=8.4
 export HOST_NAME_PHP8=php8.local
-export HOST_NAME_PHP8=php7.local
+export HOST_NAME_PHP7=php7.local
 export HOST_NAME_NGINX=nginx.local
+export HOST_NAME_NGINX=mysql.local
 export DOC_ROOT=/repo/public
 export CONTAINER_PHP8=php8
 export CONTAINER_PHP7=php7
 export CONTAINER_NGINX=nginx
+export CONTAINER_MYSQL=mysql
 export CONTAINER_IP_PHP8=10.10.10.88
 export CONTAINER_IP_PHP7=10.10.10.77
 export CONTAINER_IP_NGINX=10.10.10.10
+export CONTAINER_IP_MYSQL=10.10.10.20
 export CONTAINER_SUBNET=10.10.10.0\/24
 export DB_ADMIN_VER=4.8.1
 export REPO_DIR=/repo
 export REPO_BACKUP_DIR=/repo/backups
+export DB_NAM=php8cookbook
+export DB_USR=cookbook
+export DB_PWD=password
