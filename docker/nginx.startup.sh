@@ -9,6 +9,7 @@ echo "$CONTAINER_IP_PHP7    $HOST_NAME_PHP7" >> /etc/hosts
 echo "Linking config fikes ..."
 mv -f /etc/nginx/http.d/default.conf /etc/nginx/http.d/default.conf.old
 ln -s -f /tmp/default.conf /etc/nginx/http.d/default.conf
+ln -s -f /repo /var/www/html
 
 echo "Starting nginx ..."
 /usr/sbin/nginx

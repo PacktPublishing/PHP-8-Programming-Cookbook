@@ -3,6 +3,8 @@ services:
     container_name: nginx
     hostname: nginx
     image: unlikelysource/nginx_img
+    ports:
+    - 8888:80
     volumes:
      - ".:/repo"
     build:

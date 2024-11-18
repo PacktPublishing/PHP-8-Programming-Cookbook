@@ -22,12 +22,12 @@ class Connect
     public static function getConnection(array $config = []) : PDO|null
     {
         if (empty(self::$pdo)) {
-            $driver   = $config['driver']   ?? static::DB_DRIVER;
-            $host     = $config['host']     ?? static::DB_HOST;
-            $dbName   = $config['dbname']   ?? static::DB_NAME;
+            $driver   = $config['db_driver']   ?? static::DB_DRIVER;
+            $host     = $config['db_host']     ?? static::DB_HOST;
+            $dbName   = $config['db_name']   ?? static::DB_NAME;
+            $username = $config['db_usr'] ?? static::DB_USR;
+            $password = $config['db_pwd'] ?? static::DB_PWD;
             $options  = $config['options']  ?? static::DB_OPTS;
-            $username = $config['username'] ?? static::DB_USR;
-            $password = $config['password'] ?? static::DB_PWD;
             try {
                 // change this is using other drivers
                 if ($driver === 'sqlite') {

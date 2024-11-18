@@ -52,6 +52,7 @@ The following settings are other than default:
     --enable-gd \
     --enable-intl \
     --enable-mbstring \
+    --enable-mysqlnd  \
     --enable-simplexml  \
     --enable-soap  \
     --enable-sockets  \
@@ -59,6 +60,8 @@ The following settings are other than default:
     --enable-xmlwriter  \
     --with-config-file-path=/usr/local/php8/etc \
     --with-config-file-scan-dir=/usr/local/php8/etc/conf.d \
+    --with-mysqli \
+    --with-pdo-mysql \
     --with-openssl \
     --with-readline \
     --with-sodium \

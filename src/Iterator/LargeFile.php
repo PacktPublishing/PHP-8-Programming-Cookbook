@@ -13,7 +13,11 @@ class LargeFile
     const ERROR_TYPE   = 'ERROR: Type must be "ByLength", "ByLine" or "CSV"';     
     protected $file;
     protected $allowedTypes = ['ByLine', 'ByLength', 'CSV'];
-    public function __construct(string $filename, string $mode = 'r')
+    public function __construct(string $filename, 
+                                string $mode = 'r', 
+                                // these use PHP8 constructor argument promotion:
+                                public string $delim = ',',     
+                                public bool $hasHeaders = TRUE)
     {
         if (!file_exists($filename)) {
             $message = __METHOD__ . ' : ' . self::ERROR_UNABLE . PHP_EOL;
@@ -62,7 +66,7 @@ class LargeFile
     {
       $count = 0;
       while (!$this->file->eof()) {
-        yield $this->file->fgetcsv(separator:',', enclosure:'"', escape:'\\');
+        yield $this->file->fgetcsv(separator:$this->delim, enclosure:'"', escape:'\\');
         $count++;
       }
       return $count;        

@@ -47,9 +47,10 @@ class GenericRow
     #[GenericRow\buildSelect(
         "Creates prepared statement for database table select",
         "array where : key => value pairs where key === col and value == WHERE equivalence",
+        "int limit   : adds LIMIT to SQL statement if non zero",
         "Returns PDOStatement if successful; FALSE otherwise"
     )]
-    public function buildSelect(array $where = []) : PDOStatement|false
+    public function buildSelect(array $where = [], int $limit = 0) : PDOStatement|false
     {
         // build SQL SELECT
         $ok = false;
@@ -58,8 +59,12 @@ class GenericRow
         if (!empty($where)) {
             $sql .= 'WHERE ';
             foreach ($where as $col => $value) {
-                $sql .= $col . '=' . ':' . $col;
+                $sql .= $col . '=' . ':' . $col . ',';
             }
+            $sql = substr($sql, -1) . ' ';
+        }
+        if (!empty($limit)) {
+            $sql .= 'LIMIT ' . $limit;
         }
         $this->selectStatement = $this->pdo->prepare($sql);
         return $this->selectStatement;
