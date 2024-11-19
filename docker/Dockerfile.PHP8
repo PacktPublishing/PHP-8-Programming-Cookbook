@@ -38,6 +38,7 @@ RUN \
     --with-curl \
     --with-ffi \
     --with-openssl  \
+    --with-pear \
     --with-tidy \
     --with-zlib && \
     make && \
@@ -60,7 +61,11 @@ RUN \
     mkdir -p /var/log/php && \
     sed -i "s/display_errors\ \=\ Off/display_errors \=\ On/g" /usr/local/php8/etc/php.ini && \
     sed -i "s/;error_log\ \=\ php_errors.log/error_log\ \=\ \/var\/log\/php\/error\.log/g" /usr/local/php8/etc/php.ini
+RUN \
+    echo "Installing XDebug..." && \
+    pecl install xdebug
 COPY php8.startup.sh /tmp/startup.sh
+COPY secrets.sh /tmp/secrets.sh
 RUN chmod +x /tmp/*.sh
 WORKDIR /repo
 ENTRYPOINT /tmp/startup.sh

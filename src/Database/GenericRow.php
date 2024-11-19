@@ -27,20 +27,35 @@ class GenericRow
     public function __construct(
         public string $table, 
         public array $dbCols,
-        public ?PDO $pdo)
+        public ?PDO $pdo,
+        public string $primaryKey = 'id')
     {}
+    #[GenericRow\removePrimary(
+        "Removed primary key from dbCols",
+        "Returns array"
+    )]
+    public function removePrimary() : array
+    {
+        $cols = $this->dbCols;
+        if (isset($cols[$this->primaryKey])) {
+            unset($cols[$this->primaryKey]);
+        }
+        return $cols;
+    }
     #[GenericRow\buildInsert(
         "Creates prepared statement to insert row into database table",
         "Returns PDOStatement if successful; FALSE otherwise"
     )]
     public function buildInsert() : PDOStatement|false
     {
+        // remove reference to primary key column
+        $cols = $this->removePrimary();
         // build SQL INSERT
         $ok = false;
         $sql = 'INSERT INTO ' . $this->table . ' '
-             . '(' . implode(',', $this->dbCols) . ') '
+             . '(' . implode(',', $cols) . ') '
              . 'VALUES '
-             . '(:' . implode(',:', $this->dbCols) . ');';
+             . '(:' . implode(',:', $cols) . ');';
         $this->insertStatement = $this->pdo->prepare($sql);
         return $this->insertStatement;
    }
@@ -72,15 +87,19 @@ class GenericRow
     #[GenericRow\ingestRow(
         "Ingests row from CSV",
         "array data: actual data from CSV file",
+        "bool includesKey : set TRUE if data includes primary key; FALSE otherwise",
         "Returns TRUE if row count matches; FALSE otherwise",
         "Throws OutOfBoundsException if count of dbCols and data does not match"
     )]
-    public function ingestRow(array $data) : bool
+    public function ingestRow(array $data, bool $includesKey) : bool
     {
-        if (count($this->dbCols) !== count($data)) {
-            throw new OutOfBoundsException(static::ERR_COUNT);
+        $ok = FALSE;
+        $cols = ($includesKey) ? $this->dbCols : $this->removePrimary();
+        if (count($cols) == count($data)) {
+            $this->row = array_combine($cols, $data);
+            $ok = TRUE;
         }
-        $this->row = array_combine($this->dbCols, $data);
+        return $ok;
     }
     #[GenericRow\insert(
         "Inserts row into database table",
@@ -90,14 +109,9 @@ class GenericRow
     public function insert(array $data) : bool
     {
         // build SQL INSERT
-        try {
-            $this->ingestRow($data);
+        $ok = FALSE;
+        if ($this->ingestRow($data, FALSE)) {
             $ok = $this->insertStatement->execute($this->row);
-        } catch (Throwable $t) {
-            $ok = false;
-            error_log(__METHOD__ . ':' 
-                . get_class($t) . ':' 
-                . $t->getMessage());
         }
         return (bool) $ok;    
     }

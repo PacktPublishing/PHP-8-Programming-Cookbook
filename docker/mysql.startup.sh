@@ -17,14 +17,10 @@ if [[ ! -f "/repo/mysql" ]]; then
     /usr/bin/mysql_install_db  --user=mysql --ldata=/var/lib/mysql --datadir=/repo/mysql
     /usr/bin/mysqld --user=mysql --datadir=/repo/mysql/
     sleep 3
-    /usr/bin/mysql -uroot -v -e "CREATE DATABASE IF NOT EXISTS $DB_NAM;"
-	/usr/bin/mysql -uroot -v -e "CREATE USER IF NOT EXISTS '$DB_USR'@'$DB_HOST' IDENTIFIED BY '$DB_PWD';"
-	/usr/bin/mysql -uroot -v -e "GRANT ALL PRIVILEGES ON *.* TO '$DB_USR'@'$DB_HOST';"
-	/usr/bin/mysql -uroot -v -e "FLUSH PRIVILEGES;"
+    /repo/docker/mysql_init_db.sh
 else
     /usr/bin/mysqld --user=mysql --datadir=/repo/mysql/
 fi
-
 
 status=$?
 if [ $status -ne 0 ]; then

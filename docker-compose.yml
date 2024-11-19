@@ -26,8 +26,9 @@ services:
       dockerfile: Dockerfile.MySQL
     volumes:
      - .:/repo
-    restart: always
     working_dir: /repo
+    command: /tmp/startup.sh
+    restart: always
     networks:
       php8cookbook_net:
         ipv4_address: 10.10.10.20

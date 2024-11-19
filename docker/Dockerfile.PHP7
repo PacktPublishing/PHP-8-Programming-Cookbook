@@ -39,6 +39,7 @@ RUN \
         --enable-sockets  \
         --enable-xmlreader  \
         --enable-xmlwriter  \
+        --enable-xdebug \
         --with-config-file-path=/usr/local/php7/etc \
         --with-config-file-scan-dir=/usr/local/php7/etc/conf.d \
         --with-gmp \
@@ -48,6 +49,7 @@ RUN \
         --with-bz2 \
         --with-curl \
         --with-ffi \
+        --with-pear \
         --with-tidy \
         --with-zlib && \
     make && \
@@ -59,7 +61,11 @@ RUN \
     cp /opt/php-src/php.ini-development /usr/local/php7/etc/php.ini && \
     mkdir -p /var/log/php && \
     sed -i "s/;error_log\ \=\ php_errors.log/error_log\ \=\ \/var\/log\/php\/error\.log/g" /usr/local/php7/etc/php.ini
+RUN \
+    echo "Installing XDebug..." && \
+    pecl install xdebug
 COPY php7.startup.sh /tmp/startup.sh
+COPY secrets.sh /tmp/secrets.sh
 RUN chmod +x /tmp/*.sh
 WORKDIR /repo
 ENTRYPOINT /tmp/startup.sh

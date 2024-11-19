@@ -12,18 +12,25 @@ try {
     // grab an instance using TAB as delimiter
     $iter = (new LargeFile($csv_fn, 'r', "\t", FALSE))->getIterator('CSV');
     $iter->next();
-    $rowObj = new PostCode(Connect::getConnection($config['ch02']));
+    // set up database connection and row object
+    $pdo = Connect::getConnection();
+    $rowObj = new PostCode($pdo);
     // check to see if table exists
     $select = $rowObj->buildSelect([], 1);
     $result = $select->execute();
     if (empty($result)) {
         $rowObj->createTable();
     }
-    $rowObj->buildInsert();
-    while ($iter->valid()) {
-        $expected++;
-        $actual += (int) $rowObj->insert($iter->current());
-        $iter->next();
+    if (!empty($rowObj->buildInsert())) {
+        while ($iter->valid()) {
+            $expected++;
+            $row = $iter->current();
+            $actual += (int) $rowObj->insert($row);
+            // echo implode(':',$row) . PHP_EOL;
+            $iter->next();
+        }
+    } else {
+        throw new RuntimeException('ERROR: problem building INSERT statement');
     }
 } catch (Throwable $e) {
   echo get_class($e) . ':' . $e->getMessage() . PHP_EOL . $e->getTraceAsString() . PHP_EOL;

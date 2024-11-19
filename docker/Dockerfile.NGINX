@@ -8,6 +8,7 @@ RUN \
     apk add nginx && \
     chown -R nginx /var/www
 COPY nginx.startup.sh /tmp/startup.sh
+COPY secrets.sh /tmp/secrets.sh
 RUN chmod +x /tmp/*.sh
 WORKDIR /repo
 ENTRYPOINT /tmp/startup.sh
