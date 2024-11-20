@@ -1,5 +1,5 @@
 <?php
-namespace Cookbook\Chapter01\View;
+namespace Cookbook\View;
 
 use FilterIterator;
 use RecursiveDirectoryIterator;
@@ -19,10 +19,10 @@ class ChapInfo
 				$result = FALSE;
 				if (parent::current()->isDir()) {
 					$fn = trim(parent::current()->getFilename());
-					if ($fn === '.' || $fn === '..') {
-						$result = FALSE;
-					} else {
+					if (str_starts_with($fn, 'Chapter')) {
 						$result = TRUE;
+					} else {
+						$result = FALSE;
 					}
 				}
 				return $result;

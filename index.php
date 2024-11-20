@@ -1,6 +1,6 @@
 <?php
-include __DIR__ . '/src/Chapter01/View/ChapInfo.php';
-use Cookbook\Chapter01\View\ChapInfo;
+include __DIR__ . '/src/View/ChapInfo.php';
+use Cookbook\View\ChapInfo;
 $html = '<style>no_bullet { list-style-type: none; }</style>';
 $html .= '<table>';
 $html .= '<tr>';

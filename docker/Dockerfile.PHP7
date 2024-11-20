@@ -40,17 +40,17 @@ RUN \
         --enable-xmlreader  \
         --enable-xmlwriter  \
         --enable-xdebug \
+        --with-bz2 \
         --with-config-file-path=/usr/local/php7/etc \
         --with-config-file-scan-dir=/usr/local/php7/etc/conf.d \
-        --with-gmp \
-        --with-readline \
-        --with-sodium \
-        --with-zip \
-        --with-bz2 \
         --with-curl \
         --with-ffi \
+        --with-gmp \
         --with-pear \
+        --with-readline \
+        --with-sodium \
         --with-tidy \
+        --with-zip \
         --with-zlib && \
     make && \
     make install && \
@@ -63,7 +63,7 @@ RUN \
     sed -i "s/;error_log\ \=\ php_errors.log/error_log\ \=\ \/var\/log\/php\/error\.log/g" /usr/local/php7/etc/php.ini
 RUN \
     echo "Installing XDebug..." && \
-    pecl install xdebug
+    echo "pecl install xdebug"
 COPY php7.startup.sh /tmp/startup.sh
 COPY secrets.sh /tmp/secrets.sh
 RUN chmod +x /tmp/*.sh
