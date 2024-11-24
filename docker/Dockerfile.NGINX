@@ -1,4 +1,4 @@
-FROM alpine:latest
+FROM docker.io/alpine:3.20
 COPY nginx.default.conf /tmp/default.conf
 RUN \
     echo "Installing basic utilities ..." && \
@@ -6,9 +6,7 @@ RUN \
 RUN \
     echo "Installing nginx ..." && \
     apk add nginx && \
+    mv -f /etc/nginx/http.d/default.conf /etc/nginx/http.d/default.conf.old && \
     chown -R nginx /var/www
-COPY nginx.startup.sh /tmp/startup.sh
-COPY secrets.sh /tmp/secrets.sh
-RUN chmod +x /tmp/*.sh
 WORKDIR /repo
 ENTRYPOINT /tmp/startup.sh

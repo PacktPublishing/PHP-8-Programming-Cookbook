@@ -7,10 +7,6 @@ class PostCode extends GenericRow
 {
     public const TABLE = 'post_codes';
     public const COLS  = ['id','country_code','postal_code','place_name','admin_name1','admin_code1','admin_name2','admin_code2','admin_name3','admin_code3','latitude','longitude','accuracy'];
-    public function __construct(public ?PDO $pdo)
-    {
-        parent::__construct(static::TABLE, static::COLS, $this->pdo);
-    }
     public function createTable()
     {
         $sql = <<<EOT
@@ -28,7 +24,7 @@ CREATE TABLE `post_codes` (
   `admin_code3` varchar(20) COLLATE utf8mb4_general_ci DEFAULT NULL,
   `latitude` decimal(10,4) NOT NULL,
   `longitude` decimal(10,4) NOT NULL,
-  `accuracy` int NOT NULL,
+  `accuracy` varchar(8) NOT NULL,
   PRIMARY KEY (`id`),
   KEY `place_name` (`place_name`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;

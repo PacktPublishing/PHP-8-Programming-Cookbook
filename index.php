@@ -5,7 +5,7 @@ $html = '<style>no_bullet { list-style-type: none; }</style>';
 $html .= '<table>';
 $html .= '<tr>';
 $html .= '<td>';
-$html .= '<br /><a href="/adminer.php">DB Admin</a>';
+$html .= '<br /><a href="/db_admin.php">DB Admin</a>';
 $html .= ChapInfo::getChaps(__DIR__);
 $html .= '</td>';
 $html .= '<td>';

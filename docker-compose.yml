@@ -7,6 +7,9 @@ services:
     - 8888:80
     volumes:
      - ".:/repo"
+     - "./docker/secrets.sh:/tmp/secrets.sh"
+     - "./docker/nginx.startup.sh:/tmp/startup.sh"
+     - "./docker/nginx.default.conf:/etc/nginx/http.d/default.conf"
     build:
       context: ./docker
       dockerfile: Dockerfile.NGINX
@@ -26,6 +29,8 @@ services:
       dockerfile: Dockerfile.MySQL
     volumes:
      - .:/repo
+     - "./docker/secrets.sh:/tmp/secrets.sh"
+     - "./docker/mysql.startup.sh:/tmp/startup.sh"
     working_dir: /repo
     command: /tmp/startup.sh
     restart: always
@@ -39,6 +44,8 @@ services:
     image: unlikelysource/php8_img
     volumes:
      - ".:/repo"
+     - "./docker/secrets.sh:/tmp/secrets.sh"
+     - "./docker/php8.startup.sh:/tmp/startup.sh"
     build:
       context: ./docker
       dockerfile: Dockerfile.PHP8
@@ -55,6 +62,8 @@ services:
     image: unlikelysource/php7_img
     volumes:
      - ".:/repo"
+     - "./docker/secrets.sh:/tmp/secrets.sh"
+     - "./docker/php7.startup.sh:/tmp/startup.sh"
     build:
       context: ./docker
       dockerfile: Dockerfile.PHP7

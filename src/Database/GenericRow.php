@@ -8,10 +8,15 @@ use RuntimeException;
 use OutOfBoundsException;
 use Cookbook\Database\Connect;
 use function array_combine;
+use function count;
+use function implode;
+use function substr;
 #[GenericRow("Represents a single row in a table")]
-class GenericRow
+abstract class GenericRow
 {
     public array $row = [];
+    public const TABLE = '';
+    public const COLS  = [];
     public ?PDOStatement $insertStatement = null;
     public ?PDOStatement $selectStatement = null;
     public const ERR_INS_STMT = 'ERROR: unable to build insert';
@@ -21,27 +26,14 @@ class GenericRow
     //            the column name order must exactly match the order of CSV the columns
     #[GenericRow\__construct(
         "string table : name of the database table",
-        "array dbCols : database column names", 
         "PDO pdo : PDO instance",
     )]
     public function __construct(
-        public string $table, 
-        public array $dbCols,
         public ?PDO $pdo,
         public string $primaryKey = 'id')
     {}
-    #[GenericRow\removePrimary(
-        "Removed primary key from dbCols",
-        "Returns array"
-    )]
-    public function removePrimary() : array
-    {
-        $cols = $this->dbCols;
-        if (isset($cols[$this->primaryKey])) {
-            unset($cols[$this->primaryKey]);
-        }
-        return $cols;
-    }
+    #[GenericRow\createTable("SQL to create the table")]
+    public abstract function createTable();
     #[GenericRow\buildInsert(
         "Creates prepared statement to insert row into database table",
         "Returns PDOStatement if successful; FALSE otherwise"
@@ -49,10 +41,10 @@ class GenericRow
     public function buildInsert() : PDOStatement|false
     {
         // remove reference to primary key column
-        $cols = $this->removePrimary();
+        $cols = array_slice(static::COLS, 1);
         // build SQL INSERT
         $ok = false;
-        $sql = 'INSERT INTO ' . $this->table . ' '
+        $sql = 'INSERT INTO ' . static::TABLE . ' '
              . '(' . implode(',', $cols) . ') '
              . 'VALUES '
              . '(:' . implode(',:', $cols) . ');';
@@ -69,8 +61,8 @@ class GenericRow
     {
         // build SQL SELECT
         $ok = false;
-        $sql = 'SELECT ' . implode(',', $this->dbCols) . ' '
-             . 'FROM ' . $this->table . ' ';
+        $sql = 'SELECT ' . implode(',', static::COLS) . ' '
+             . 'FROM ' . static::TABLE . ' ';
         if (!empty($where)) {
             $sql .= 'WHERE ';
             foreach ($where as $col => $value) {
@@ -94,7 +86,7 @@ class GenericRow
     public function ingestRow(array $data, bool $includesKey) : bool
     {
         $ok = FALSE;
-        $cols = ($includesKey) ? $this->dbCols : $this->removePrimary();
+        $cols = ($includesKey) ? static::COLS : array_slice(static::COLS, 1);
         if (count($cols) == count($data)) {
             $this->row = array_combine($cols, $data);
             $ok = TRUE;
@@ -108,7 +100,6 @@ class GenericRow
     )]
     public function insert(array $data) : bool
     {
-        // build SQL INSERT
         $ok = FALSE;
         if ($this->ingestRow($data, FALSE)) {
             $ok = $this->insertStatement->execute($this->row);

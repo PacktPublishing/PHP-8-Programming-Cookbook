@@ -63,9 +63,6 @@ RUN \
     sed -i "s/;error_log\ \=\ php_errors.log/error_log\ \=\ \/var\/log\/php\/error\.log/g" /usr/local/php7/etc/php.ini
 RUN \
     echo "Installing XDebug..." && \
-    echo "pecl install xdebug"
-COPY php7.startup.sh /tmp/startup.sh
-COPY secrets.sh /tmp/secrets.sh
-RUN chmod +x /tmp/*.sh
+    echo "/usr/local/php8/bin/pecl install xdebug"
 WORKDIR /repo
 ENTRYPOINT /tmp/startup.sh

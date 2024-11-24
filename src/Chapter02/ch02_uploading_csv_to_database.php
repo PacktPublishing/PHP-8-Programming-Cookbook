@@ -3,6 +3,7 @@ require __DIR__ . '/../../vendor/autoload.php';
 use Cookbook\Database\PostCode;
 use Cookbook\Database\Connect;
 use Cookbook\Iterator\LargeFile;
+define('ACROSS', 2);    // num to display across
 $config = require __DIR__ . '/../../config/db.config.php';
 $csv_fn = __DIR__ . '/../../data/US.txt';   // NOTE: tab-delimited
 $expected = 0;
@@ -13,20 +14,26 @@ try {
     $iter = (new LargeFile($csv_fn, 'r', "\t", FALSE))->getIterator('CSV');
     $iter->next();
     // set up database connection and row object
-    $pdo = Connect::getConnection();
+    $pdo = Connect::getConnection($config['ch02']);
     $rowObj = new PostCode($pdo);
-    // check to see if table exists
-    $select = $rowObj->buildSelect([], 1);
-    $result = $select->execute();
     if (empty($result)) {
         $rowObj->createTable();
     }
     if (!empty($rowObj->buildInsert())) {
+        $across = ACROSS;
         while ($iter->valid()) {
             $expected++;
             $row = $iter->current();
-            $actual += (int) $rowObj->insert($row);
-            // echo implode(':',$row) . PHP_EOL;
+            if (!empty($row[1])) {
+                $added = (int) $rowObj->insert($row);
+                $actual += $added;
+                $msg = ($added === 0) ? 'Not Added' : 'Added OK';
+                printf('%2s : %5s : %20s : %s  ', $row[0], $row[1], substr($row[2],0, 20), $msg);
+                if ($across-- <= 0) {
+                    echo PHP_EOL;
+                    $across = ACROSS;
+                }
+            }
             $iter->next();
         }
     } else {

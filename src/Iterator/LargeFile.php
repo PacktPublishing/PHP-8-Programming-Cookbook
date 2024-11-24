@@ -64,11 +64,12 @@ class LargeFile
 
     public function fileIteratorCSV()
     {
-      $count = 0;
-      while (!$this->file->eof()) {
-        yield $this->file->fgetcsv(separator:$this->delim, enclosure:'"', escape:'\\');
-        $count++;
-      }
-      return $count;        
+        $count = 0;
+        while (!$this->file->eof()) {
+            //yield $this->file->fgetcsv(separator:$this->delim, enclosure:'"', escape:'\\');
+            yield $this->file->fgetcsv(separator:$this->delim);
+            $count++;
+        }
+        return $count;        
     }
 }

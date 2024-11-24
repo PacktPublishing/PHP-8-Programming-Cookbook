@@ -1,4 +1,4 @@
-FROM docker.io/alpine:latest
+FROM docker.io/alpine:3.20
 RUN \
     echo "Installing basic utils ..." && \
     apk add nano && \
@@ -13,8 +13,5 @@ RUN \
     mkdir /run/mysqld && \
     touch /run/mysqld/mysqld.sock && \
     chown -R mysql /run/mysqld/
-COPY secrets.sh /tmp/secrets.sh
-COPY mysql.startup.sh /tmp/startup.sh
-RUN chmod +x /tmp/*.sh
 WORKDIR /repo
 ENTRYPOINT /tmp/startup.sh

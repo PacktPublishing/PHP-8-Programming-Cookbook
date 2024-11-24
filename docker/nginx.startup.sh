@@ -3,12 +3,9 @@
 
 echo "Updating /etc/hosts ..."
 echo "$CONTAINER_IP_NGINX   $HOST_NAME_NGINX" >> /etc/hosts
+echo "$CONTAINER_IP_MYSQL   $HOST_NAME_MYSQL" >> /etc/hosts
 echo "$CONTAINER_IP_PHP8    $HOST_NAME_PHP8" >> /etc/hosts
 echo "$CONTAINER_IP_PHP7    $HOST_NAME_PHP7" >> /etc/hosts
-
-echo "Linking config fikes ..."
-mv -f /etc/nginx/http.d/default.conf /etc/nginx/http.d/default.conf.old
-ln -s -f /tmp/default.conf /etc/nginx/http.d/default.conf
 
 echo "Starting nginx ..."
 /usr/sbin/nginx
