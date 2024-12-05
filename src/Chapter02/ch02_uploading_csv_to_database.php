@@ -3,7 +3,6 @@ require __DIR__ . '/../../vendor/autoload.php';
 use Cookbook\Database\PostCode;
 use Cookbook\Database\Connect;
 use Cookbook\Iterator\LargeFile;
-define('ACROSS', 2);    // num to display across
 $config = require __DIR__ . '/../../config/db.config.php';
 $csv_fn = __DIR__ . '/../../data/US.txt';   // NOTE: tab-delimited
 $expected = 0;
@@ -16,11 +15,8 @@ try {
     // set up database connection and row object
     $pdo = Connect::getConnection($config['ch02']);
     $rowObj = new PostCode($pdo);
-    if (empty($result)) {
-        $rowObj->createTable();
-    }
+    $rowObj->createTable();
     if (!empty($rowObj->buildInsert())) {
-        $across = ACROSS;
         while ($iter->valid()) {
             $expected++;
             $row = $iter->current();
@@ -28,11 +24,7 @@ try {
                 $added = (int) $rowObj->insert($row);
                 $actual += $added;
                 $msg = ($added === 0) ? 'Not Added' : 'Added OK';
-                printf('%2s : %5s : %20s : %s  ', $row[0], $row[1], substr($row[2],0, 20), $msg);
-                if ($across-- <= 0) {
-                    echo PHP_EOL;
-                    $across = ACROSS;
-                }
+                printf('%2s : %5s : %20s : %s  ' . PHP_EOL, $row[0], $row[1], substr($row[2],0, 20), $msg);
             }
             $iter->next();
         }
