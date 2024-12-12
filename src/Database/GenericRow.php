@@ -14,7 +14,8 @@ use function substr;
 #[GenericRow("Represents a single row in a table")]
 abstract class GenericRow
 {
-    public array $row = [];
+    public array $row  = [];
+    public string $sql = '';
     public const TABLE = '';
     public const COLS  = [];
     public ?PDOStatement $insertStatement = null;
@@ -25,8 +26,8 @@ abstract class GenericRow
     // IMPORTANT: $dbCols is the list of database column names
     //            the column name order must exactly match the order of CSV the columns
     #[GenericRow\__construct(
-        "string table : name of the database table",
         "PDO pdo : PDO instance",
+        "string primaryKey : primary key column for this database table",
     )]
     public function __construct(
         public ?PDO $pdo,
@@ -51,30 +52,16 @@ abstract class GenericRow
         $this->insertStatement = $this->pdo->prepare($sql);
         return $this->insertStatement;
    }
-    #[GenericRow\buildSelect(
-        "Creates prepared statement for database table select",
-        "array where : key => value pairs where key === col and value == WHERE equivalence",
-        "int limit   : adds LIMIT to SQL statement if non zero",
+    #[GenericRow\buildSelectSql(
+        "Creates SQL for database table select",
         "Returns PDOStatement if successful; FALSE otherwise"
     )]
-    public function buildSelect(array $where = [], int $limit = 0) : PDOStatement|false
+    public function buildSelectSql() : string
     {
         // build SQL SELECT
-        $ok = false;
-        $sql = 'SELECT ' . implode(',', static::COLS) . ' '
+        $this->sql = 'SELECT ' . implode(',', static::COLS) . ' '
              . 'FROM ' . static::TABLE . ' ';
-        if (!empty($where)) {
-            $sql .= 'WHERE ';
-            foreach ($where as $col => $value) {
-                $sql .= $col . '=' . ':' . $col . ',';
-            }
-            $sql = substr($sql, -1) . ' ';
-        }
-        if (!empty($limit)) {
-            $sql .= 'LIMIT ' . $limit;
-        }
-        $this->selectStatement = $this->pdo->prepare($sql);
-        return $this->selectStatement;
+        return $this->sql;
    }
     #[GenericRow\ingestRow(
         "Ingests row from CSV",
