@@ -2,6 +2,8 @@
 namespace Cookbook\Database;
 
 use PDO;
+use WeakMap;
+use WeakReference;
 use SplObjectStorage;
 #[Names("Generic Row specific to 'post_codes' table")]
 class PostCode extends GenericRow
@@ -33,8 +35,25 @@ CREATE TABLE `post_codes` (
 EOT;
         return $this->pdo->exec($sql);
     }
+    #[PostCode\findOneCity(
+        "Returns only the first city found",
+        "string city : city to find",
+        "Returns PDOStatement if successful; FALSE otherwise"
+    )]
+    public function findOneCity(string $city) : static
+    {
+        $post = new static($this->pdo);
+        $sql  = $this->buildSelectSql();
+        $sql .= 'WHERE place_name LIKE ' . $this->pdo->quote('%' . $city. '%') . ' ';
+        $sql .= 'LIMIT 1';
+        $result = $this->pdo->query($sql);
+        if (!empty($result)) {
+            $post->ingestRow($result->fetch(PDO::FETCH_ASSOC), TRUE);
+        }
+        return $post;
+    }
     #[PostCode\findCity(
-        "Creates prepared statement for database table select",
+        "Returns an SplObjectStorage instance loaded with cities found",
         "string city : city to find",
         "Returns PDOStatement if successful; FALSE otherwise"
     )]
@@ -43,12 +62,37 @@ EOT;
         $obj  = new SplObjectStorage();
         $post = new static($this->pdo);
         $sql  = $this->buildSelectSql();
-        $sql .= ' WHERE place_name LIKE ' . $this->pdo->quote('%' . $city. '%');
+        $sql .= ' WHERE place_name LIKE ' . $this->pdo->quote('%' . $city. '%') . ' ';
         $result = $this->pdo->query($sql);
         if (!empty($result)) {
             while ($row = $result->fetch(PDO::FETCH_ASSOC)) {
                 $post->ingestRow($row, TRUE);
                 $obj->attach(clone $post);
+            }
+        }
+        return $obj;
+    }
+    #[PostCode\findCityWeakRef(
+        "Returns an SplObjectStorage instance loaded with weak references of cities found",
+        "string city : city to find",
+        "Returns PDOStatement if successful; FALSE otherwise"
+    )]
+    public function findCityWeakRef(string $city) : SplObjectStorage
+    {
+        $obj  = new class() extends SplObjectStorage {
+            public function current()
+            {
+                return parent::current()->get();
+            }
+        };
+        $post = new static($this->pdo);
+        $sql  = $this->buildSelectSql();
+        $sql .= ' WHERE place_name LIKE ' . $this->pdo->quote('%' . $city. '%') . ' ';
+        $result = $this->pdo->query($sql);
+        if (!empty($result)) {
+            while ($row = $result->fetch(PDO::FETCH_ASSOC)) {
+                $post->ingestRow($row, TRUE);
+                $obj->attach(WeakReference::create(clone $post));
             }
         }
         return $obj;

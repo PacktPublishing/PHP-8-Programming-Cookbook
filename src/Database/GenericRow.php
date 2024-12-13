@@ -93,4 +93,11 @@ abstract class GenericRow
         }
         return (bool) $ok;    
     }
+    #[GenericRow\__get(
+        "Returns internal array row element"
+    )]
+    public function __get(string $key) : string
+    {
+        return $this->row[$key] ?? '';
+    }
 }
