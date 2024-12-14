@@ -10,6 +10,7 @@ class PostCode extends GenericRow
 {
     public const TABLE = 'post_codes';
     public const COLS  = ['id','country_code','postal_code','place_name','admin_name1','admin_code1','admin_name2','admin_code2','admin_name3','admin_code3','latitude','longitude','accuracy'];
+    public array $found = [];
     // SQL to create "post_codes" tabls
     public function createTable()
     {
@@ -65,34 +66,35 @@ EOT;
         $sql .= ' WHERE place_name LIKE ' . $this->pdo->quote('%' . $city. '%') . ' ';
         $result = $this->pdo->query($sql);
         if (!empty($result)) {
+            $i = 0;
             while ($row = $result->fetch(PDO::FETCH_ASSOC)) {
                 $post->ingestRow($row, TRUE);
-                $obj->attach(clone $post);
+                $this->found[$i] = clone $post;
+                $obj->attach($this->found[$i]);
+                $i++;
             }
         }
         return $obj;
     }
-    #[PostCode\findCityWeakRef(
-        "Returns an SplObjectStorage instance loaded with weak references of cities found",
+    #[PostCode\findCityWeakMap(
+        "Returns an WeakMap instance loaded with weak references of cities found",
         "string city : city to find",
         "Returns PDOStatement if successful; FALSE otherwise"
     )]
-    public function findCityWeakRef(string $city) : SplObjectStorage
+    public function findCityWeakMap(string $city) : WeakMap
     {
-        $obj  = new class() extends SplObjectStorage {
-            public function current()
-            {
-                return parent::current()->get();
-            }
-        };
+        $obj  = new WeakMap();
         $post = new static($this->pdo);
         $sql  = $this->buildSelectSql();
         $sql .= ' WHERE place_name LIKE ' . $this->pdo->quote('%' . $city. '%') . ' ';
         $result = $this->pdo->query($sql);
         if (!empty($result)) {
+            $i = 0;
             while ($row = $result->fetch(PDO::FETCH_ASSOC)) {
                 $post->ingestRow($row, TRUE);
-                $obj->attach(WeakReference::create(clone $post));
+                $this->found[$i] = clone $post;
+                $obj[$this->found[$i]] = $i;
+                $i++;
             }
         }
         return $obj;

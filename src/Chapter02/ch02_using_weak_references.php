@@ -9,64 +9,34 @@ if (empty($city)) {
 }
 
 echo 'Normal Object Storage' . PHP_EOL;
-$total = 0;
-$found = 0;
-$post   = new PostCode(Connect::getConnection($config['ch02']));
-$storage = $post->findCity($city);
-unset($post);
-foreach ($storage as $obj) {
-    $total++;
-    if (trim($obj->place_name) !== $city) {
-        printf("%40s : UNSET\n", $obj->place_name);
-        unset($obj);
-    } else {
-        $found++;
-        printf("%40s : %2s : %10s\n", $obj->place_name, $obj->admin_code1, $obj->postal_code);
-    }
-}
-echo 'Total items containing search key       : ' . $total . PHP_EOL;
-echo 'Total items exactly matching search key : ' . $found . PHP_EOL;
-echo 'Memory Usage: ' . memory_get_peak_usage() . PHP_EOL;
+$post = new PostCode(Connect::getConnection($config['ch02']));
+$obj  = $post->findOneCity($city);
+$storage = new SplObjectStorage();
+$storage->attach($obj);
+$row = (array) $storage?->current()->row;
+echo 'To Notice: object initially appears in storage:' . PHP_EOL;
+echo 'City: ' . implode(':', $row) . PHP_EOL;
+unset($obj, $post);
+echo 'To Notice: even though unset, object still exists in storage:' . PHP_EOL;
+$row = (array) $storage?->current()->row;
+echo 'City: ' . implode(':', $row) . PHP_EOL;
+var_dump($obj);
+$usageNormal = memory_get_peak_usage();
 
-$storage->rewind();
-$total = 0;
-foreach ($storage as $obj) {
-    $total++;
-    printf("%40s : %2s : %10s\n", $obj->place_name, $obj->admin_code1, $obj->postal_code);
-}
-echo 'Total items containing search key       : ' . $total . PHP_EOL;
-echo 'TO NOTICE: even though the objects were unset ... they still exist because of the back-reference!' . PHP_EOL;
 memory_reset_peak_usage();
-
-echo 'Weak Ref Object Storage' . PHP_EOL;
-$total = 0;
-$found = 0;
-$post   = new PostCode(Connect::getConnection($config['ch02']));
-$storage = $post->findCity($city);
-unset($post);
-foreach ($storage as $obj => $idx) {
-    $total++;
-    if (trim($obj->place_name) !== $city) {
-        printf("%40s : UNSET\n", $obj->place_name);
-        unset($obj);
-    } else {
-        $found++;
-        printf("%40s : %2s : %10s\n", $obj->place_name, $obj->admin_code1, $obj->postal_code);
-    }
-}
-echo 'Total items containing search key       : ' . $total . PHP_EOL;
-echo 'Total items exactly matching search key : ' . $found . PHP_EOL;
-echo 'Memory Usage: ' . memory_get_peak_usage() . PHP_EOL;
-
-$storage->rewind();
-$total = 0;
-foreach ($storage as $obj => $idx) {
-    $total++;
-    if (!empty($obj) && is_object($obj)) {
-        printf("%40s : %2s : %10s\n", $obj->place_name, $obj->admin_code1, $obj->postal_code);
-    } else {
-        echo 'Object does not exist' . PHP_EOL;
-    }
-}
-echo 'Total items containing search key       : ' . $total . PHP_EOL;
-echo 'TO NOTICE: even though the objects were unset ... they still exist because of the back-reference!' . PHP_EOL;
+echo 'Weak Reference Object Storage' . PHP_EOL;
+$post = new PostCode(Connect::getConnection($config['ch02']));
+$obj  = $post->findOneCity($city);
+$storage = new SplObjectStorage();
+$storage->attach(WeakReference::create($obj));
+$row = (array) $storage?->current()->get()->row;
+echo 'To Notice: object initially appears in storage:' . PHP_EOL;
+echo 'City: ' . implode(':', $row) . PHP_EOL;
+unset($obj, $post);
+echo 'To Notice: when unset, object disappears from storage:' . PHP_EOL;
+$row = (array) $storage?->current()->get()->row;
+echo 'City: ' . implode(':', $row) . PHP_EOL;
+var_dump($obj);
+$usageWeak = memory_get_peak_usage();
+echo 'Normal Memory Usage   : ' . $usageNormal . PHP_EOL;
+echo 'Weak Ref Memory Usage : ' . $usageWeak . PHP_EOL;
