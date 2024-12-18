@@ -13,7 +13,6 @@ RUN \
     ./configure \
     --prefix=/usr/local/php8 \
     --disable-phpdbg \
-    --enable-opcache  \
     --enable-bcmath \
     --enable-calendar \
     --enable-fpm \
@@ -21,6 +20,7 @@ RUN \
     --enable-intl \
     --enable-mbstring \
     --enable-mysqlnd  \
+    --enable-opcache  \
     --enable-simplexml  \
     --enable-soap  \
     --enable-sockets  \

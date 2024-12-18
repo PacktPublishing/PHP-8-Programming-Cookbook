@@ -27,13 +27,13 @@ RUN \
     ./configure \
         --prefix=/usr/local/php7 \
         --disable-phpdbg \
-        --enable-opcache  \
         --enable-bcmath \
         --enable-calendar \
         --enable-fpm \
         --enable-gd \
         --enable-intl \
         --enable-mbstring \
+        --enable-opcache  \
         --enable-simplexml  \
         --enable-soap  \
         --enable-sockets  \

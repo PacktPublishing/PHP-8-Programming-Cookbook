@@ -102,11 +102,14 @@ cd /opt/php-src/ext
 * Locate the desired extension and change to its directory
 * Run `phpize`
 ```
-/opt/php-src/scripts/phpize --with-php-config=/opt/php-src/scripts/php-config
+/opt/php-src/scripts/phpize
 ```
 * Run `configure`
 ```
-/opt/php-src/scripts/configure --prefix=/usr/local/php8
+# for PHP 7:
+./configure --prefix=/usr/local/php7 --with-php-config=/usr/local/php8/bin/php-config
+# for PHP 8:
+./configure --prefix=/usr/local/php8 --with-php-config=/usr/local/php8/bin/php-config
 ```
 * Build and install
 ```
