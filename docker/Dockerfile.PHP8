@@ -37,6 +37,7 @@ RUN \
     --with-bz2 \
     --with-curl \
     --with-ffi \
+    --with-gmp \
     --with-openssl  \
     --with-pear \
     --with-tidy \

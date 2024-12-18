@@ -79,3 +79,38 @@ Problem building with OpenSSL:
 
 Otherwise the file locations and settings are the same except:
 * Instead of `php8` look for `php7` in all file and directory paths
+
+# Adding Extensions
+To add an extension, you can use the `pecl` command:
+* 
+
+Otherwise, for core extensions, proceed as follows:
+* Shell into the `php8` or `php7` container
+```
+# example: php8
+cd /path/to/cookbook
+./admin.sh shell php8
+```
+* Make sure that build scripts are executable
+```
+chmod +x /opt/php-src/scripts/*
+```
+* Change to the PHP source extensions directory
+```
+cd /opt/php-src/ext
+```
+* Locate the desired extension and change to its directory
+* Run `phpize`
+```
+/opt/php-src/scripts/phpize --with-php-config=/opt/php-src/scripts/php-config
+```
+* Run `configure`
+```
+/opt/php-src/scripts/configure --prefix=/usr/local/php8
+```
+* Build and install
+```
+make
+make test
+make install
+```

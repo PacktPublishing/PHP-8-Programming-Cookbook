@@ -1,26 +1,32 @@
 <?php
-// Usaage : PHP __FILE__ [BITS] [NUM] [ALGO]
-//          BITS = bit size
+// Usaage : PHP __FILE__ [SIZE] [NUM]
+//          SIZE = minimum number of digits
 //          NUM  = number of primes to generate
-//          ALGO = algorithm to use
 
 include __DIR__ . '/../../vendor/autoload.php';
-use Cookbook\Chapter02\Prime\Generate;
+use Cookbook\Services\Prime;
 
 // init vars
-$generate = new Generate();
+$prime = new Prime();
 
 // get inputs (if any)
-$bits = $argv[1] ?? $_GET['bits'] ?? 64;
-$num  = $argv[2] ?? $_GET['num'] ?? 100;
-$algo = $argv[3] ?? $_GET['algo'] ?? 'simple';
+$size = (int) ($argv[1] ?? $_GET['size'] ?? 32);
+$num  = (int) ($argv[2] ?? $_GET['num'] ?? 1000);
+
+// generate random starting number according to $size
+$min   = '';
+for ($x = 0; $x < $size; $x++) {
+    $min .= (string) random_int(0, 9);
+}
 
 // generate primes
 $start = microtime(TRUE);
-$min   = 2**$bits;
 $gen   = [];
-do {
-	$next = $generate->getNextPrime($min, $gen, $algo);
-	echo 'Next: ' . number_format($next, 0) . PHP_EOL;
-} while ($num-- > 0);
+$next = $prime->generate($min, $num);
+echo 'Prime Number Candidates:' . PHP_EOL;
+foreach ($next as $candidate) {
+    echo $candidate . ' | ';
+}
+echo PHP_EOL;
+echo 'Starting value: ' . $min . PHP_EOL;
 echo 'Time to generate: ' . (microtime(TRUE) - $start) . PHP_EOL;
