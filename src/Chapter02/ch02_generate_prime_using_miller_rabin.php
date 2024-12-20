@@ -20,5 +20,5 @@ echo 'Prime Number Candidates:' . PHP_EOL;
 foreach ($gen as $candidate) {
     echo $candidate . ' | ';
 }
-echo PHP_EOL;
-echo 'Time to generate: ' . (microtime(TRUE) - $start) . PHP_EOL;
+echo PHP_EOL . '<br />' . PHP_EOL;
+echo 'Elapsed Time: ' . (microtime(TRUE) - $start) . PHP_EOL;

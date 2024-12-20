@@ -1,6 +1,6 @@
 <?php
 namespace Cookbook\Services;
-// See: https://en.wikipedia.org/wiki/Miller%E2%80%93Rabin_primality_test
+// See: https://en.wikipedia.org/wiki/Miller-Rabin_primality_test
 use GMP; // NOTE: requires the gmp extension
 use Generator;
 use SplObjectStorage;
@@ -10,7 +10,6 @@ use function gmp_nextprime;
 use function random_int;
 class Prime
 {
-    const CONTROL = 100;    // don't go past 100 attempts if empty
     // Miller-Rabin Primality Test
     #[Services\generate("int size : size in # of digits of the seed number",
                         "int num : number of primes",
