@@ -6,68 +6,116 @@ use http\Exception\InvalidArgumentException;
 
 class FormFactory
 {
-    private array $availableTypes = [
-        'radio',
-        'select',
-    ];
-
     public function build(array $config): string
     {
         if (!isset($config['elements']) || !isset($config['attributes'])) {
-            throw new InvalidArgumentException('Missing "elements" and "attributes" key');
+            throw new InvalidArgumentException('Missing "elements" and "attributes" keys');
         }
 
-        // Construct the form wrapper.
         $html = "<form";
         foreach ($config['attributes'] as $key => $value) {
-            $html .= " $key='$value'";
+            $html .= " $key='" . htmlspecialchars($value, ENT_QUOTES) . "'";
         }
         $html .= ">";
 
-        // Generate input Elements
         foreach ($config['elements'] as $element) {
             $html .= $this->buildElement($element);
+            $html .= "<br />";
         }
+
+        // Add submit button by default
+        $html .= $this->buildSubmitButton($config['submit'] ?? []);
 
         $html .= "</form>";
 
         return $html;
     }
 
-    // Can be refactored to use separate classes per input type.
     private function buildElement(array $element): string
     {
-        if (!isset($element['type']) || !in_array($element['type'], $this->availableTypes)) {
-            throw new \InvalidArgumentException("Invalid type '{$element['type']}'");
+        if (!isset($element['type']) || !$this->isValidType($element['type'])) {
+            throw new \InvalidArgumentException("Invalid or missing input type '{$element['type']}'");
         }
 
         $type = $element['type'];
         $attributes = $element['attributes'] ?? [];
-        $html = "<$type ";
+        $html = "";
 
-        // Add attributes
-        foreach ($attributes as $key => $value) {
-            $html .= " $key='$value'";
+        switch ($type) {
+            case InputType::SELECT->value:
+                $html .= $this->buildSelect($attributes, $element['options'] ?? []);
+                break;
+
+            case InputType::RADIO->value:
+                $html .= $this->buildRadio($attributes, $element['options'] ?? []);
+                break;
+
+            case InputType::TEXT->value:
+            case InputType::EMAIL->value:
+                $html .= $this->buildInput($type, $attributes);
+                break;
+
+            default:
+                throw new \InvalidArgumentException("Unsupported input type '{$type}'");
         }
-
-        if ($type === 'select') {
-            $html .= ">";
-            foreach ($element['options'] as $value => $text) {
-                $html .= "<option value='$value'>$text</option>";
-            }
-            $html .= "</select>";
-        } elseif ($type === 'radio') {
-            $html .= ">";
-            foreach ($element['options'] as $value => $text) {
-                $id = "{$element['attributes']['name']}_$value";
-                $name = htmlspecialchars($element['attributes']['name']);
-                $html .= "<input type='radio' id='$id' name='$name' value='$value'> 
-                  <label for='$id'>$text</label><br />";
-            }
-            $html .= "</radio>";
-        }
-
 
         return $html;
     }
+
+    private function isValidType(string $type): bool
+    {
+        return in_array($type, array_column(InputType::cases(), 'value'), true);
+    }
+
+    private function buildSelect(array $attributes, array $options): string
+    {
+        $html = "<select";
+        foreach ($attributes as $key => $value) {
+            $html .= " $key='" . htmlspecialchars($value, ENT_QUOTES) . "'";
+        }
+        $html .= ">";
+
+        foreach ($options as $value => $text) {
+            $html .= "<option value='" . htmlspecialchars($value, ENT_QUOTES) . "'>"
+                . htmlspecialchars($text) . "</option>";
+        }
+
+        $html .= "</select>";
+        return $html;
+    }
+
+    private function buildRadio(array $attributes, array $options): string
+    {
+        $name = htmlspecialchars($attributes['name'] ?? 'radio', ENT_QUOTES);
+        $html = "";
+
+        foreach ($options as $value => $text) {
+            $id = "{$name}_" . htmlspecialchars($value, ENT_QUOTES);
+            $html .= "<input type='radio' id='$id' name='$name' value='" . htmlspecialchars($value, ENT_QUOTES) . "'>";
+            $html .= "<label for='$id'>" . htmlspecialchars($text) . "</label><br />";
+        }
+
+        return $html;
+    }
+
+    private function buildInput(string $type, array $attributes): string
+    {
+        $html = "<input type='$type'";
+        foreach ($attributes as $key => $value) {
+            $html .= " $key='" . htmlspecialchars($value, ENT_QUOTES) . "'";
+        }
+        $html .= " />";
+        return $html;
+    }
+
+    private function buildSubmitButton(array $attributes): string
+    {
+        $html = "<button type='submit'";
+        foreach ($attributes as $key => $value) {
+            $html .= " $key='" . htmlspecialchars($value, ENT_QUOTES) . "'";
+        }
+        $html .= ">" . ($attributes['label'] ?? 'Submit') . "</button>";
+        return $html;
+    }
 }
+
