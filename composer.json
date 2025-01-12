@@ -1,8 +1,9 @@
 {
     "require" : {
-        "php" : ">= 8.1",
+        "php" : ">=8.3",
         "phpmailer/phpmailer": "^6.9",
-        "phpunit/phpunit": "10.1"
+        "phpunit/phpunit": "10.1",
+      "ext-intl": "*"
     },
     "autoload" : {
 		"psr-4" : {
