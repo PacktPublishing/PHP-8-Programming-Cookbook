@@ -18,7 +18,7 @@ services:
     restart: always
     networks:
       php8cookbook_net:
-        ipv4_address: 10.10.10.10
+        ipv4_address: 10.10.90.10
         
   mysql:
     container_name: mysql
@@ -36,7 +36,7 @@ services:
     restart: always
     networks:
       php8cookbook_net:
-        ipv4_address: 10.10.10.20
+        ipv4_address: 10.10.90.20
 
   php8:
     container_name: php8
@@ -54,7 +54,7 @@ services:
     restart: always
     networks:
       php8cookbook_net:
-        ipv4_address: 10.10.10.88
+        ipv4_address: 10.10.90.88
 
   php7:
     container_name: php7
@@ -72,11 +72,11 @@ services:
     restart: always
     networks:
       php8cookbook_net:
-        ipv4_address: 10.10.10.77
+        ipv4_address: 10.10.90.77
 
 networks:
   php8cookbook_net:
     ipam:
       driver: default
       config:
-        - subnet: "10.10.10.0/24"
+        - subnet: "10.10.90.0/24"

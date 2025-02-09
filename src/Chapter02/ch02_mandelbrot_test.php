@@ -10,3 +10,4 @@ if (empty($_SERVER['HTTP_HOST'])) {
 
 // w/out OPCache: [3.410, 3.306, 3.277] / 3 = 3.331
 // with OPcache: [3.392, 3.310, 3.341]) / 3 = 3.348
+// with JIT tracing mode: [1.139, 1.124, 1.158] / 3 = 1.140
