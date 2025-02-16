@@ -5,15 +5,16 @@ use Iterator;
 use CallbackFilterIterator;
 use Cookbook\Iterator\LargeFile;
 
-#[Library\buildCityArray("Builds an array of postcode => city")]
-function buildCityArray()
+#[Library\buildArrays("Builds postcode => city, and postcode => [country, postcode, city, etc] for ~4000 entries from the GeoNames file")]
+function buildArrays()
 {
     $fn = __DIR__ . '/../../data/US.txt';
     $largeFile = new \Cookbook\Iterator\LargeFile($fn);
     $iterator = $largeFile->getIterator('ByLine');
     $gap = 10;
-    $arr = [];
     $pos = $gap;
+    $cities = [];
+    $multi  = [];
     foreach ($iterator as $line) {
         if ($pos-- > 0) {
             continue;   // skip $gap # lines
@@ -23,34 +24,11 @@ function buildCityArray()
         $line = trim($line);
         if (!empty($line)) {
             $row = str_getcsv($line, "\t");
-            $arr[$row[1]] = $row[2];
+            $multi[$row[1]]  = $row;
+            $cities[$row[1]] = $row[2];
         }
     }
-    return $arr;
-}
-
-#[Library\buildMultiArray("Builds a multi-dimensional array of ~4000 entries from the GeoNames file")]
-function buildMultiArray()
-{
-    $fn = __DIR__ . '/../../data/US.txt';
-    $largeFile = new \Cookbook\Iterator\LargeFile($fn);
-    $iterator = $largeFile->getIterator('ByLine');
-    $gap = 10;
-    $arr = [];
-    $pos = $gap;
-    foreach ($iterator as $line) {
-        if ($pos-- > 0) {
-            continue;   // skip $gap # lines
-        } else {
-            $pos = $gap;
-        }
-        $line = trim($line);
-        if (!empty($line)) {
-            $row = str_getcsv($line, "\t");
-            $arr[$row[1]] = $row;
-        }
-    }
-    return $arr;
+    return [$cities, $multi];
 }
 
 #[Library\fetchUsingArraySearch(
