@@ -1,4 +1,5 @@
 <?php
+
 session_start();
 
 // On initial load, clear the session and use the language from HTTP_ACCEPT_LANGUAGE

@@ -6,7 +6,8 @@ use Cookbook\Chapter10\GettersSetters\Address;
 include __DIR__ . '/../../vendor/autoload.php';
 
 // Dynamic function to echo properties based on getter methods.
-function echoProperties(object $object, $indent = ''): void {
+function echoProperties(object $object, $indent = ''): void
+{
     // Get all public methods of the object.
     $methods = get_class_methods($object);
 

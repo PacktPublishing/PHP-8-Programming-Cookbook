@@ -1,4 +1,5 @@
 <?php
+
 $date = new DateTime('2025-01-01 00:00:00');
 
 // IntlDateFormatter per locale instances:

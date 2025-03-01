@@ -9,7 +9,6 @@ try {
 
     // DateMalformedIntervalStringException
     $interval = DateInterval::createFromDateString('invalid@invalid');
-
 } catch (DateInvalidTimeZoneException $exception) {
     echo "DateInvalidTimeZoneException: " . $exception->getMessage();
 } catch (DateMalformedStringException $exception) {

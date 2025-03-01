@@ -1,4 +1,5 @@
 <?php
+
 echo '<label for="select-when-free-coffee" style="display: block;">When do you want to have your free coffee?</label>';
 echo '<select name="select-when-free-coffee" id="select-when-free-coffee">
     <option value="0">00:00</option>

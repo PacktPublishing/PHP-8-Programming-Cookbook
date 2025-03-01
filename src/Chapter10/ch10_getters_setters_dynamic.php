@@ -6,7 +6,8 @@ use Cookbook\Chapter10\GettersSetters\Address;
 include __DIR__ . '/../../vendor/autoload.php';
 
 // Handle exceptions if invalid inputs are set.
-function safeSet(object $object, string $setter, $value): void {
+function safeSet(object $object, string $setter, $value): void
+{
     try {
         $object->$setter($value);
     } catch (Exception $e) {
@@ -14,7 +15,8 @@ function safeSet(object $object, string $setter, $value): void {
     }
 }
 
-function echoProperties(object $object, $indent = ''): void {
+function echoProperties(object $object, $indent = ''): void
+{
     $methods = get_class_methods($object);
     foreach ($methods as $method) {
         if (str_starts_with($method, 'get')) {
@@ -31,9 +33,9 @@ function echoProperties(object $object, $indent = ''): void {
 }
 
 echo "Enter Address Details:\n";
-$street   = readline("Street: ");
-$suburb   = readline("Suburb: ");
-$state    = readline("State (NSW, VIC, QLD, WA, SA, TAS, ACT, NT): ");
+$street = readline("Street: ");
+$suburb = readline("Suburb: ");
+$state = readline("State (NSW, VIC, QLD, WA, SA, TAS, ACT, NT): ");
 $postcode = readline("Postcode (4 digits): ");
 
 $address = new Address();
@@ -44,8 +46,8 @@ safeSet($address, 'setPostcode', $postcode);
 
 echo "\nEnter Person Details:\n";
 $firstName = readline("First Name: ");
-$lastName  = readline("Last Name: ");
-$age       = readline("Age: ");
+$lastName = readline("Last Name: ");
+$age = readline("Age: ");
 
 $person = new Person();
 safeSet($person, 'setFirstName', $firstName);

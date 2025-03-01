@@ -23,7 +23,7 @@ echo "<!DOCTYPE html>
     <title>Translations Example</title>
 </head>
 <body>
-    <p>Language code: ". $language->value . "</p>
+    <p>Language code: " . $language->value . "</p>
     <p>" . $translator->translate('greeting', $translations) . "</p>
     <p>" . $translator->translate('howAreYou', $translations) . "</p>
 </body>

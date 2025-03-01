@@ -7,13 +7,14 @@ class HiringProcessFlow implements QueueInterface
     private ?NodeInterface $head;
     private ?NodeInterface $tail;
 
-    public function __construct() {
+    public function __construct()
+    {
         $this->head = null;
         $this->tail = null;
     }
 
-    // Add a new process to the queue
-    public function addNode(NodeInterface $node): void {
+    public function addNode(NodeInterface $node): void
+    {
         if ($this->tail === null) {
             $this->head = $this->tail = $node;
         } else {
@@ -23,7 +24,6 @@ class HiringProcessFlow implements QueueInterface
         }
     }
 
-    // Execute the processes in order
     public function execute(): array
     {
         $executedProcesses = [];
@@ -44,8 +44,8 @@ class HiringProcessFlow implements QueueInterface
         return $executedProcesses;
     }
 
-    // Get list of pending processes
-    public function getPendingProcesses(): array {
+    public function getPendingProcesses(): array
+    {
         $pendingProcesses = [];
 
         if ($this->head === null) {

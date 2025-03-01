@@ -1,4 +1,5 @@
 <?php
+
 // UTF-8 strings
 echo "=== Using strlen and mb_strlen ===\n";
 $hebrewString = 'שָׁלוֹם';

@@ -27,7 +27,8 @@ class Address
         $this->street = $street;
     }
 
-    public function getSuburb(): string {
+    public function getSuburb(): string
+    {
         return $this->suburb;
     }
 
@@ -48,7 +49,9 @@ class Address
     {
         $state = strtoupper(trim($state));
         if (!in_array($state, self::$validStates)) {
-            throw new \Exception("Invalid Australian state or territory. Allowed values: " . implode(', ', self::$validStates));
+            throw new \Exception(
+                "Invalid Australian state or territory. Allowed values: " . implode(', ', self::$validStates)
+            );
         }
         $this->state = $state;
     }

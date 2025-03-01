@@ -1,4 +1,5 @@
 <?php
+
 $number = 1555231.36;
 
 // NumberFormatter concrete instances

@@ -10,7 +10,7 @@ $userInput = "&#x1F600; <script>alert('hi');</script>";
 $sanitizedInput = $inputCleaner->clean($userInput);
 
 // Do Database persistence code here:
-    // DB-specific code.
+// DB-specific code.
 
 // Output
 echo $sanitizedInput;

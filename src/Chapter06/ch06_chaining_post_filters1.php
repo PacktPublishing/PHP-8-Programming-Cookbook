@@ -1,4 +1,5 @@
 <?php
+
 try {
     $username = $_POST['username'] ?? '';
     $username = strip_tags($username); // remove trailing whitespaces

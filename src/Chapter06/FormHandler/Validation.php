@@ -24,7 +24,7 @@ class Validation
             $value = $field['value'] ?? null;
 
             if ($type && $name) {
-                $filteredValue = $this->    filter($type, $value);
+                $filteredValue = $this->filter($type, $value);
                 $isValid = $this->validate($type, $filteredValue);
 
                 $results[$name] = [
