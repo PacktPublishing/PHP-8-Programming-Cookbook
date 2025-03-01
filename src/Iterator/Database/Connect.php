@@ -1,8 +1,8 @@
 <?php
-namespace Cookbook\Database;
+namespace Cookbook\Iterator\Database;
 use PDO;
-use Throwable;
 use RuntimeException;
+
 #[Connect("Singleton that returns a PDO instance")]
 class Connect
 {

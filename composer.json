@@ -3,7 +3,9 @@
         "php" : ">=8.3",
         "phpmailer/phpmailer": "^6.9",
         "phpunit/phpunit": "10.1",
-      "ext-intl": "*"
+      "ext-intl": "*",
+      "ext-http": "*",
+      "ext-readline": "*"
     },
     "autoload" : {
 		"psr-4" : {

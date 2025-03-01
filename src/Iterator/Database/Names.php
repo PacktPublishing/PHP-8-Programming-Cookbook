@@ -1,7 +1,8 @@
 <?php
-namespace Cookbook\Database;
+namespace Cookbook\Iterator\Database;
 
 use PDO;
+
 #[Names("Generic Row specific to 'names' table")]
 class Names extends GenericRow
 {

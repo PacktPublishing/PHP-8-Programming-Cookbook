@@ -1,16 +1,12 @@
 <?php
-namespace Cookbook\Database;
+namespace Cookbook\Iterator\Database;
 
 use PDO;
 use PDOStatement;
-use Throwable;
-use RuntimeException;
-use OutOfBoundsException;
-use Cookbook\Database\Connect;
 use function array_combine;
 use function count;
 use function implode;
-use function substr;
+
 #[GenericRow("Represents a single row in a table")]
 abstract class GenericRow
 {

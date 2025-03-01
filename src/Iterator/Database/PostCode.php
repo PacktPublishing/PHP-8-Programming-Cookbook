@@ -1,8 +1,9 @@
 <?php
-namespace Cookbook\Database;
+namespace Cookbook\Iterator\Database;
 
 use PDO;
 use SplObjectStorage;
+
 #[Names("Generic Row specific to 'post_codes' table")]
 class PostCode extends GenericRow
 {
