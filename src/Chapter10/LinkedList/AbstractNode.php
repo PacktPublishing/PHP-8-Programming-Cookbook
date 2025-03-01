@@ -9,6 +9,7 @@ abstract class AbstractNode implements NodeInterface
     private ?NodeInterface $next = null;
     private ?NodeInterface $previous = null;
     private string $nodeType;
+    private int $priority;
 
     public function getNodeId(): string
     {
@@ -62,6 +63,17 @@ abstract class AbstractNode implements NodeInterface
     public function setNodeType(string $nodeType): NodeInterface
     {
         $this->nodeType = $nodeType;
+        return $this;
+    }
+
+    public function getPriority(): int
+    {
+        return $this->priority;
+    }
+
+    public function setPriority(int $priority): AbstractNode
+    {
+        $this->priority = $priority;
         return $this;
     }
 }

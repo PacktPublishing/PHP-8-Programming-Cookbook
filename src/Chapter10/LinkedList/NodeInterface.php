@@ -12,6 +12,8 @@ interface NodeInterface
 
     public function getPrevious(): ?NodeInterface;
 
+    public function getPriority(): int;
+
     public function setNodeId(string $nodeId): NodeInterface;
 
     public function setRoutine(NodeInterface $routine): NodeInterface;
@@ -19,4 +21,6 @@ interface NodeInterface
     public function setNext(NodeInterface $next): NodeInterface;
 
     public function setPrevious(NodeInterface $previous): NodeInterface;
+
+    public function setPriority(int $priority): NodeInterface;
 }
