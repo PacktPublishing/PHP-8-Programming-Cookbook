@@ -5,7 +5,8 @@
         "phpunit/phpunit": "10.1",
       "ext-intl": "*",
       "ext-http": "*",
-      "ext-readline": "*"
+      "ext-readline": "*",
+      "ext-pdo": "*"
     },
     "autoload" : {
 		"psr-4" : {
