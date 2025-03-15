@@ -8,7 +8,6 @@ use Cookbook\Chapter10\SearchEngine\PersistenceHandler\DataSourceHandlerInterfac
 class Search
 {
     private array $result = [];
-
     private DataSourceHandlerInterface $dataSourceHandler;
     private BinarySearch $binarySearch;
 

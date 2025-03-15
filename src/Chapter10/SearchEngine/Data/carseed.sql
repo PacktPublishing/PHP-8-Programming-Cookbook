@@ -14,8 +14,8 @@ CREATE TABLE IF NOT EXISTS cars
 ),Description TEXT);
 
 INSERT INTO cars (Make, Model, Year, Price, Mileage, `Condition`, Description)
-VALUES ('Mercedes-Benz', 'CLA', 2025, 38000, 15000, 'New', 'Compact luxury car with modern design'),
+VALUES ('Mercedes-Benz', 'CLA', 2025, 38000, 15000, 'Used', 'Compact luxury car with modern design'),
        ('Toyota', 'Corolla', 2020, 20000, 30000, 'Used', 'Highly reliable and fuel-efficient compact car'),
-       ('Honda', 'Civic', 2022, 22000, 20000, 'New', 'Reliable compact car'),
-       ('BMW', '5 Series', 2023, 45000, 12000, 'New', 'Luxury sedan with 5 seats'),
+       ('Honda', 'Civic', 2025, 22000, 0, 'New', 'Reliable compact car'),
+       ('BMW', '5 Series', 2025, 45000, 0, 'New', 'Luxury sedan with 5 seats'),
        ('Mercedes-Benz', 'S Class', 2010, 18000, 85000, 'Used', 'Full-sized sedan with 5 seats');
