@@ -7,14 +7,14 @@ include __DIR__ . '/../../vendor/autoload.php';
 
 // Instantiate generator, and add input fields.
 $generator = new GenericFormGenerator();
-$generator->addInput(InputType::Text, 'Username', 'username');
-$generator->addInput(InputType::Password, 'Password', 'password');
+$generator->addInput(InputType::Text, ['label' => 'Username', 'name' => 'username']);
+$generator->addInput(InputType::Password, ['label' => 'Password', 'name' => 'password']);
 
 // Echo the entire form.
 echo $generator->generate('my-form', '');
 
-// Output the username, after submission.
-if (isset($_POST['submit'])) {
-    echo "Hello " . $_POST['username'] . "<br />";
-    print_r($_POST);
-}
+// Add styling
+echo "<style>input { width: 200px; } label {float:left; width:100px; }</style>";
+
+// Output Array.
+print_r($_POST);

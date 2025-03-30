@@ -2,12 +2,15 @@
 
 namespace Cookbook\Chapter06\GenericInputForm;
 
-use Cookbook\Chapter06\GenericInputForm\InputType;
+use Cookbook\Chapter06\GenericInputForm\Renderer\InputRendererFactory;
+use Cookbook\Chapter06\GenericInputForm\Renderer\InputRendererInterface;
 use Exception;
 
 class GenericFormGenerator
 {
     private array $inputForms = [];
+
+    private InputRendererInterface $renderer;
 
     public function generate(string $formName, string $submitUrl): string
     {
@@ -29,19 +32,20 @@ class GenericFormGenerator
         return $form;
     }
 
-    public function addInput(InputType $inputType, string $label, string $name): void
+    /**
+     * @throws Exception
+     */
+    public function addInput(InputType $inputType, array $options): void
     {
-        $this->inputForms[] = $this->renderInputForm($inputType, $label, $name);
+        $this->inputForms[] = $this->renderInputForm($inputType, $options);
     }
 
-    private function renderInputForm(InputType $inputType, string $label, string $name): string
+    /**
+     * @throws Exception
+     */
+    private function renderInputForm(InputType $inputType, array $options): string
     {
-        $input = "<div>
-                    <label>$label</label>
-                    <input type='$inputType->name' name='$name'>
-                  </div>";
-
-        return $input;
+        $renderer = InputRendererFactory::createRenderer($inputType);
+        return $renderer->render($inputType, $options);
     }
-
 }
