@@ -6,11 +6,11 @@ use \Cookbook\Chapter06\GenericInputForm\InputType;
 include __DIR__ . '/../../vendor/autoload.php';
 
 // Radio Options:
-$freeCoffeeGroupOptions = [
+$groupOptions = [
     'fieldSetTitle' => 'Do you want a free cup of coffee?',
 ];
 
-$freeCoffeeRadioElementsOptions = [
+$elementOptions = [
     [
         'radio' => [
             'radioElementName' => 'free-coffee',
@@ -38,8 +38,10 @@ $freeCoffeeRadioElementsOptions = [
 
 // Instantiate generator, and add input fields.
 $generator = new GenericFormGenerator();
-$generator->addInput(InputType::Radio,
-    ['radio_group_options' => $freeCoffeeGroupOptions, 'radio_element_options' => $freeCoffeeRadioElementsOptions]);
+$generator->addInput(
+    InputType::Radio,
+    ['radio_group_options' => $groupOptions, 'radio_element_options' => $elementOptions]
+);
 
 // Echo the entire form.
 echo $generator->generate('my-radio-form', '');

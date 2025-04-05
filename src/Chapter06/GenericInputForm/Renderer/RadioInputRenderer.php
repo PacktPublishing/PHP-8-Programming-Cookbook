@@ -8,7 +8,7 @@ class RadioInputRenderer implements InputRendererInterface
 {
     public function render(InputType $inputType, array $options): string
     {
-        $groupOptions   = $options['radio_group_options'];
+        $groupOptions = $options['radio_group_options'];
         $elementOptions = $options['radio_element_options'];
 
         return $this->generate($groupOptions, $elementOptions);
@@ -37,5 +37,19 @@ class RadioInputRenderer implements InputRendererInterface
         $labelFor = $elementOptions['label']['labelFor'];
         $labelText = $elementOptions['label']['labelText'];
         return "<input type='radio' name='$name' id='$id' value='$value' /> <label for='$labelFor'>$labelText</label><br />";
+    }
+
+    private function buildRadio(array $attributes, array $options): string
+    {
+        $name = htmlspecialchars($attributes['name'] ?? 'radio', ENT_QUOTES);
+        $html = "";
+
+        foreach ($options as $value => $text) {
+            $id = "{$name}_" . htmlspecialchars($value, ENT_QUOTES);
+            $html .= "<input type='radio' id='$id' name='$name' value='" . htmlspecialchars($value, ENT_QUOTES) . "'>";
+            $html .= "<label for='$id'>" . htmlspecialchars($text) . "</label><br />";
+        }
+
+        return $html;
     }
 }

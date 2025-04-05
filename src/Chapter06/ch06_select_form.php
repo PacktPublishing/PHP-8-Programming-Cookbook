@@ -18,8 +18,10 @@ for ($i = 0; $i < 24; $i++) {
 
 // Instantiate generator, and add input fields.
 $generator = new GenericFormGenerator();
-$generator->addInput(InputType::Select,
-    ['select_options' => $selectOptions, 'select_element_options' => $elementOptions]);
+$generator->addInput(
+    InputType::Select,
+    ['select_options' => $selectOptions, 'select_element_options' => $elementOptions]
+);
 
 // Echo the entire form.
 echo $generator->generate('my-radio-form', '');

@@ -8,7 +8,7 @@ class SelectInputRenderer implements InputRendererInterface
 {
     public function render(InputType $inputType, array $options): string
     {
-        $selectOptions   = $options['select_options'];
+        $selectOptions = $options['select_options'];
         $elementOptions = $options['select_element_options'];
 
         return $this->generate($selectOptions, $elementOptions);
