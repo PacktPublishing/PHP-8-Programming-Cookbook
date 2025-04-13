@@ -4,7 +4,7 @@ namespace Cookbook\Geonames;
     "This class holds Geonames city data",
     "Source: https://download.geonames.org/export/dump/"
 )]
-class City
+class City extends GeoBase
 {
     public int    $geonameid = 0;  // integer id of record in geonames database
     public string $name = '';   // name of geographical point (utf8) varchar(200)
@@ -29,9 +29,17 @@ class City
         "Returns the name of the city",
         "@return string \$name"
     )]
-    public function getName() : string
+    public function getCityName() : string
     {
         return $this->name ?? '';
+    }
+    #[City\getStateProvCode(
+        "Returns the state or province (or 1st regional area) code",
+        "@return string \$admin1"
+    )]
+    public function getStateProvCode() : string
+    {
+        return $this->admin1 ?? '';
     }
     #[City\getLatLon(
         "Returns the latitute and longitude of the city in the form of a tuple",
