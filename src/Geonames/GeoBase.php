@@ -19,9 +19,8 @@ abstract class GeoBase implements NameInterface
         foreach (array_keys($vars) as $idx => $name) {
             $this->$name = match (gettype($this->$name)) {
                 'integer' => (int) ($data[$idx] ?? 0),
-                'float' => (float) ($data[$idx] ?? 0.0),
-                'double' => (float) ($data[$idx] ?? 0.0),
-                default => trim(strip_tags($data[$idx] ?? ''))
+                'float', 'double'   => (float) ($data[$idx] ?? 0.0),
+                default   => trim(strip_tags($data[$idx] ?? ''))
             };
         }
     }
