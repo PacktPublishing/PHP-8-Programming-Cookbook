@@ -1,8 +1,10 @@
 <?php
 namespace Cookbook\Appointment;
 
-enum Months
+enum Months : int
 {
+    use RandomCaseTrait;
+    public const MONTH_NAMES = [1 => 'January','February','March','April','May','June','July','August','September','October','November','December'];
     case JAN = 1;
     case FEB = 2;
     case MAR = 3;
@@ -15,4 +17,8 @@ enum Months
     case OCT = 10;
     case NOV = 11;
     case DEC = 12;
+    public static function getName(Months $month)
+    {
+        return self::MONTH_NAMES[$month->value];
+    }
 }
