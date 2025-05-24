@@ -1,18 +1,19 @@
 <?php
 namespace Cookbook\Services;
-#[Ipsum("Provides Lorem Ipsum",
-    "See: https://loripsum.net/")]
+#[Ipsum("Provides random text")]
 class Ipsum
 {
-    public const URL = 'https://loripsum.net/api';
-    #[Ipsum\__invoke("opts: (integer) - The number of paragraphs to generate.
-                     short, medium, long, verylong - The average length of a paragraph.")]
-    public function __invoke(array $opts)
+    public const FN  = __DIR__ . '/../../data/war_and_peace.txt';
+    #[Ipsum\__invoke(
+        "int \$num : The number of paragraphs to generate.",
+        "string \$fn : The source text file")]
+    public function __invoke(int $num, string $fn = '')
     {
-        $url = static::URL . '/' . implode('/', $opts);
-        $ch = curl_init($url);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
-        return curl_exec($url);
+        $fn = (empty($fn)) ? static::FN : $fn;
+        $text = file($fn);
+        $count = count($text);  // Number Lines
+        
+        unset($text);        
     }
 }
 
