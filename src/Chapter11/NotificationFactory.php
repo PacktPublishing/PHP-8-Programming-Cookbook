@@ -3,8 +3,10 @@
 namespace Cookbook\Chapter11;
 
 use Cookbook\Chapter11\Medium\EmailNotification;
+use Cookbook\Chapter11\Medium\LegacyEmailSenderAdapter;
 use Cookbook\Chapter11\Medium\SmsNotification;
 use Cookbook\Chapter11\Models\Contact;
+use Cookbook\Chapter11\OldMedium\LegacyEmailSender;
 
 class NotificationFactory
 {
@@ -34,6 +36,7 @@ class NotificationFactory
             EmailNotification::class => [
                 'sender' => $emailSender,
             ],
+            LegacyEmailSenderAdapter::class => new LegacyEmailSender(),
         ];
     }
 

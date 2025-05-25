@@ -10,5 +10,8 @@ $notificationFactory = new NotificationFactory();
 // Create an SMS Notification object
 $sms = $notificationFactory->create(NotificationType::SMS);
 
-// Create an SMS Notification object
+// Create an EMAIL Notification object
 $email = $notificationFactory->create(NotificationType::EMAIL);
+
+// Create a Legacy Email Notification object
+$legacyEmail = $notificationFactory->create(NotificationType::LEGACY_EMAIL);
