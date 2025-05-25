@@ -56,24 +56,6 @@ services:
       php8cookbook_net:
         ipv4_address: 10.10.90.88
 
-  php7:
-    container_name: php7
-    hostname: php7
-    image: unlikelysource/php7_img
-    volumes:
-     - ".:/repo"
-     - "./docker/secrets.sh:/tmp/secrets.sh"
-     - "./docker/php7.startup.sh:/tmp/startup.sh"
-    build:
-      context: ./docker
-      dockerfile: Dockerfile.PHP7
-    working_dir: /repo
-    command: /tmp/startup.sh
-    restart: always
-    networks:
-      php8cookbook_net:
-        ipv4_address: 10.10.90.77
-
 networks:
   php8cookbook_net:
     ipam:
