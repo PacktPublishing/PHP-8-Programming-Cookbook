@@ -6,34 +6,31 @@ use RuntimeException;
 #[Connect("Singleton that returns a PDO instance")]
 class Connect
 {
-    public const DB_DRIVER = 'mysql';
-    public const DB_NAME = 'php8cookbook';
-    public const DB_OPTS = [PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION];
-    public const DB_HOST = 'mysql.local';
     public const ERR_PDO = 'ERROR: unable to create PDO instance';
-    public static ?PDO $pdo = NULL;
-    #[Connect\__construct("Marked private to prevent multiple instances")]
-    private function __construct()
-    {}
+    public ?PDO $pdo = NULL;
+    #[Connect\__construct(
+        "Builds PDO instance",
+        "array config : configuration array with connection info",
+        "@throw RuntimeException"
+    )]
+    public function __construct(array $config) 
+    {
+        $options  = $config['options'] ?? [PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION];
+        $username = $config['db_usr']  ?? '';
+        $password = $config['db_pwd']  ?? '';
+        try {
+            $dsn = sprintf('%s:host=%s;dbname=%s', $config['db_driver'], $config['db_host'], $config['db_name']);
+            $this->pdo = new PDO($dsn, $username, $password, $options);
+        } catch(Throwable $t) {
+            error_log(__METHOD__ . ':' . get_class($t) . ':' . $t->getMessage());
+            throw new RuntimeException(static::ERR_PDO);
+        }
+    }
     #[Connect\getConnection(
         "Returns PDO instance or NULL",
-        "array config : configuration array with connection info"
     )]
-    public static function getConnection(array $config = []) : PDO|null
+    public function __invoke() : PDO|null
     {
-        if (empty(self::$pdo)) {
-            $driver   = $config['db_driver'] ?? static::DB_DRIVER;
-            $host     = $config['db_host']   ?? static::DB_HOST;
-            $dbName   = $config['db_name']   ?? static::DB_NAME;
-            $options  = $config['options']   ?? static::DB_OPTS;
-            $username = $config['db_usr']    ?? '';
-            $password = $config['db_pwd']    ?? '';
-            // change this is using other drivers
-            static::$pdo = new PDO($driver . ':host=' . $host . ';dbname=' . $dbName, $username, $password, $options);
-            if (empty(self::$pdo)) {
-                throw new RuntimeException(static::ERR_PDO);
-            }
-        }
-        return static::$pdo;
+        return $this->pdo;
     }
 }

@@ -6,8 +6,8 @@ class LazyIpsum
 {
     public static function getLazy(string $fn)
     {
-        $reflector = new ReflectionClass(Ipsum::class);
-        return $reflector->newLazyGhost(function (Ipsum $obj) use ($fn) {
+        $reflect = new ReflectionClass(Ipsum::class);
+        return $reflect->newLazyGhost(function (Ipsum $obj) use ($fn) {
              $obj->__construct($fn);
         });
     }
