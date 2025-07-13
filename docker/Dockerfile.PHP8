@@ -1,69 +1,46 @@
-FROM docker.io/unlikelysource/php_src_base
-ENV PHP_TAG=PHP-8.4
+FROM alpine:latest
+ENV PHP_VER=84
+RUN \
+    apk add bash
 RUN \
     echo "Installing PHP 8 ..." && \
-    /bin/bash && \
-    mkdir -p /usr/local/php8 && \
-    mkdir -p /usr/local/php8/etc && \
-    mkdir -p /usr/local/php8/etc/conf.d && \
-    cd /opt/php-src && \
-    git pull && \
-    git checkout $PHP_TAG && \
-    ./buildconf --force && \
-    ./configure \
-    --prefix=/usr/local/php8 \
-    --disable-phpdbg \
-    --enable-bcmath \
-    --enable-calendar \
-    --enable-fpm \
-    --enable-gd \
-    --enable-intl \
-    --enable-mbstring \
-    --enable-mysqlnd  \
-    --enable-opcache  \
-    --enable-simplexml  \
-    --enable-soap  \
-    --enable-sockets  \
-    --enable-xmlreader  \
-    --enable-xmlwriter  \
-    --with-config-file-path=/usr/local/php8/etc \
-    --with-config-file-scan-dir=/usr/local/php8/etc/conf.d \
-    --with-mysqli \
-    --with-pdo-mysql \
-    --with-openssl \
-    --with-readline \
-    --with-sodium \
-    --with-zip \
-    --with-bz2 \
-    --with-curl \
-    --with-ffi \
-    --with-gmp \
-    --with-openssl  \
-    --with-pear \
-    --with-tidy \
-    --with-zlib && \
-    make && \
-    make install && \
-    ln -s /usr/local/php8/bin/php /usr/local/bin/php8 && \
-    ln -s /usr/local/php8/bin/php /usr/bin/php
+    apk add php"$PHP_VER" && \
+    apk add php"$PHP_VER"-bcmath && \
+    apk add php"$PHP_VER"-calendar && \
+    apk add php"$PHP_VER"-fpm && \
+    apk add php"$PHP_VER"-gd && \
+    apk add php"$PHP_VER"-intl && \
+    apk add php"$PHP_VER"-mbstring && \
+    apk add php"$PHP_VER"-mysqlnd  && \
+    apk add php"$PHP_VER"-opcache  && \
+    apk add php"$PHP_VER"-simplexml  && \
+    apk add php"$PHP_VER"-soap  && \
+    apk add php"$PHP_VER"-sockets  && \
+    apk add php"$PHP_VER"-xmlreader  && \
+    apk add php"$PHP_VER"-xmlwriter  && \
+    apk add php"$PHP_VER"-mysqli && \
+    apk add php"$PHP_VER"-pdo_mysql && \
+    apk add php"$PHP_VER"-openssl && \
+    apk add php"$PHP_VER"-sodium && \
+    apk add php"$PHP_VER"-zip && \
+    apk add php"$PHP_VER"-bz2 && \
+    apk add php"$PHP_VER"-curl && \
+    apk add php"$PHP_VER"-ffi && \
+    apk add php"$PHP_VER"-gmp && \
+    apk add php"$PHP_VER"-openssl  && \
+    apk add php"$PHP_VER"-pear && \
+    apk add php"$PHP_VER"-tidy && \
+    apk add php"$PHP_VER"-zlib && \
+    apk add php"$PHP_VER"-fpm
 RUN \
-    echo "Installing PHP-FPM ..." && \
-    cd /opt/php-src && \
-    cp php.ini-production /usr/local/php8/lib/php.ini && \
-    cp sapi/fpm/www.conf.in /usr/local/php8/etc/php-fpm.d/www.conf && \
-    cp sapi/fpm/php-fpm.conf.in /usr/local/php8/etc/php-fpm.conf && \
-    sed -i 's/\@php_fpm_sysconfdir\@/\/usr\/local\/php8\/etc/g' /usr/local/php8/etc/php-fpm.conf && \
-    sed -i 's/\@php_fpm_user\@/nobody/g' /usr/local/php8/etc/php-fpm.d/www.conf && \
-    sed -i 's/\@php_fpm_group\@/nobody/g' /usr/local/php8/etc/php-fpm.d/www.conf && \
-    sed -i 's/listen\ \=\ 127\.0\.0\.1\:9000/listen\ \=\ 0\.0\.0\.0\:9000/g' /usr/local/php8/etc/php-fpm.d/www.conf
-RUN \
-    echo "Setting up PHP to log errors to /var/log/php/error.log..." && \
-    cp /usr/local/php8/lib/php.ini /usr/local/php8/etc/php.ini && \
-    mkdir -p /var/log/php && \
-    sed -i "s/display_errors\ \=\ Off/display_errors \=\ On/g" /usr/local/php8/etc/php.ini && \
-    sed -i "s/;error_log\ \=\ php_errors.log/error_log\ \=\ \/var\/log\/php\/error\.log/g" /usr/local/php8/etc/php.ini
+    echo "Setting up PHP to display errors..." && \
+    echo "NOTE: the PHP error logs are in the /var/log/php$PHP_VER directory..." && \
+    sed -i "s/display_errors\ \=\ Off/display_errors \=\ On/g" /etc/php"$PHP_VER"/php.ini
 RUN \
     echo "Installing XDebug..." && \
-    echo "/usr/local/php8/bin/pecl install xdebug"
+    echo "/usr/local/php8/bin/pecl add xdebug"
+RUN \
+    echo "Configuring PHP-FPM to listen to all IPs..." && \
+    sed -i "s/127.0.0.1:9000/0.0.0.0:9000/g" /etc/php$PHP_VER/php-fpm.d/www.conf 
 WORKDIR /repo
 ENTRYPOINT /tmp/startup.sh
