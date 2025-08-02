@@ -89,7 +89,7 @@ abstract class GenericRow
     {
         $ok = FALSE;
         if ($this->ingestRow($data, FALSE)) {
-            $ok = $this->insertStatement->execute($this->row);
+            $ok = $this->buildInsert()->execute($this->row);
         }
         return (bool) $ok;    
     }
