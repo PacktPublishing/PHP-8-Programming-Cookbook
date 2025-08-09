@@ -21,7 +21,7 @@ class Container implements ContainerInterface
     public function get(string $key) : mixed
     {
         // TODO: add provision to retrieve service from cache
-        return static::$instance->storage[$key] ?? NULL;
+        return static::$instance?->storage[$key]() ?? NULL;
     }
     public function has(string $key) : bool
     {

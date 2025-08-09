@@ -1,8 +1,5 @@
 <?php
 namespace Cookbook\Services;
-use PDO;
-use Throwable;
-use RuntimeException;
 use Cookbook\Database\PostCode;
 use Psr\Container\ContainerInterface;
 #[PostCodeFactory("Uses ConnectionFactory produce a PostCode instance")]
@@ -18,6 +15,6 @@ class PostCodeFactory
     )]
     public function __invoke() : PostCode|null
     {
-        return new PostCode($this->container->get('db_connect')(), 'id');
+        return new PostCode($this->container->get('db_connect'), 'id');
     }
 }

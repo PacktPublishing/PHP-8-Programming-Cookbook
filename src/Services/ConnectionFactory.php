@@ -18,6 +18,6 @@ class ConnectionFactory
     )]
     public function __invoke() : PDO|null
     {
-        return (new Connect($this->container->get('db_config')()))();
+        return new Connect($this->container->get('db_config'))();
     }
 }
