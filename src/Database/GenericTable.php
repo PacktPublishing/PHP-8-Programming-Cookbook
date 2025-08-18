@@ -6,17 +6,13 @@ use PDOStatement;
 use SplObjectStorage;
 use Psr\Container\ContainerInterface;
 #[GenericTable("Generic table class")]
-abstract class GenericTable implements TableInterface
+class GenericTable implements TableInterface
 {
-    public ?PDO $pdo = NULL;
     public string $sql  = '';
     public ?GenericRowInterface $rowClass = NULL;
     public ?SplObjectStorage $found = NULL;   // used to store results
-    public function __construct(
-        public ContainerInterface $container,
-        public string $connect_svc = 'db_connect') 
+    public function __construct(public PDO $pdo) 
     {
-        $this->pdo = $container->get($connect_svc);
         $this->found = new SplObjectStorage();
     }
     #[GenericRow\getCols(
@@ -34,24 +30,24 @@ abstract class GenericTable implements TableInterface
     {
         $q = function (string $item) {
             return static::QUOTE . trim($item) . static::QUOTE; };
-        $sql = 'DROP TABLE IF EXISTS ' . $q(static::TABLE) . ';';
+        $sql = 'DROP TABLE IF EXISTS ' . $q(static::TABLE) . ';' . PHP_EOL;
         $sql .= 'CREATE TABLE ' . $q(static::TABLE) . ' ( ';
         foreach (static::COLS as $key => $value) {
             $sql .= $q($key) . ' ' . $value . ',';
         }
-        // remove trailing comma
-        $sql = substr($sql, -1);
         $sql .= ' PRIMARY KEY (' . $q(static::PRIMARY) . '), ';
         $sql .= ' KEY ' . $q('place_name') . ' (' . $q('place_name') . ') ';
         $sql .= ') ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;';
+        $this->sql = $sql;
         return $this->pdo->exec($sql);
     }
     #[GenericRow\buildInsert(
         "Creates basic SQL SELECT for database",
-        "@param bool \$autoInsert : set FALSE if primary key is not auto-insert",
+        "bool \$autoInsert : set FALSE if primary key is not auto-insert",
+        "array \$cols : returned by reference",
         "Returns PDOStatement if successful; FALSE otherwise"
     )]
-    public function buildInsert(bool $autoInsert = TRUE) : PDOStatement|false
+    public function buildInsert(bool $autoInsert = TRUE, array &$cols = []) : PDOStatement|false
     {
         // remove reference to primary key column if auto-insert
         if ($autoInsert) {
@@ -66,6 +62,7 @@ abstract class GenericTable implements TableInterface
              . '(' . implode(',', $cols) . ') '
              . 'VALUES '
              . '(:' . implode(',:', $cols) . ');';
+        $this->sql = $sql;
         $this->insertStatement = $this->pdo->prepare($sql);
         return $this->insertStatement;
    }

@@ -21,16 +21,22 @@ class GenericRow
         "IMPORTANT: column order needs to match!",
         "array \$data: actual data from CSV file",
         "array \$cols: column names to be ingested",
-        "Returns TRUE if row count matches; FALSE otherwise",
+        "Returns current value of \$this->row",
     )]
-    public function ingestRow(array $data, array $cols) : bool
+    public function ingestRow(array $data = [], array $cols = []) : array
     {
-        $ok = FALSE;
-        if (count($cols) == count($data)) {
-            $this->row = array_combine($cols, $data);
-            $ok = TRUE;
+        // check to see if it's a numeric array 
+        // using new PHP 8.1 function array_is_list()
+        if (!empty($data)) {
+            if (array_is_list($data)) {
+                foreach ($cols as $i => $key) {
+                    $this->row[$key] = $data[$i] ?? '';
+                }
+            } else {
+                $this->row = $data;
+            }
         }
-        return $ok;
+        return $this->row;
     }
     #[GenericRow\__get(
         "Returns internal array row element"

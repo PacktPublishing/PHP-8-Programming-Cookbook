@@ -24,38 +24,40 @@ class PostCodeTable extends GenericTable
         'longitude' => 'decimal(10,4) NOT NULL',
         'accuracy' => 'varchar(8) NOT NULL',
     ];
-    #[PostCode\findOneCity(
-        "Returns only the first city found",
-        "string city : city to find",
+    #[PostCode\findByPostCode(
+        "Returns city data based on post code",
+        "string postCode : post code to find",
         "Returns GenericRow if successful; FALSE otherwise"
     )]
-    public function findOneCity(string $city) : GenericRow | NULL
+    public function findByPostCode(string $code) : GenericRow | NULL
     {
-        $post = NULL;
         $sql  = $this->buildSelectSql();
-        $sql .= 'WHERE place_name LIKE ' . $this->pdo->quote('%' . $city. '%') . ' ';
-        $sql .= 'LIMIT 1';
-        $result = $this->pdo->query($sql);
-        if (!empty($result)) {
-            $post = new GenericRow($result->fetch(PDO::FETCH_NUM));
+        $sql .= 'WHERE `postal_code` = ?';
+        $result = $this->pdo->prepare($sql);
+        if (empty($result->execute([$code]))) {
+            $post = new GenericRow();
+        } else {
+            $post = new GenericRow($result->fetch(PDO::FETCH_ASSOC));
         }
+        $this->sql = $sql;
         return $post;
     }
-    #[PostCode\findCity(
+    #[PostCode\findByCity(
         "Returns an SplObjectStorage instance loaded with cities found",
         "string city : city to find",
         "Returns iteration of GenericRow objects"
     )]
-    public function findCity(string $city) : iterable
+    public function findByCity(string $city) : iterable
     {
         $sql  = $this->buildSelectSql();
-        $sql .= ' WHERE place_name LIKE ' . $this->pdo->quote('%' . $city. '%') . ' ';
+        $sql .= ' WHERE place_name LIKE ' . $this->pdo->quote('%' . trim($city) . '%') . ' ';
         $result = $this->pdo->query($sql);
         if (!empty($result)) {
-            while ($row = $result->fetch(PDO::FETCH_NUM)) {
-                $this->found->attach(new GenericRow($result->fetch(PDO::FETCH_NUM)));
+            while ($row = $result->fetch(PDO::FETCH_ASSOC)) {
+                $this->found->attach(new GenericRow($row));
             }
         }
+        $this->sql = $sql;
         return $this->found;
     }
     /*

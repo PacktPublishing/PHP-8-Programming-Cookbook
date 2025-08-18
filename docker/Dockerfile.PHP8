@@ -20,6 +20,7 @@ RUN \
     apk add php"$PHP_VER"-xmlwriter  && \
     apk add php"$PHP_VER"-mysqli && \
     apk add php"$PHP_VER"-pdo_mysql && \
+    apk add php"$PHP_VER"-phar && \
     apk add php"$PHP_VER"-openssl && \
     apk add php"$PHP_VER"-sodium && \
     apk add php"$PHP_VER"-zip && \

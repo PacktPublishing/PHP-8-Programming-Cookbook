@@ -24,6 +24,8 @@ services:
     container_name: mysql
     hostname: mysql
     image: unlikelysource/mysql_img
+    ports:
+    - 3306:3306
     build:
       context: ./docker
       dockerfile: Dockerfile.MySQL

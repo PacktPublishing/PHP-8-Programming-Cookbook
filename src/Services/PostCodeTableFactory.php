@@ -15,8 +15,6 @@ class PostCodeTableFactory
     )]
     public function __invoke() : PostCodeTable|null
     {
-        $postCodeTable = new PostCodeTable($this->container->get('db_connect'), 'id');
-        $postCodeTable->rowClass = $this->container->get('post_code_row');
-        return $postCodeTable;
+        return new PostCodeTable($this->container->get('db_connect'));
     }
 }
