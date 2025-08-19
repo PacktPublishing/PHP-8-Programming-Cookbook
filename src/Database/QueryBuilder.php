@@ -8,17 +8,12 @@ class QueryBuilder
 {
 	public string $sql      = '';
 	public string $prefix   = '';
-	public string $where    = [];
-	public string $control  = ['', ''];
-    public ?TableInterface $table = NULL;
+	public array $where    = [];
+	public array $control  = ['', ''];
     #[QueryBuilder\__construct("TableInterface \$table : Table class instance")]
-    public function __construct(TableInterface $table)
-    {
-        $this->instance  = new static();
-        $this->table     = $table;
-    }
+    public function __construct(public TableInterface $table) {}
     #[QueryBuilder\select("array \$cols : columns to return; if empty, returns all cols")]
-    public function select(array $cols)
+    public function select(array $cols = [])
     {
         $this->prefix = 'SELECT ';
         $this->prefix .= (empty($cols)) 
@@ -28,7 +23,7 @@ class QueryBuilder
 		return $this;
     }
     #[QueryBuilder\quote("string \$a needs to take the form COL OPERATOR VALUE")]
-    protected quote(string $a)
+    protected function quote(string $a)
     {
         // get rid of double space
         $a = preg_replace('/  /', ' ', $a);

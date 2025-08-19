@@ -1,6 +1,6 @@
 <?php
 // OOP query builder example
-
+define('DB_CONFIG_FN', __DIR__ . '/../../config/db.config.php');
 include __DIR__ . '/../../vendor/autoload.php';
 use Cookbook\Services\Container;
 use Cookbook\Services\ConnectionFactory;
@@ -11,9 +11,10 @@ $container->add('db_config', function () { return require DB_CONFIG_FN; });
 $container->add('db_connect', new ConnectionFactory($container));
 $container->add('postcode_table', new PostCodeTableFactory($container));
 $postCodeTable = $container->get('postcode_table');
-
-echo QueryBuilder::select($postCodeTable)
-    ->where()
+$query = new QueryBuilder($postCodeTable);
+echo $query->select()->where('admin_name1 = New YorK')->and('postal_code = 13676')->getSql();
+echo PHP_EOL;
+echo $query->select()->where()
     ->like('admin_name1', '%New York%')
     ->and('country_code = US')
     ->or('post_code')->in(['10606', '10607', '10610'])
