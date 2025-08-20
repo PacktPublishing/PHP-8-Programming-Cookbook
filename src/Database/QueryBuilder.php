@@ -6,85 +6,119 @@ namespace Cookbook\Database;
 )]
 class QueryBuilder
 {
-	public string $sql      = '';
-	public string $prefix   = '';
-	public array $where    = [];
-	public array $control  = ['', ''];
-    #[QueryBuilder\__construct("TableInterface \$table : Table class instance")]
-    public function __construct(public TableInterface $table) {}
-    #[QueryBuilder\select("array \$cols : columns to return; if empty, returns all cols")]
-    public function select(array $cols = [])
+	public string $sql    = '';
+	public string $prefix = '';
+	public array $where   = [];
+	public array $control = [];
+    #[QueryBuilder\__construct(
+        "array \$cols : desired table columns",
+        "string \$table : name of the table",
+        "string \$quoteColChar : character used to quote columns",
+        "string \$quoteValCar : character used to quote values"
+    )]
+    public function __construct(
+        public array $cols,
+        public string $table,
+        public string $quoteColChar = '`',
+        public string $quoteValChar = '\'') 
+    {}
+    #[QueryBuilder\quoteCol("string \$a : column or table name to be quoted")]
+    protected function quoteCol(string $a)
     {
-        $this->prefix = 'SELECT ';
-        $this->prefix .= (empty($cols)) 
-                         ? implode(',', $this->table->getCols())
-                         : implode(',', $cols);
-        $this->prefix .= ' FROM ' . $this->table::TABLE;
-		return $this;
+        return (empty($a)) ? '' : $this->quoteColChar . $a . $this->quoteColChar;
     }
-    #[QueryBuilder\quote("string \$a needs to take the form COL OPERATOR VALUE")]
-    protected function quote(string $a)
+    #[QueryBuilder\quoteVal("string \$a : column or table name to be quoted")]
+    protected function quoteVal(string $a)
+    {
+        return (empty($a)) ? '' : $this->quoteValChar . $a . $this->quoteValChar;
+    }
+    #[QueryBuilder\quoteExp("string \$a needs to take the form COL OPERATOR VALUE")]
+    protected function quoteExp(string $a)
     {
         // get rid of double space
         $a = preg_replace('/  /', ' ', $a);
-        // break up
+        // break up into column, operator, value
         $list = explode(' ', $a);
-        $list = explode(' ', $a);
-        $col  = array_shift($list);
-        $op   = array_shift($list);
-        $val  = implode(' ', $list ?? []);
-        return $this->table::QUOTE . $col . $this->table::QUOTE . ' ' . $op . ' ' . $this->quote($val);
+        $col  = (!empty($list)) ? array_shift($list) : '';
+        $op   = (!empty($list)) ? array_shift($list) : '';
+        $val  = (!empty($list)) ? implode(' ', $list ?? []) : '';
+        return $this->quoteCol($col) . ' ' . $op . ' ' . $this->quoteVal($val);
+    }
+    #[QueryBuilder\select("array \$cols : columns to return; if empty, returns all cols")]
+    public function select()
+    {
+        $this->sql = '';
+        $this->where = [];
+        $this->control = [];
+        $this->prefix = 'SELECT ';
+        foreach ($this->cols as $col)
+            $this->prefix .= $this->quoteCol($col) . ',';
+        // remove trailing comma
+        $this->prefix = substr($this->prefix, 0, -1);
+        $this->prefix .= ' FROM ' . $this->quoteCol($this->table) . ' ';
+		return $this;
     }
     #[QueryBuilder\where("string \$a needs to take the form COL OPERATOR VALUE")]
     public function where(string $a = '')
     {
-        $this->where[0] = ' WHERE ' . $this->quote($a);
+        $this->where[0] = 'WHERE ' 
+                        . ((empty($a)) ? '' : $this->quoteExp($a))
+                        . ' ';
 		return $this;
     }
     #[QueryBuilder\like("string \$a : COL", "string \$b : VALUE")]
     public function like(string $a, string $b)
     {
-        $this->where[] = trim($table::QUOTE . $a . $table::QUOTE . ' LIKE %' . $b . '%');
+        $this->where[] = $this->quoteCol($a) . ' LIKE ' . $this->quoteVal('%' . $b . '%') . ' ';
 		return $this;
     }
-    #[QueryBuilder\where("string \$a needs to take the form COL OPERATOR VALUE")]
+    #[QueryBuilder\and("string \$a needs to take the form COL OPERATOR VALUE")]
     public function and(string $a = '')
     {
-        $this->where[] = trim('AND ' . $this->quote($a));
+        $this->where[] = $this->exp(' AND ', $a);
 		return $this;
     }
     #[QueryBuilder\or("string \$a needs to take the form COL OPERATOR VALUE")]
-    public function or($a = NULL)
+    public function or(string $a = '')
     {
-        $this->where[] = trim('OR ' . $this->quote($a));
-		return $this;
-    }
-    #[QueryBuilder\in("array \$a items to be included in the IN clause")]    
-    public function in(array $a)
-    {
-        $vals = '';
-        foreach ($a as $item) {
-            $vals .= $this->quote($item) . ',';
-        }
-        $this->where[] = 'IN ( ' . substr($vals, 0, -1) . ' )';
+        $this->where[] = $this->exp(' OR ', $a);
 		return $this;
     }
     #[QueryBuilder\not("string \$a needs to take the form COL OPERATOR VALUE")]
-    public function not($a = NULL)
+    public function not(string $a = '')
     {
-        $this->where[] = trim('NOT ' . $this->quote($a));
+        $this->where[] = $this->exp(' NOT ', $a);
+		return $this;
+    }
+    #[QueryBuilder\exp("string \$a needs to take the form COL OPERATOR VALUE",
+                       " string \$exp is AND, OR, NOT")]
+    public function exp(string $a = '', string $exp = 'AND')
+    {
+        return $exp . (((empty($a)) ? '' : $this->quoteExp($a))) . ' ';
+    }
+    #[QueryBuilder\in(
+        "string \$col : column name", 
+        "array \$a items to be included in the IN clause"
+    )]    
+    public function in(string $col, array $arr)
+    {
+        $vals = '';
+        foreach ($arr as $item) {
+            $vals .= $this->quoteVal($item) . ',';
+        }
+        $this->where[] = $this->quoteCol($col) . ' IN ( ' . substr($vals, 0, -1) . ' )';
 		return $this;
     }
     #[QueryBuilder\limit("int \$num : represents how many rows in the output")]    
     public function limit(int $num)
     {
-        $this->control[0] = 'LIMIT ' . $num;
+        $this->control[0] = ' LIMIT ' . $num;
 		return $this;
     }
     #[QueryBuilder\offset("int \$num : represents how many rows to skip")]    
     public function offset(int $num)
     {
-        $this->control[1] = 'OFFSET ' . $num;
+        $this->control[1] = ' OFFSET ' . $num;
 		return $this;
     }
     #[QueryBuilder\getSql("returns the SQL string")]    
@@ -93,10 +127,10 @@ class QueryBuilder
 		$this->sql = $this->prefix
 				. implode(' ', $this->where)
 				. ' '
-				. $this->control[0]
+				. ($this->control[0] ?? '')
 				. ' '
-				. $this->control[1];
-		$this->sql = preg_replace('/  /', ' ', $this->sql);
+				. ($this->control[1] ?? '');
+		$this->sql = str_replace(['  ','  '], ' ', $this->sql);
 		return trim($this->sql);
 	}
 }
