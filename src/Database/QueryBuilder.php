@@ -75,26 +75,26 @@ class QueryBuilder
     #[QueryBuilder\and("string \$a needs to take the form COL OPERATOR VALUE")]
     public function and(string $a = '')
     {
-        $this->where[] = $this->exp(' AND ', $a);
+        $this->where[] = $this->exp($a, 'AND');
 		return $this;
     }
     #[QueryBuilder\or("string \$a needs to take the form COL OPERATOR VALUE")]
     public function or(string $a = '')
     {
-        $this->where[] = $this->exp(' OR ', $a);
+        $this->where[] = $this->exp($a, 'OR');
 		return $this;
     }
     #[QueryBuilder\not("string \$a needs to take the form COL OPERATOR VALUE")]
     public function not(string $a = '')
     {
-        $this->where[] = $this->exp(' NOT ', $a);
+        $this->where[] = $this->exp($a, 'NOT');
 		return $this;
     }
     #[QueryBuilder\exp("string \$a needs to take the form COL OPERATOR VALUE",
                        " string \$exp is AND, OR, NOT")]
     public function exp(string $a = '', string $exp = 'AND')
     {
-        return $exp . (((empty($a)) ? '' : $this->quoteExp($a))) . ' ';
+        return ' ' . $exp . ' ' . (((empty($a)) ? '' : $this->quoteExp($a))) . ' ';
     }
     #[QueryBuilder\in(
         "string \$col : column name", 
