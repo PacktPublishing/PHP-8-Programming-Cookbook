@@ -45,7 +45,7 @@ class QueryBuilder
         return $this->quoteCol($col) . ' ' . $op . ' ' . $this->quoteVal($val);
     }
     #[QueryBuilder\select("array \$cols : columns to return; if empty, returns all cols")]
-    public function select()
+    public function select() : static
     {
         $this->sql = '';
         $this->where = [];
@@ -59,27 +59,21 @@ class QueryBuilder
 		return $this;
     }
     #[QueryBuilder\where("string \$a needs to take the form COL OPERATOR VALUE")]
-    public function where(string $a = '')
+    public function where(string $a = '') : static
     {
         $this->where[0] = 'WHERE ' 
                         . ((empty($a)) ? '' : $this->quoteExp($a))
                         . ' ';
 		return $this;
     }
-    #[QueryBuilder\like("string \$a : COL", "string \$b : VALUE")]
-    public function like(string $a, string $b)
-    {
-        $this->where[] = $this->quoteCol($a) . ' LIKE ' . $this->quoteVal('%' . $b . '%') . ' ';
-		return $this;
-    }
     #[QueryBuilder\and("string \$a needs to take the form COL OPERATOR VALUE")]
-    public function and(string $a = '')
+    public function and(string $a = '') : static
     {
         $this->where[] = $this->exp($a, 'AND');
 		return $this;
     }
     #[QueryBuilder\or("string \$a needs to take the form COL OPERATOR VALUE")]
-    public function or(string $a = '')
+    public function or(string $a = '') : static
     {
         $this->where[] = $this->exp($a, 'OR');
 		return $this;
@@ -96,11 +90,17 @@ class QueryBuilder
     {
         return ' ' . $exp . ' ' . (((empty($a)) ? '' : $this->quoteExp($a))) . ' ';
     }
+    #[QueryBuilder\like("string \$a : COL", "string \$b : VALUE")]
+    public function like(string $a, string $b) : static
+    {
+        $this->where[] = $this->quoteCol($a) . ' LIKE ' . $this->quoteVal('%' . $b . '%') . ' ';
+		return $this;
+    }
     #[QueryBuilder\in(
         "string \$col : column name", 
         "array \$a items to be included in the IN clause"
     )]    
-    public function in(string $col, array $arr)
+    public function in(string $col, array $arr) : static
     {
         $vals = '';
         foreach ($arr as $item) {
@@ -110,19 +110,19 @@ class QueryBuilder
 		return $this;
     }
     #[QueryBuilder\limit("int \$num : represents how many rows in the output")]    
-    public function limit(int $num)
+    public function limit(int $num) : static
     {
         $this->control[0] = ' LIMIT ' . $num;
 		return $this;
     }
     #[QueryBuilder\offset("int \$num : represents how many rows to skip")]    
-    public function offset(int $num)
+    public function offset(int $num) : static
     {
         $this->control[1] = ' OFFSET ' . $num;
 		return $this;
     }
     #[QueryBuilder\getSql("returns the SQL string")]    
-	public function getSql()
+	public function getSql() : string
 	{
 		$this->sql = $this->prefix
 				. implode(' ', $this->where)
