@@ -1,18 +1,10 @@
 <?php
 // OOP query builder example
-define('DB_CONFIG_FN', __DIR__ . '/../../config/db.config.php');
 include __DIR__ . '/../../vendor/autoload.php';
-use Cookbook\Services\Container;
-use Cookbook\Services\ConnectionFactory;
-use Cookbook\Services\PostCodeTableFactory;
 use Cookbook\Database\QueryBuilder;
-$container = Container::getInstance();
-$container->add('db_config', function () { return require DB_CONFIG_FN; });
-$container->add('db_connect', new ConnectionFactory($container));
-$container->add('postcode_table', new PostCodeTableFactory($container));
-$postCodeTable = $container->get('postcode_table');
-$query = new QueryBuilder($postCodeTable->getCols(), $postCodeTable::TABLE);
-echo $query->select()->where('admin_name1 = New YorK')->and('postal_code = 13676')->getSql();
+use Cookbook\Database\PostCodeTable;
+$query = new QueryBuilder(array_keys(PostCodeTable::COLS), PostCodeTable::TABLE);
+echo $query->select()->where('admin_name1 = New York')->and('postal_code = 13676')->getSql();
 echo PHP_EOL;
 $query->sql = '';
 echo $query->select()->where('country_code = US')
