@@ -2045,6 +2045,7 @@ US	85284	Tempe	Arizona	AZ	Maricopa	013			33.3363	-111.9197	4
 US	85285	Tempe	Arizona	AZ	Maricopa	013			33.4148	-111.9093	4
 US	85286	Chandler	Arizona	AZ	Maricopa	013			33.2711	-111.8311	4
 US	85287	Tempe	Arizona	AZ	Maricopa	013			33.4285	-111.9349	4
+US	85288	Tempe	Arizona	AZ	Maricopa	013			33.4419	-111.9236	4
 US	85295	Gilbert	Arizona	AZ	Maricopa	013			33.3054	-111.7408	4
 US	85296	Gilbert	Arizona	AZ	Maricopa	013			33.3354	-111.7406	4
 US	85297	Gilbert	Arizona	AZ	Maricopa	013			33.2781	-111.7096	4
@@ -2250,6 +2251,7 @@ US	85139	Maricopa	Arizona	AZ	Pinal	021			32.9576	-112.0534	4
 US	85140	San Tan Valley	Arizona	AZ	Pinal	021			33.1911	-111.528	4
 US	85141	Picacho	Arizona	AZ	Pinal	021			32.6686	-111.4549	4
 US	85143	San Tan Valley	Arizona	AZ	Pinal	021			33.1911	-111.528	4
+US	85144	San Tan Valley	Arizona	AZ	Pinal	021			33.1911	-111.528	4
 US	85145	Red Rock	Arizona	AZ	Pinal	021			32.58	-111.341	4
 US	85147	Sacaton	Arizona	AZ	Pinal	021			33.1234	-111.7384	4
 US	85172	Stanfield	Arizona	AZ	Pinal	021			32.8823	-111.966	4
@@ -4480,6 +4482,7 @@ US	95014	Cupertino	California	CA	Santa Clara	085			37.318	-122.0449	4
 US	95015	Cupertino	California	CA	Santa Clara	085			37.323	-122.0527	4
 US	95020	Gilroy	California	CA	Santa Clara	085			37.0139	-121.5773	4
 US	95021	Gilroy	California	CA	Santa Clara	085			37.0095	-121.5705	4
+US	95025	San Jose	California	CA	Santa Clara	085			37.3394	-121.895	4
 US	95026	Holy City	California	CA	Santa Clara	085			37.1584	-121.986	4
 US	95030	Los Gatos	California	CA	Santa Clara	085			37.2296	-121.9834	4
 US	95031	Los Gatos	California	CA	Santa Clara	085			37.1574	-121.9676	4
@@ -15605,6 +15608,7 @@ US	01815	Woburn	Massachusetts	MA	Middlesex	017			42.4793	-71.1523	4
 US	01821	Billerica	Massachusetts	MA	Middlesex	017			42.5519	-71.2518	4
 US	01822	Billerica	Massachusetts	MA	Middlesex	017			42.5584	-71.2689	4
 US	01824	Chelmsford	Massachusetts	MA	Middlesex	017			42.5911	-71.3556	4
+US	01825	North Reading	Massachusetts	MA	Middlesex	017			42.5751	-71.0787	4
 US	01826	Dracut	Massachusetts	MA	Middlesex	017			42.6764	-71.3186	4
 US	01827	Dunstable	Massachusetts	MA	Middlesex	017			42.6739	-71.4952	4
 US	01850	Lowell	Massachusetts	MA	Middlesex	017			42.656	-71.3051	4
@@ -27962,6 +27966,7 @@ US	44054	Sheffield Lake	Ohio	OH	Lorain	093			41.4823	-82.0965	4
 US	44055	Lorain	Ohio	OH	Lorain	093			41.4361	-82.135	4
 US	44074	Oberlin	Ohio	OH	Lorain	093			41.2899	-82.2229	4
 US	44090	Wellington	Ohio	OH	Lorain	093			41.1712	-82.2269	4
+US	43405	Toledo	Ohio	OH	Lucas	095			41.6639	-83.5552	4
 US	43434	Harbor View	Ohio	OH	Lucas	095			41.6934	-83.4444	4
 US	43504	Berkey	Ohio	OH	Lucas	095			41.6989	-83.831	4
 US	43528	Holland	Ohio	OH	Lucas	095			41.6226	-83.7257	4
@@ -29141,6 +29146,7 @@ US	73164	Oklahoma City	Oklahoma	OK	Oklahoma	109			35.5514	-97.4075	4
 US	73167	Oklahoma City	Oklahoma	OK	Oklahoma	109			35.4676	-97.5164	4
 US	73169	Oklahoma City	Oklahoma	OK	Oklahoma	109			35.3882	-97.6587	4
 US	73172	Oklahoma City	Oklahoma	OK	Oklahoma	109			35.5175	-97.6218	4
+US	73175	Oklahoma City	Oklahoma	OK	Oklahoma	109			35.4676	-97.5164	4
 US	73178	Oklahoma City	Oklahoma	OK	Oklahoma	109			35.5514	-97.4075	4
 US	73179	Oklahoma City	Oklahoma	OK	Oklahoma	109			35.4242	-97.6547	4
 US	73184	Oklahoma City	Oklahoma	OK	Oklahoma	109			35.5514	-97.4075	4
