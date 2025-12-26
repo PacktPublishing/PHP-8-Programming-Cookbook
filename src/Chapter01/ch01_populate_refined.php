@@ -18,7 +18,7 @@ declare(strict_types=1);
 final class App
 {
     public function __construct(private array $config) {}
-    public function run(array $argv): int
+    public function run(array $argv): string
     {
         try {
             $fn = $this->parseArgs($argv);
@@ -56,9 +56,9 @@ final class App
     {
         $host = $this->config['db']['DB_HOST'] ?? '';
         $port = $this->config['db']['DB_PORT'] ?? '';
-        $db   = $this->config['db']['DB_NAME'] ?? '';
-        $user = $this->config['db']['DB_USER'] ?? '';
-        $pass = $this->config['db']['DB_PASS'] ?? '';
+        $db   = $this->config['db']['DB_NAM'] ?? '';
+        $user = $this->config['db']['DB_USR'] ?? '';
+        $pass = $this->config['db']['DB_PWD'] ?? '';
         $dsn = sprintf('mysql:host=%s;port=%s;dbname=%s;charset=utf8mb4',
                        $host, $port, $db);
         $opts = [
@@ -73,7 +73,7 @@ final class App
             return $pdo;
         } catch (Throwable $t) {
             error_log(__METHOD__ . ':' . $t->getMessage());
-            throw new Exception("Database connection failed: {$e->getMessage()}\n");
+            throw new Exception("Database connection failed: {$t->getMessage()}\n");
         }
     }
 
@@ -121,10 +121,8 @@ SQL;
     {
         $insertSql = <<<SQL
 INSERT INTO postcode (
-    country_code, postal_code, place_name,
-    admin_name1, admin_code1,
-    admin_name2, admin_code2,
-    admin_name3, admin_code3,
+    country_code, postal_code, place_name, admin_name1, admin_code1,
+    admin_name2, admin_code2, admin_name3, admin_code3,
     latitude, longitude, accuracy
 ) VALUES ( ?,?,?,?,?,?,?,?,?,?,?,?)
 SQL;
@@ -137,7 +135,7 @@ SQL;
             | SplFileObject::SKIP_EMPTY
             | SplFileObject::DROP_NEW_LINE
         );
-        $file->setCsvControl("\t"); // tab-delimited
+        $file->setCsvControl("\t", '"', '\\'); // tab-delimited
 
         $rowsRead = 0;
         $rowsInserted = 0;
@@ -156,16 +154,6 @@ SQL;
                 }
 
                 $rowsRead++;
-
-                // GeoNames format expects 12 columns.
-                // Some files may contain a header; GeoNames typically doesn't.
-                // We'll skip obvious header rows defensively.
-                if ($rowsRead === 1 && isset($row[0], $row[1]) && str_contains((string)$row[0], 'country') && str_contains((string)$row[1], 'postal')) {
-                    continue;
-                }
-
-                // Normalize to at least 12 columns
-                $row = array_pad($row, 12, '');
 
                 // Trim fields
                 $row = array_map(
@@ -195,31 +183,32 @@ SQL;
                     $postalCode,
                     $placeName,
                     // admin_name1
-                    ($this->nullIfEmpty($row[3] ?? ''),
+                    $this->nullIfEmpty($row[3]) ?? '',
                     // admin_code1
-                    ($this->nullIfEmpty($row[4] ?? ''),
+                    $this->nullIfEmpty($row[4]) ?? '',
                     // admin_name2
-                    ($this->nullIfEmpty($row[5] ?? ''),
+                    $this->nullIfEmpty($row[5]) ?? '',
                     // admin_code2
-                    ($this->nullIfEmpty($row[6] ?? ''),
+                    $this->nullIfEmpty($row[6]) ?? '',
                     // admin_name3
-                    ($this->nullIfEmpty($row[7] ?? ''),
+                    $this->nullIfEmpty($row[7]) ?? '',
                     // admin_code3
-                    ($this->nullIfEmpty($row[8] ?? ''),
+                    $this->nullIfEmpty($row[8]) ?? '',
                     // latitude
-                    ($this->nullIfNotNumeric($row[9] ?? ''),
+                    $this->nullIfNotNumeric($row[9]) ?? '',
                     // longitude
-                    ($this->nullIfNotNumeric($row[10] ?? ''),
+                    $this->nullIfNotNumeric($row[10]) ?? '',
                     // accuracy
-                    $this->nullIfNotInt($row[11] ?? ''),
+                    (int) $row[11] ?? 0,
                 ];
 
                 try {
                     $stmt->execute($params);
                     $rowsInserted++;
-                } catch (Throwable $e) {
+                } catch (Throwable $t) {
                     // Keep going; you can log details if needed.
                     // Typical causes: encoding issues, overly long strings, etc.
+                    error_log(__METHOD__ . ':' . $t->getMessage());
                 }
 
                 $sinceCommit++;
@@ -232,12 +221,11 @@ SQL;
             if ($inTx) {
                 $pdo->commit();
             }
-        } catch (Throwable $e) {
+        } catch (Throwable $t) {
             if ($inTx) {
                 try { $pdo->rollBack(); } catch (Throwable) {}
             }
-            $this->stderr("Import failed: {$e->getMessage()}\n");
-            $this->exitNow(1);
+            throw new Exception("Import failed: {$t->getMessage()}\n");
         }
 
         return [$rowsRead, $rowsInserted];
@@ -263,5 +251,5 @@ SQL;
 
 }
 
-$app = new App();
+$app = new App(include __DIR__ . '/config/db_config.php');
 exit($app->run($argv));
