@@ -63,11 +63,11 @@ final class App
 
     private function connect(): PDO
     {
-        $host = getenv('DB_HOST') !== false ? getenv('DB_HOST') : '127.0.0.1';
+        $host = getenv('DB_HOST') !== false ? getenv('DB_HOST') : 'mysql.local';
         $port = getenv('DB_PORT') !== false ? getenv('DB_PORT') : '3306';
-        $db   = getenv('DB_NAME') !== false ? getenv('DB_NAME') : 'geonames';
-        $user = getenv('DB_USER') !== false ? getenv('DB_USER') : 'root';
-        $pass = getenv('DB_PASS') !== false ? getenv('DB_PASS') : '';
+        $db   = getenv('DB_NAM') !== false ? getenv('DB_NAM') : 'php8cookbook';
+        $user = getenv('DB_USR') !== false ? getenv('DB_USR') : '';
+        $pass = getenv('DB_PWD') !== false ? getenv('DB_PWD') : '';
 
         $dsn = sprintf(
             'mysql:host=%s;port=%s;dbname=%s;charset=utf8mb4',
