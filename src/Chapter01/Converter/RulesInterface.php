@@ -5,4 +5,5 @@ namespace Cookbook\Chapter01\Converter;
 interface RulesInterface
 {
     public function __invoke(array $match);
+    public function __construct(string &$contents, iterable &$post_op);
 }

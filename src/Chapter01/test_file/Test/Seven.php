@@ -7,6 +7,10 @@ class Seven
 	{
 		$this->config = $config;
 	}
+	public function add(real $a, real $b) 
+	{
+		return (real) $a + $b;
+	}
 	public function match(string $str, float $f)
 	{
 		return str_contains($str, $f);
@@ -18,10 +22,6 @@ class Seven
 			$new .= chr(ord($str[$x]) + $factor);
 		}
 		return $new;
-	}
-	public function add(real $a, real $b) 
-	{
-		return (real) $a + $b;
 	}
 	public function getConf(string $key)
 	{

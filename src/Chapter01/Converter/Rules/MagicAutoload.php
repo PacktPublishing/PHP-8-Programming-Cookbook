@@ -8,7 +8,7 @@ class MagicAutoload implements RulesInterface
     #[ClassConstructor\__construct(
         "Accepts contents and post-op iterator"
     )]
-    public function __construct(public string &$contents, public iterable $post_op) {}
+    public function __construct(public string &$contents, public iterable &$post_op) {}
     #[ClassConstructor\__invoke(
         "flags method same name as class if __construct() not found",
     )]

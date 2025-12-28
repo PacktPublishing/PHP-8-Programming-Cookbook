@@ -1,7 +1,7 @@
 FROM alpine:latest
 ENV PHP_VER=84
 RUN \
-    apk add bash
+    apk add bash curl
 RUN \
     echo "Installing PHP 8 ..." && \
     apk add php"$PHP_VER" && \

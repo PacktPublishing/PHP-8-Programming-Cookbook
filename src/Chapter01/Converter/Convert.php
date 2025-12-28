@@ -15,22 +15,16 @@ class Convert
     public const PROBLEM       = '// ******* DETECTED: ';
     public const ERR_NOT_FOUND = 'ERROR: this file is not found %s';
     public const LF_REPLACE    = ' --LF-- ';
-    public const CONVERT_KEY   = 'convert';
-    public const RULES_KEY     = 'rules';
+    public const CONVERT_KEY   = 'convert';     // normal regex => callback() rules
+    public const RULES_KEY     = 'rules';       // discreet invokable classes for difficult cases
     public string $contents    = '';
-    public array $rules_list   = [];
-    public ?iterable $post_op = NULL; // post-op callbacks
-    public ?iterable $regex_callbacks = NULL;
+    public array  $post_op     = [];
     #[Convert\__construct(
         "Accepts a config array and builds rules",
         "param_01 : <iterable> config"
     )]
     public function __construct(public iterable $config = []) 
-    {
-        $this->post_op = new ArrayObject();
-        $this->rules_list = $config[static::RULES_KEY] ?? [];
-        $this->regex_callbacks = [];
-    }
+    {}
     #[Convert\convert(
         "runs preg_replace_callback_array()",
         "param_01 : <string> filename"
@@ -45,20 +39,24 @@ class Convert
         $this->contents = file_get_contents($filename);
         // convert PHP_EOL into " --LF-- "
         $this->contents = str_replace(PHP_EOL, static::LF_REPLACE, $this->contents);
-        // load rules
-        foreach ($this->rules_list as $class) {
+        // load discreet invokable classes used for difficult conversions
+        $rules_list = $this->config[static::RULES_KEY] ?? [];
+        $regex_callbacks = [];
+        foreach ($rules_list as $class) {
             $callback = new $class($this->contents, $this->post_op);
             if ($callback instanceof RulesInterface) {
-                $this->regex_callbacks[$callback::REGEX] = $callback;
+                $regex_callbacks[$callback::REGEX] = $callback;
             }
         }
         // this is the main process
-        $this->contents = preg_replace_callback_array($this->regex_callbacks, $this->contents);
+        if (!empty($regex_callbacks)) {
+            $this->contents = preg_replace_callback_array($regex_callbacks, $this->contents);
+        }
         // also process any callbacks coming from the config file
         if (!empty($this->config[static::CONVERT_KEY])) {
             $this->contents = preg_replace_callback_array($this->config[static::CONVERT_KEY], $this->contents);
         }
-        // run post-op callbacks
+        // run post-op callbacks (defined in discreet classes)
         foreach ($this->post_op as $callback) {
             $callback($this->contents);
         }

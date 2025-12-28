@@ -8,7 +8,7 @@ class ClassConstructor implements RulesInterface
     #[ClassConstructor\__construct(
         "Accepts post-op iterator"
     )]
-    public function __construct(public string &$contents, public iterable $post_op) {}
+    public function __construct(public string &$contents, public iterable &$post_op) {}
     #[ClassConstructor\__invoke(
         "flags method same name as class if __construct() not found",
     )]
@@ -26,17 +26,17 @@ class ClassConstructor implements RulesInterface
                 . '*/'  . Convert::LF_REPLACE
                 . $txt;
             // this is a callable class invoked in __destruct()
-        $this->post_op[] = new class ($search) {
-            public function __construct(public string $search) {}
-            public function __invoke(string &$contents)
-            { 
-                $contents = str_ireplace(
-                    $this->search, 
-                    'function __construct', 
-                    $contents);
-            }
-        };
+            $this->post_op[] = new class ($search) {
+                public function __construct(public string $search) {}
+                public function __invoke(string &$contents)
+                { 
+                    $contents = str_ireplace(
+                        $this->search, 
+                        'function __construct', 
+                        $contents);
+                }
+            };
+        }
+        return $txt;
     }
-    return $txt;
-}
 }
