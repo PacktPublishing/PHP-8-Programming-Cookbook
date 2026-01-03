@@ -6,8 +6,9 @@ use InvalidArgumentException;
 use SplFileObject;
 use NoRewindIterator;
 use Generator;
-
-class LargeFile
+use Traversable;
+use IteratorAggregate;
+class LargeFile implements IteratorAggregate
 {
     const ERROR_UNABLE = 'ERROR: Unable to open file';
     const ERROR_TYPE   = 'ERROR: Type must be "ByLength", "ByLine" or "CSV"';     
@@ -52,7 +53,7 @@ class LargeFile
         return $count; 
     }
 
-    public function getIterator($type = 'ByLine', $numBytes = NULL)
+    public function getIterator($type = 'ByLine', $numBytes = NULL) : Traversable
     {
         if(!in_array($type, $this->allowedTypes)) {
             $message = __METHOD__ . ' : '  . self::ERROR_TYPE . PHP_EOL;

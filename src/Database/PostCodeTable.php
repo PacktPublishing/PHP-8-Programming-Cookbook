@@ -1,84 +1,71 @@
 <?php
 namespace Cookbook\Database;
-
 use PDO;
-use WeakMap;
-use WeakReference;
-use SplObjectStorage;
-#[PostCodeTable("Table class associated with 'post_codes' table")]
-class PostCodeTable extends GenericTable
+use Generator;
+
+class PostcodeTable
 {
-    public const TABLE = 'post_codes';
-    public const COLS  = [
-        'id' => 'int NOT NULL AUTO_INCREMENT',
-        'country_code' => 'char(2) COLLATE utf8mb4_general_ci NOT NULL',
-        'postal_code' => 'varchar(20) COLLATE utf8mb4_general_ci NOT NULL',
-        'place_name' => 'char(180) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL',
-        'admin_name1' => 'varchar(100) COLLATE utf8mb4_general_ci DEFAULT NULL',
-        'admin_code1' => 'varchar(10) COLLATE utf8mb4_general_ci DEFAULT NULL',
-        'admin_name2' => 'varchar(100) COLLATE utf8mb4_general_ci DEFAULT NULL',
-        'admin_code2' => 'varchar(20) COLLATE utf8mb4_general_ci DEFAULT NULL',
-        'admin_name3' => 'varchar(100) COLLATE utf8mb4_general_ci DEFAULT NULL',
-        'admin_code3' => 'varchar(20) COLLATE utf8mb4_general_ci DEFAULT NULL',
-        'latitude' => 'decimal(10,4) NOT NULL',
-        'longitude' => 'decimal(10,4) NOT NULL',
-        'accuracy' => 'varchar(8) NOT NULL',
-    ];
-    #[PostCode\findByPostCode(
-        "Returns city data based on post code",
-        "string postCode : post code to find",
-        "Returns GenericRow if successful; FALSE otherwise"
-    )]
-    public function findByPostCode(string $code) : GenericRow | NULL
+    public function __construct(
+        private PDO $pdo,
+    ) {}
+
+    /**
+     * Creates a Postcode entity from a database row array.
+     *
+     * @param array<string, mixed> $row Associative array with database column names as keys
+     */
+    public function factory(array $row): Postcode
     {
-        $sql  = $this->buildSelectSql();
-        $sql .= 'WHERE `postal_code` = ?';
-        $result = $this->pdo->prepare($sql);
-        if (empty($result->execute([$code]))) {
-            $post = new GenericRow();
-        } else {
-            $post = new GenericRow($result->fetch(PDO::FETCH_ASSOC));
-        }
-        $this->sql = $sql;
-        return $post;
+        return new Postcode(
+            id: isset($row['id']) ? (int) $row['id'] : null,
+            countryCode: (string) ($row['country_code'] ?? ''),
+            postalCode: (string) ($row['postal_code'] ?? ''),
+            placeName: (string) ($row['place_name'] ?? ''),
+            adminName1: (string) ($row['admin_name1'] ?? ''),
+            adminCode1: (string) ($row['admin_code1'] ?? ''),
+            adminName2: (string) ($row['admin_name2'] ?? ''),
+            adminCode2: (string) ($row['admin_code2'] ?? ''),
+            adminName3: (string) ($row['admin_name3'] ?? ''),
+            adminCode3: (string) ($row['admin_code3'] ?? ''),
+            latitude: isset($row['latitude']) ? (float) $row['latitude'] : null,
+            longitude: isset($row['longitude']) ? (float) $row['longitude'] : null,
+            accuracy: isset($row['accuracy']) ? (int) $row['accuracy'] : null,
+        );
     }
-    #[PostCode\findByCity(
-        "Returns an SplObjectStorage instance loaded with cities found",
-        "string city : city to find",
-        "Returns iteration of GenericRow objects"
-    )]
-    public function findByCity(string $city) : iterable
+
+    /**
+     * Finds all postcodes matching the given city/place name.
+     *
+     * @param string $cityName The city or place name to search for
+     * @return Generator<Postcode> Yields Postcode entities one at a time
+     */
+    public function findByCity(string $cityName): Generator
     {
-        $sql  = $this->buildSelectSql();
-        $sql .= ' WHERE place_name LIKE ' . $this->pdo->quote('%' . trim($city) . '%') . ' ';
-        $result = $this->pdo->query($sql);
-        if (!empty($result)) {
-            while ($row = $result->fetch(PDO::FETCH_ASSOC)) {
-                $this->found->attach(new GenericRow($row));
-            }
+        $sql = <<<'SQL'
+            SELECT 
+                id,
+                country_code,
+                postal_code,
+                place_name,
+                admin_name1,
+                admin_code1,
+                admin_name2,
+                admin_code2,
+                admin_name3,
+                admin_code3,
+                latitude,
+                longitude,
+                accuracy
+            FROM postcode
+            WHERE place_name = :place_name
+            ORDER BY country_code, postal_code
+        SQL;
+
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute(['place_name' => $cityName]);
+
+        while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+            yield $this->factory($row);
         }
-        $this->sql = $sql;
-        return $this->found;
     }
-    /*
-    #[PostCode\findCityWeakMap(
-        "Returns an WeakMap instance loaded with weak references of cities found",
-        "string city : city to find",
-        "Returns PDOStatement if successful; FALSE otherwise"
-    )]
-    public function findCityWeakMap(string $city) : WeakMap
-    {
-        $obj  = new WeakMap();
-        $post = $this->container->get($row_svc);
-        $sql  = $this->buildSelectSql();
-        $sql .= ' WHERE place_name LIKE ' . $this->pdo->quote('%' . $city. '%') . ' ';
-        $result = $this->pdo->query($sql);
-        if (!empty($result)) {
-            while ($row = $result->fetch(PDO::FETCH_ASSOC)) {
-                $this->obj->attach(new GenericRow($result->fetch(PDO::FETCH_ NUM));
-            }
-        }
-        return $obj;
-   }
-   */
 }
