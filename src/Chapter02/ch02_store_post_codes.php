@@ -1,12 +1,7 @@
-#!/usr/bin/env php
 <?php
-
-declare(strict_types=1);
-
 require_once __DIR__ . '/../../vendor/autoload.php';
-
-use Cookbook\Database\Postcode;
-use Cookbook\Database\PostcodeTable;
+use Cookbook\Database\PostCode;
+use Cookbook\Database\PostCodeTable;
 
 // ──────────────────────────────────────────────────────────────
 // Validate command line arguments
@@ -43,13 +38,14 @@ try {
     exit(1);
 }
 
+$count = 0;
 $start = microtime(TRUE);
-$table = new PostcodeTable($pdo);
+$table = new PostCodeTable($pdo);
 $results = $table->findByCity($cityName);
 $storage = [];
-foreach ($results as $entity) {
-    $storage[] = $enity;
+foreach ($results as $obj) {
+    echo $obj->postalCode . ' ';
+    $storage[] = $obj;
 }
-var_dump($storage);
-echo 'Time Elapsed: ' . (microtime(TRUE) - $start) . PHP_EOL;
-echo 'Memory Used:  ' . memory_get_usage() . PHP_EOL;
+echo PHP_EOL;
+echo 'Number Found: ' . $results->getReturn() . PHP_EOL;

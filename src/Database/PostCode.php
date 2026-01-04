@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 namespace Cookbook\Database;
-class Postcode
+class PostCode
 {
     public function __construct(
         public ?int $id = null,

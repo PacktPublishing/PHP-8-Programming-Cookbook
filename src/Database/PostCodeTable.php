@@ -2,8 +2,7 @@
 namespace Cookbook\Database;
 use PDO;
 use Generator;
-
-class PostcodeTable
+class PostCodeTable
 {
     public function __construct(
         private PDO $pdo,
@@ -14,9 +13,9 @@ class PostcodeTable
      *
      * @param array<string, mixed> $row Associative array with database column names as keys
      */
-    public function factory(array $row): Postcode
+    public function factory(array $row): PostCode
     {
-        return new Postcode(
+        return new PostCode(
             id: isset($row['id']) ? (int) $row['id'] : null,
             countryCode: (string) ($row['country_code'] ?? ''),
             postalCode: (string) ($row['postal_code'] ?? ''),
@@ -61,11 +60,14 @@ class PostcodeTable
             ORDER BY country_code, postal_code
         SQL;
 
+        $count = 0;
         $stmt = $this->pdo->prepare($sql);
         $stmt->execute(['place_name' => $cityName]);
-
-        while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+        $stmt->setFetchMode(PDO::FETCH_ASSOC);
+        while ($row = $stmt->fetch()) {
             yield $this->factory($row);
+            $count++;
         }
+        return $count;
     }
 }
