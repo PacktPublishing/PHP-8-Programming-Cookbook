@@ -38,8 +38,6 @@ try {
     exit(1);
 }
 
-$count = 0;
-$start = microtime(TRUE);
 $table = new PostCodeTable($pdo);
 $results = $table->findByCity($cityName);
 $storage = [];
