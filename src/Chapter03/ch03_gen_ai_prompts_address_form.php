@@ -394,7 +394,7 @@ function generateNameAddressForm($fieldAttrs, $countries, $formAction = '', $for
         $html .= '<div class="form-group">' . PHP_EOL;
         $html .= '<label for="' . $fieldName . '"';
         $html .= ($isRequired) ? ' class="required"' : '';
-        $html .= '>' . $fieldLabel);
+        $html .= '>' . $fieldLabel;
         $html .= (!$isRequired) ? ' <span class="optional">(Optional)</span>' : '';
         $html .= '</label>' . PHP_EOL;        
         // Generate input field based on type
