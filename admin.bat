@@ -1,5 +1,5 @@
 @echo off
-SET USAGE="Usage: init.sh up|down|build|ls|shell [php7|php8|nginx|mysql] -- 2nd argument is the container (used with shell option)"
+SET USAGE="Usage: init.sh up|down|build|ls|shell [php|nginx|mysql] -- 2nd argument is the container (used with shell option)"
 # If you're using %DOCKER%, change these two env vars
 # replace "podman" with "%DOCKER%"
 SET DOCKER=podman
@@ -44,15 +44,10 @@ GOTO:EOF
 IF "%1"=="shell" GOTO :shell
 GOTO :done
 :shell
-IF "$2" == "php7" GOTO :shell_php7
 IF "$2" == "nginx" GOTO :shell_nginx
 IF "$2" == "mysql" GOTO :shell_mysql
 
 %DOCKER% exec -it %CONTAINER_PHP8% /bin/bash
-GOTO:EOF
-
-:shell_php7
-%DOCKER% exec -it %CONTAINER_PHP7% /bin/bash
 GOTO:EOF
 
 :shell_nginx
