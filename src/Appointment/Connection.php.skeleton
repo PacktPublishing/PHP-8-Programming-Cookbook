@@ -1,0 +1,49 @@
+<?php
+namespace Cookbook\Appointment;
+use PDO;
+use Iterator;
+use ArrayIterator;
+class Connection
+{
+    public const string DRIVER = 'mysql';
+    public const string ERR_DB = 'ERROR: unable to connect to the database';
+    public ?PDO $pdo = NULL;
+
+    public function __construct(string $user, string $pwd, string $host, string $db_name, string $driver = '')
+    {
+        if (empty($user) || empty($pwd) || empty($db_name) || empty($host)) {
+            throw new InvalidArgumentException(static::ERR_DB);
+        }
+        $dsn = 'mysql:host=' . $host . ';dbname=' . $db_name;
+        $opts = [PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION];
+        $this->pdo = new PDO($dsn, $user, $pwd, $opts);
+    }
+    public function addAppointment(Appointment $appt) : bool
+    {
+        // Insert the Appointment instance into the "appointment" table
+        // return TRUE if add was successful, FALSE otherwise
+    }
+    public function findAppts(string $start_date = '', string $end_date = '') : ?Iterator
+    {
+        $sql = 'SELECT * FROM appointment ';
+        // if both $appt->start_date_and_time and $appt->end_date_and_time are set, add a WHERE clause where results are >= $appt->start_date_and_time and <= $appt->end_date_and_time
+        // if $appt->start_date_and_time is set but $appt->end_date_and_time is not set, add a WHERE clause where results are >= $appt->start_date_and_time
+        // if $appt->start_date_and_time is not set but $appt->end_date_and_time is set, add a WHERE clause where results are <= $appt->end_date_and_time
+        // if none of the above conditions are true, return a list of all appointments
+        // all return values must be in the form of ArrayIterator or NULL if no hits
+    }
+    public function findApptsByDay(string $start_date = '') : ?Iterator
+    {
+        return findAppts($start_date, $start_date);
+    }
+    public function findApptsByWeek(string $start_date = '') : ?Iterator
+    {
+        // from $start_date determine the week to search
+        // return the results of findAppts() with the start date == the 1st day of the search week, and end date == last day of the search week
+    }
+    public function findApptsByMonth(string $start_date = '') : ?Iterator
+    {
+        // from $start_date determine the month to search
+        // return the results of findAppts() with the start date == the 1st of the search month, and end date == last day of the search month
+    }
+}

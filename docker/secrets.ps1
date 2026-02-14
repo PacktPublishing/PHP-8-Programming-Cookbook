@@ -1,0 +1,44 @@
+# Environment variables for Docker/Podman container management
+$env:PHP_VER = "84"
+$env:HOST_NAME_PHP8 = "php8.local"
+$env:HOST_NAME_PHP7 = "php7.local"
+$env:HOST_NAME_NGINX = "nginx.local"
+$env:HOST_NAME_NGINX = "mysql.local"
+$env:DOC_ROOT = "/repo/public"
+$env:CONTAINER_PHP8 = "php8"
+$env:CONTAINER_PHP7 = "php7"
+$env:CONTAINER_NGINX = "nginx"
+$env:CONTAINER_MYSQL = "mysql"
+$env:CONTAINER_IP_PHP8 = "10.10.10.88"
+$env:CONTAINER_IP_PHP7 = "10.10.10.77"
+$env:CONTAINER_IP_NGINX = "10.10.10.10"
+$env:CONTAINER_IP_MYSQL = "10.10.10.20"
+$env:CONTAINER_SUBNET = "10.10.10.0/24"
+$env:DB_ADMIN_VER = "5.4.2"
+$env:REPO_DIR = "/repo"
+$env:REPO_BACKUP_DIR = "/repo/backups"
+$env:DB_NAM = "php8cookbook"
+$env:DB_USR = "cookbook"
+$env:DB_PWD = "password"
+
+# Also set as regular PowerShell variables for easier access
+$PHP_VER = $env:PHP_VER
+$HOST_NAME_PHP8 = $env:HOST_NAME_PHP8
+$HOST_NAME_PHP7 = $env:HOST_NAME_PHP7
+$HOST_NAME_NGINX = $env:HOST_NAME_NGINX
+$DOC_ROOT = $env:DOC_ROOT
+$CONTAINER_PHP8 = $env:CONTAINER_PHP8
+$CONTAINER_PHP7 = $env:CONTAINER_PHP7
+$CONTAINER_NGINX = $env:CONTAINER_NGINX
+$CONTAINER_MYSQL = $env:CONTAINER_MYSQL
+$CONTAINER_IP_PHP8 = $env:CONTAINER_IP_PHP8
+$CONTAINER_IP_PHP7 = $env:CONTAINER_IP_PHP7
+$CONTAINER_IP_NGINX = $env:CONTAINER_IP_NGINX
+$CONTAINER_IP_MYSQL = $env:CONTAINER_IP_MYSQL
+$CONTAINER_SUBNET = $env:CONTAINER_SUBNET
+$DB_ADMIN_VER = $env:DB_ADMIN_VER
+$REPO_DIR = $env:REPO_DIR
+$REPO_BACKUP_DIR = $env:REPO_BACKUP_DIR
+$DB_NAM = $env:DB_NAM
+$DB_USR = $env:DB_USR
+$DB_PWD = $env:DB_PWD

@@ -1,0 +1,14 @@
+Using the provided PHP class files as a starting point, complete the code in the Calendar class using the comments as further instructions.
+[upload Appointment.php, Connection.php, and the skeleton code for Calendar.php]
+
+Referencing the classes in the previous output, create a file "ch04_appointment.php" that uses PHP, jQuery, and HTML 
+to provide an area that can display appointments by day, week or month.
+In addition, the code file should define two forms that do the following:
+Form #1: Get Appointments
+1. Provides a date input field for start date.
+2. Provides a set of radio buttons to choose single day, week, or month.
+3. Submit button.
+Form #2: Add Appointment
+1. Provides a box with input fields allowing the user to add a new location
+2. Provides input fields for the user to create an appointment
+Be sure to sanitize all inputs when form data is submitted to the "ch04_appointment.php" via AJAX request.
