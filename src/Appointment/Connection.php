@@ -3,10 +3,12 @@ namespace Cookbook\Appointment;
 use PDO;
 use Iterator;
 use DateTime;
+use ArrayIterator;
 class Connection
 {
     public const DRIVER = 'mysql';
-    public const FIRST_DAY = 'Sunday';
+    public const FIRST_DAY = 'sun';
+    public const WEEK_DAYS = ['sun','mon','tue','wed','thu','fri','sat','sun','mon','tue','wed','thu','fri','sat'];
     public const ERR_DB = 'ERROR: unable to connect to the database';
     public ?PDO $pdo = NULL;
 
@@ -41,6 +43,8 @@ class Connection
         // if none of the above conditions are true, return a list of all appointments
         // all return values must be in the form of ArrayIterator or NULL if no hits
         $params = [];
+        $start_date .= (!empty($start_date)) ? ' 00:00' : '';
+        $end_date   .= (!empty($end_date))   ? ' 23:59' : '';
         if (!empty($start_date) && !empty($end_date)) {
             $sql .= 'WHERE start_date_and_time >= ? AND end_date_and_time <= ?';
             $params = [$start_date, $end_date];
@@ -80,8 +84,18 @@ class Connection
         // return the results of findAppts() with the start date == the 1st day of the search week, and end date == last day of the search week
         $date = new DateTime($start_date);
         $first_day = (empty($first_day)) ? static::FIRST_DAY : $first_day;
-        $start = $date->modify($first_day . ' this week')->format('Y-m-d');
-        $end = $date->modify($first_day . ' this week')->format('Y-m-d');
+        // ADDED: find out how many days offset is the start date from the first day of the week
+        $day_of_week     = strtolower($date->format('D'));
+        $day_of_week_pos = array_search($day_of_week, static::WEEK_DAYS);
+        $first_day_pos   = array_search($first_day, static::WEEK_DAYS);
+        $relative_pos    = $day_of_week_pos - $first_day_pos;
+        if ($relative_pos > 0) {
+            $start = $date->modify('-' . $relative_pos . ' days')->format('Y-m-d 00:00');
+        } else {
+            $start = $date->format('Y-m-d 00:00');
+        }
+        // changed this to last day
+        $end = $date->modify('+7 days')->format('Y-m-d 23:59');
         return $this->findAppts($start, $end);
     }
     public function findApptsByMonth(string $start_date = '') : ?Iterator

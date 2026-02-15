@@ -10,7 +10,6 @@ require 'Calendar.php';
 */
 include __DIR__ . '/../../vendor/autoload.php';
 use Cookbook\Appointment\Connection;
-use Cookbook\Appointment\Calendar;
 use Cookbook\Appointment\Appointment;
 
 // added db config
@@ -18,28 +17,22 @@ $db = include __DIR__ . '/../../config/db.config.php';
 
 // Database connection - adjust credentials as needed
 $conn = new Connection($db['db_usr'], $db['db_pwd'], $db['db_host'], $db['db_name']);
-$calendar = new Calendar($conn);
-
-
-// Sanitize and validate inputs
-function sanitize_input($data) {
-    // $data = trim($data);
-    // $data = stripslashes($data);
-    // $data = htmlspecialchars($data);
-    return trim(strip_tags($data));
-}
 
 // Handle AJAX requests
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     header('Content-Type: application/json');
     $response = ['success' => false, 'message' => '', 'html' => ''];
-
     if (isset($_POST['action'])) {
-        if ($_POST['action'] === 'get_appointments') {
-            $start_date = sanitize_input($_POST['start_date'] ?? '');
-            $type = sanitize_input($_POST['type'] ?? 'day');
-            $first_day = sanitize_input($_POST['first_day'] ?? '');
-
+        // ADDED sanitize all inputs
+        $post = $_POST;
+        foreach ($post as $key => $val) {
+            $post[$key] = trim(strip_tags($val));
+        }
+        // REMOVED calls to sanitize_input()
+        if ($post['action'] === 'get_appointments') {
+            $start_date = $post['start_date'] ?? '';
+            $type       = $post['type'] ?? 'day';
+            $first_day  = $post['first_day'] ?? '';
             // Validate date
             if (!empty($start_date) && !DateTime::createFromFormat('Y-m-d', $start_date)) {
                 $response['message'] = 'Invalid start date.';
@@ -49,26 +42,41 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 try {
                     if ($type === 'day') {
                         $appts = $conn->findApptsByDay($start_date);
-                        $html = $calendar->showApptsByDay($appts ?: new ArrayIterator([]));
                     } elseif ($type === 'week') {
                         $appts = $conn->findApptsByWeek($start_date, $first_day);
-                        $html = $calendar->showApptsByWeek($appts ?: new ArrayIterator([]), $first_day);
                     } elseif ($type === 'month') {
                         $appts = $conn->findApptsByMonth($start_date);
-                        $html = $calendar->showApptsByMonth($appts ?: new ArrayIterator([]), $first_day);
                     }
-                    error_log(__FILE__ . ':' . __LINE__ . ':' . var_export($appts, TRUE));
+                    error_log(__FILE__ . ':' . __LINE__ . ':APPTS:' . var_export($appts, TRUE));
+                    if (empty($appts)) {
+                        $html = 'No Appointments';
+                    } else {
+                        $html = '<table>';
+                        $html .= '<tr><th>Start</th><th>End</th><th>Title</th><th>Location</th><th>Contact info</th></tr>';
+                        foreach ($appts as $key => $appt) {
+                            $color = ($key % 2 === 0) ? 'F0F0F0' : 'FFFFFF';
+                            $html .= '<tr style="background-color:#' . $color . ';">';
+                            $html .= '<td>' . htmlspecialchars($appt->start_date_and_time ?? '') . '</td>';
+                            $html .= '<td>' . htmlspecialchars($appt->end_date_and_time ?? '') . '</td>';
+                            $html .= '<td>' . htmlspecialchars($appt->title ?? '') . '</td>';
+                            $html .= '<td>' . htmlspecialchars($appt->location ?? '') . '</td>';
+                            $html .= '<td>' . htmlspecialchars($appt->contact_info ?? '') . '</td>';
+                            $html .= '</tr>';
+                        }
+                        $html .= '</table>';
+                    }
                     $response = ['success' => true, 'html' => $html];
                 } catch (Exception $e) {
                     $response['message'] = 'Error fetching appointments: ' . $e->getMessage();
                 }
             }
-        } elseif ($_POST['action'] === 'add_appointment') {
-            $title = sanitize_input($_POST['title'] ?? '');
-            $location = sanitize_input($_POST['location'] ?? '');
-            $contact_info = sanitize_input($_POST['contact_info'] ?? '');
-            $start_date_time = sanitize_input($_POST['start_date_time'] ?? '');
-            $end_date_time = sanitize_input($_POST['end_date_time'] ?? '');
+        } elseif ($post['action'] === 'add_appointment') {
+            // REMOVED calls to sanitize_input()
+            $title           = $post['title'] ?? '';
+            $location        = $post['location'] ?? '';
+            $contact_info    = $post['contact_info'] ?? '';
+            $start_date_time = $post['start_date_time'] ?? '';
+            $end_date_time   = $post['end_date_time'] ?? '';
 
             // Validate required fields and datetime
             if (empty($title) || empty($location) || empty($start_date_time) || empty($end_date_time)) {
@@ -98,29 +106,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <title>Appointment Calendar</title>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <style>
-        .popup {
-            display: none;
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            background: white;
-            border: 1px solid #ccc;
-            padding: 20px;
-            box-shadow: 0 0 10px rgba(0,0,0,0.5);
-        }
-        .overlay {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0,0,0,0.5);
-        }
+    .container {
+        font-family:    Arial, Helvetica, sans-serif;
+        width: 80%;
+        margin: auto;
+    }
+    td, th {
+        border: solid thin black;
+        padding: 5px;
+    }
     </style>
 </head>
 <body>
+    <div class="container">
     <h1>Appointment Calendar</h1>
 
     <div id="display-area">
@@ -131,45 +129,50 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <form id="get-appointments-form">
         <label for="start_date">Start Date:</label>
         <input type="date" id="start_date" name="start_date" required><br><br>
-        <label>Type:</label><br>
-        <input type="radio" id="day" name="type" value="day" checked>
-        <label for="day">Day</label><br>
-        <input type="radio" id="week" name="type" value="week">
-        <label for="week">Week</label><br>
-        <input type="radio" id="month" name="type" value="month">
+        <label>Type:</label>&nbsp;
+        <input type="radio" id="day" name="type" value="day" checked>&nbsp;
+        <label for="day">Day</label>
+        <input type="radio" id="week" name="type" value="week">&nbsp;
+        <label for="week">Week</label>
+        <input type="radio" id="month" name="type" value="month">&nbsp;
         <label for="month">Month</label><br><br>
         <button type="submit">Get Appointments</button>
     </form>
 
     <h2>Add Appointment</h2>
     <form id="add-appointment-form">
-        <label for="title">Title:</label>
-        <input type="text" id="title" name="title" required maxlength="16"><br><br>
-        
-        <label for="location">Location:</label>
-        <input type="text" id="location" name="location" required><br><br>
-        
-        <label for="contact_info">Contact Info:</label>
-        <input type="text" id="contact_info" name="contact_info"><br><br>
-        
-        <label for="start_date_time">Start Date and Time:</label>
-        <input type="datetime-local" id="start_date_time" name="start_date_time" required><br><br>
-        
-        <label for="end_date_time">End Date and Time:</label>
-        <input type="datetime-local" id="end_date_time" name="end_date_time" required><br><br>
-        
-        <button type="submit">Add Appointment</button>
+        <table>
+        <tr>
+        <th><label for="title">Title:</label></th>
+        <td><input type="text" id="title" name="title" required maxlength="16"></td>
+        </tr>
+        <tr>
+        <th><label for="location">Location:</label></th>
+        <td><input type="text" id="location" name="location" required></td>
+        </tr>
+        <tr>
+        <th><label for="contact_info">Contact Info:</label></th>
+        <td><input type="text" id="contact_info" name="contact_info"></td>
+        </tr>
+        <tr>
+        <th><label for="start_date_time">Start Date and Time:</label></th>
+        <td><input type="datetime-local" id="start_date_time" name="start_date_time" required></td>
+        </tr>
+        <tr>
+        <th><label for="end_date_time">End Date and Time:</label></th>
+        <td><input type="datetime-local" id="end_date_time" name="end_date_time" required></td>
+        </tr>
+        <tr>
+        <td colspan=2><button type="submit">Add Appointment</button></td>
+        </table>
     </form>
-
-    <div class="overlay" id="overlay"></div>
-    <div class="popup" id="popup"></div>
-
+    </div>
     <script>
         $(document).ready(function() {
             // Handle get appointments form
             $('#get-appointments-form').submit(function(e) {
                 e.preventDefault();
-                var formData = $(this).serialize() + '&action=get_appointments&first_day=Sunday'; // Assuming default first_day
+                var formData = $(this).serialize() + '&action=get_appointments&first_day=sun'; // Assuming default first_day
                 $.post('', formData, function(response) {
                     if (response.success) {
                         $('#display-area').html(response.html);
@@ -192,16 +195,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             });
         });
 
-        function showPopup(content) {
-            $('#popup').html(content);
-            $('#overlay').show();
-            $('#popup').show();
-        }
-
-        $('#overlay').click(function() {
-            $('#overlay').hide();
-            $('#popup').hide();
-        });
     </script>
 </body>
 </html>

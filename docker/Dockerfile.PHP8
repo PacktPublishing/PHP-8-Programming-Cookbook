@@ -33,6 +33,7 @@ RUN \
     apk add php"$PHP_VER"-tidy && \
     apk add php"$PHP_VER"-zlib && \
     apk add php"$PHP_VER"-ctype && \
+    apt add php"$PHP_VER"-tokenizer && \
     apk add php"$PHP_VER"-fpm
 RUN \
     echo "Setting up PHP to display errors..." && \

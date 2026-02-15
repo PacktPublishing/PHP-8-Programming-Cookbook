@@ -44,6 +44,8 @@ services:
     container_name: php8
     hostname: php8
     image: unlikelysource/php8_img
+    ports:
+    - 8889:8889
     volumes:
      - ".:/repo"
      - "./docker/secrets.sh:/tmp/secrets.sh"
