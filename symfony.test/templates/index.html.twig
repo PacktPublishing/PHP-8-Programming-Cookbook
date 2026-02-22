@@ -1,0 +1,43 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}News Roundup{% endblock %}
+
+{% block body %}
+<h1>News Roundup</h1>
+
+<div id="categories">
+    {% for category in categories %}
+        <button class="category-btn" data-category="{{ category }}">{{ category }}</button>
+    {% endfor %}
+</div>
+
+<div id="news-table">
+    <!-- The HTML table returned from the AJAX request will be displayed here -->
+    {{ news|raw }}
+</div>
+
+<script src="https://code.jquery.com/jquery-4.0.0.min.js" integrity="sha256-OaVG6prZf4v69dPg6PhVattBXkcOWQB62pdZ3ORyrao=" crossorigin="anonymous"></script>
+<script>
+$(document).ready(function() {
+    $('.category-btn').click(function() {
+        var category = $(this).data('category');
+        $.ajax({
+            url: '/api/news',
+            method: 'POST',
+            data: JSON.stringify({ category: category }),
+            contentType: 'application/json',
+            success: function(response) {
+                if (response.success) {
+                    $('#news-table').html(response.html);
+                } else {
+                    $('#news-table').html('<p>Error: ' + response.error + '</p>');
+                }
+            },
+            error: function() {
+                $('#news-table').html('<p>An error occurred while fetching news.</p>');
+            }
+        });
+    });
+});
+</script>
+{% endblock %}

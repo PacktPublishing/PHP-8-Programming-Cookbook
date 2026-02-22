@@ -21,3 +21,9 @@ services:
 
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
+    App\Service\GenAiService:
+        arguments:
+            $apiKey: '%env(GENAI_API_KEY)%'
+            $apiBridge: '%env(GENAI_BRIDGE)%'
+            $apiModel: '%env(GENAI_MODEL)%'
+            $apiUrl: '%env(GENAI_URL)%'

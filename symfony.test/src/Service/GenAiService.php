@@ -10,7 +10,7 @@ class GenAiService
 {
     public ?PlatformInterface $platform = NULL;
     public function __construct(
-        public string $apiKey, public string $apiBridge, public string $apiModel)
+        public string $apiKey, public string $apiBridge, public string $apiModel, public string $apiUrl)
     {
         $factory = '\\Symfony\\AI\\Platform\\Bridge\\' . $apiBridge . '\\PlatformFactory';
         if (!class_exists($factory)) throw new InvalidArgumentExcept('ERROR: provider unavailable');
