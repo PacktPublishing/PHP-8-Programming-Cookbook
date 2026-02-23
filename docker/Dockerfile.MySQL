@@ -1,4 +1,4 @@
-FROM docker.io/alpine:3.20
+FROM alpine:latest
 RUN \
     echo "Installing basic utils ..." && \
     apk add nano && \

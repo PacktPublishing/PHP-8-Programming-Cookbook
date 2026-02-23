@@ -13,7 +13,7 @@ class GenAiService
         public string $apiKey, public string $apiBridge, public string $apiModel, public string $apiUrl)
     {
         $factory = '\\Symfony\\AI\\Platform\\Bridge\\' . $apiBridge . '\\PlatformFactory';
-        if (!class_exists($factory)) throw new InvalidArgumentExcept('ERROR: provider unavailable');
+        if (!class_exists($factory)) throw new InvalidArgumentException('ERROR: provider unavailable');
         $this->platform = $factory::create($this->apiKey, HttpClient::create());
     }
     public function chat(string $text)

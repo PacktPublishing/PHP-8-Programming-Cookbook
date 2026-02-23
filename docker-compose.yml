@@ -10,6 +10,7 @@ services:
      - "./docker/secrets.sh:/tmp/secrets.sh"
      - "./docker/nginx.startup.sh:/tmp/startup.sh"
      - "./docker/nginx.default.conf:/etc/nginx/http.d/default.conf"
+     - "./docker/symfony.test.conf:/etc/nginx/http.d/symfony.test.conf"
     build:
       context: ./docker
       dockerfile: Dockerfile.NGINX

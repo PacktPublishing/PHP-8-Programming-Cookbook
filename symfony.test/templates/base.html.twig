@@ -4,7 +4,24 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}Symfony App{% endblock %}</title>
-    {% block stylesheets %}{% endblock %}
+    {% block stylesheets %}
+    <style>
+    h1 {
+        margin:auto;
+        width:80%;
+    }
+    #categories {
+        margin:auto;
+        width:80%;
+        font-family: Helvetica, Arial, sans-serif; 
+    }
+    #news-table {
+        margin:auto;
+        width:80%;
+        font-family: Helvetica, Arial, sans-serif; 
+    }
+    </style>
+    {% endblock %}
 </head>
 <body>
     {% block body %}{% endblock %}

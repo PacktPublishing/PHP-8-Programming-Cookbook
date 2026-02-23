@@ -1,5 +1,4 @@
-FROM docker.io/alpine:3.20
-COPY nginx.default.conf /tmp/default.conf
+FROM alpine:latest
 RUN \
     echo "Installing basic utilities ..." && \
     apk add curl git bash nano
