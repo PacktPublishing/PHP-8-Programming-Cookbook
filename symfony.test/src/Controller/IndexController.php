@@ -13,6 +13,7 @@ class IndexController extends AbstractController
     public const ERR_API = 'Unable to make API call';
     public const CATEGORIES = ['World','North America','South America','Europe','Middle East','Asia','South Pacific'];
     public const DEFAULT_CATEGORY = 'World';
+    public const INFO_MISSING = 'Info Missing';
     public const PROMPT = 'In JSON format, give me headlines and summaries of the top 10 news stories in this category: %s.'
                         . 'For each item only give me these 3 things:'
                         . 'headline: The headline of the news item with a link to the news story.'
@@ -50,12 +51,16 @@ class IndexController extends AbstractController
         $arr      = json_decode($json, TRUE);
         $html     = sprintf(self::NO_NEWS, __LINE__);
         if (!empty($arr)) {
+            // sanitize the return values
+            $link = strip_tags($item['link'] ?? '#');
+            $head = strip_tags($item['headline'] ?? 'No Headline');
+            $summ = strip_tags($item['summary'] ?? 'No Summary');
             $html = '<table>';
             $html .= '<tr><th>Headline</th><th>Summary</th></tr>';
             foreach ($arr as $item) {
                 $html .= '<tr>';
-                $html .= '<td><a href="' . ($item['link'] ?? '') . '">' . ($item['headline'] ?? 'No Headline') . '</a></td>';
-                $html .= '<td>' . ($item['summary'] ?? 'No Summary') . '</td>';
+                $html .= '<td><a href="' . $link . '">' . $head . '</a></td>';
+                $html .= '<td>' . $summ . '</td>';
                 $html .= '</tr>';
             }
             $html .= '</table>';
