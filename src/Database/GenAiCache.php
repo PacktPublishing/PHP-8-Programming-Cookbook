@@ -1,10 +1,7 @@
 <?php
 namespace Cookbook\Database;
 use PDO;
-use ArrayObject;
-use SplFileObject;
 use DateInterval;
-use Traversable;
 use Psr\SimpleCache\CacheInterface;
 use Psr\Container\ContainerInterface;
 #[GenAiCache("Provides a GenAI caching service as per https://www.php-fig.org/psr/psr-16/")]
@@ -12,7 +9,6 @@ class GenAiCache implements CacheInterface
 {
     public const TABLE  = 'gen_ai_cache';
     public ?PDO $pdo = NULL;
-    public string $allSQL   = 'SELECT cache_key,request_text FROM %s';
     public string $findSQL  = 'SELECT cache_key,request_text FROM %s WHERE cache_key = ?';
     public string $saveSQL  = 'INSERT INTO %s (cache_key, request_text) VALUES (?,?)';
     public string $delSQL   = 'DELETE FROM %s WHERE cache_key = ?';
@@ -25,7 +21,7 @@ class GenAiCache implements CacheInterface
     {
         $stmt = $this->pdo->prepare(sprintf($this->findSQL, static::TABLE));
         $result = $stmt->execute([$key]);
-        $text = base64_decode($stmt->fetchAll(PDO::FETCH_ASSOC)[0] ?? '');
+        $text = base64_decode($stmt->fetchAll(PDO::FETCH_ASSOC)[0]['request_text'] ?? '');
         return $text;
     }
     public function set(string $key, mixed $value, DateInterval|int|null $ttl = null): bool
@@ -52,7 +48,7 @@ class GenAiCache implements CacheInterface
     }
     public function getMultiple(iterable $keys, mixed $default = null): iterable
     {
-        return $this->pdo->query(sprintf($this->allSQL, static::TABLE));
+        // do nothing
     }
     public function setMultiple(iterable $values, DateInterval|int|null $ttl = null): bool
     {
