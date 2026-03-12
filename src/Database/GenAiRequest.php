@@ -4,20 +4,20 @@ use PDO;
 use Exception;
 use DateInterval;
 use Psr\SimpleCache\CacheInterface;
+use Psr\Container\ContainerInterface;
 #[GenAiRequest("Processes GenAI request")]
 class GenAiRequest
 {
-    public const THRESHOLD   = 90;
     public const NO_RESPONSE = 'No response from your AI platform';
     public const FROM_CACHE  = 'Returned from cache: ' . PHP_EOL;
     public const FROM_ORIG   = 'Returned from GenAI: ' . PHP_EOL;
-    public const AI_KEY_FN   = __DIR__ . '/../../secure/monica_api_key.txt';
-    public const AI_MODEL    = 'gpt-4.1-nano';     // $0.10 / 1M input tokens | $0.40 / 1M output tokens
-    public const AI_API_URL  = 'https://openapi.monica.im/v1/chat/completions';
-    public const AI_SYS_TEXT = 'Keep your responses concise and limited to 256 words or less.';
-    public function __construct(
-        public ?CacheInterface $cache = NULL)
-    {}
+    public array $ai_config  = [];
+    public ?CacheInterface $cache = NULL;
+    public function __construct(ContainerInterface $container)
+    {
+        $this->ai_config = $container->get('ai_config');
+        $this->cache     = new GenAiCache($container);
+    }
     #[GenAiRequest\__invoke(
         "@param string \$request",
         "@return string \$response")]
@@ -54,20 +54,20 @@ class GenAiRequest
     protected function makeCall(string $request) : string
     {
         // get API key
-        $apiKey = trim(file_get_contents(static::AI_KEY_FN));
+        $apiKey = trim(file_get_contents($this->ai_config['AI_KEY_FN']));
         // set up GenAI API data
         $data = [
-            'model' => static::AI_MODEL,
+            'model' => $this->ai_config['AI_MODEL'],
             'messages' => [
                 [
                     'role' => 'user',
-                    'content' => [['type' => 'text', 'text' => static::AI_SYS_TEXT . ' ' . $request]],
+                    'content' => [['type' => 'text', 'text' => $this->ai_config['AI_SYS_TEXT'] . ' ' . $request]],
                 ]
             ]
         ];
         $json = json_encode($data);
         // make the request to GenAI
-        $ch = curl_init(static::AI_API_URL);
+        $ch = curl_init($this->ai_config['AI_API_URL']);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($ch, CURLOPT_POST, true);
         curl_setopt($ch, CURLOPT_POSTFIELDS, $json);
