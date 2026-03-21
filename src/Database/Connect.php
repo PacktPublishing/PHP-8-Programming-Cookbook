@@ -3,7 +3,7 @@ namespace Cookbook\Database;
 use PDO;
 use Throwable;
 use RuntimeException;
-#[Connect("Singleton that returns a PDO instance")]
+#[Connect("Returns a PDO instance")]
 class Connect
 {
     public const ERR_PDO = 'ERROR: unable to create PDO instance';
