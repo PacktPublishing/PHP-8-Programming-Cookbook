@@ -1,4 +1,4 @@
-services:
+    services:
   nginx:
     container_name: nginx
     hostname: nginx

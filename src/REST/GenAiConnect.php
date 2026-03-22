@@ -1,35 +1,34 @@
 <?php
 namespace Cookbook\REST;
-use Exception
+use Exception;
 class GenAiConnect
 {
     public function __construct(protected array $config)
     {}
     public function genAIcall(string $prompt) : string
     {
-        $config = $this->config['ai_config'];
         // $config is an array that contains the following keys:
         /*
-         * api_endpoint : endpoint for the API call
-         * api_model    : model to use
-         * api_key      : API key
-         * api_opts     : an array of additional options for the chosen AI platform
+         * ai_api_url : endpoint for the API call
+         * ai_model   : model to use
+         * ai_api_key : API key
+         * ai_opts    : an array of additional options for the chosen AI platform
          */
         $data = array_merge([
-            'model'    => $config['api_model'],
+            'model'    => $this->config['ai_model'],
             'messages' => [
                 ['role' => 'user', 'content' => $prompt]
             ],
-        ], $config['api_opts'] ?? []);
+        ], $this->config['ai_opts'] ?? []);
         $json = json_encode($data);
-        $ch = curl_init($config['api_endpoint']);
+        $ch = curl_init($this->config['ai_api_url']);
         curl_setopt_array($ch, [
             CURLOPT_RETURNTRANSFER => true,
             CURLOPT_POST           => true,
             CURLOPT_POSTFIELDS     => $json,
             CURLOPT_HTTPHEADER     => [
                 'Content-Type: application/json',
-                'Authorization: Bearer ' . $config['api_key'],
+                'Authorization: Bearer ' . $this->config['ai_api_key'],
             ],
             CURLOPT_SSL_VERIFYPEER => false,  // Set to TRUE in production!
             CURLOPT_SSL_VERIFYHOST => false,  // Set to TRUE in production!
@@ -39,10 +38,10 @@ class GenAiConnect
         $error    = curl_error($ch);
         curl_close($ch);
         if (!empty($error)) {
-            throw new \Exception(sprintf('ERROR %s [%s]', __LINE__, $error));
+            throw new Exception(sprintf('ERROR %s [%s]', __LINE__, $error));
         }
         if ($httpCode !== 200) {
-            throw new \Exception(sprintf('ERROR %s [HTTP:%s]', __LINE__, $httpCode));
+            throw new Exception(sprintf('ERROR %s [HTTP:%s]', __LINE__, $httpCode));
         }
         $response = (string) $result;
         return $response;

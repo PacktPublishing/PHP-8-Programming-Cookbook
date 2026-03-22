@@ -201,5 +201,5 @@ function verify_iso2(string $iso2)
         'ZM' => 'Zambia',
         'ZW' => 'Zimbabwe',
     ];
-    return isset($codes[$iso2]);
+    return isset($codes[strtoupper($iso2)]);
 }

@@ -1,4 +1,5 @@
 <?php
+use Cookbook\REST\GenAiConnect;
 define('DISTANCE_UNITS', ['km','miles']);
 #[distance(
     "@param GenAiConnect connect : GenAiConnect instance",
@@ -10,7 +11,7 @@ define('DISTANCE_UNITS', ['km','miles']);
     "@return string response : Translated phrase",
     "@throws InvalidArgumentException"
 )]    
-function distance(GenAiConnect $connect, ...$args)
+function distance(GenAiConnect $connect, $args)
 {
     require_once __DIR__ . '/verify_iso2.php';
     $city_from = $args['city_from'] ?? '';
