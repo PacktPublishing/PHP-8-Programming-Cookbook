@@ -1,4 +1,10 @@
 <?php
+// TO DEMO: ./admin.sh shell
+// php -S 0.0.0.0:9999 src/Chapter07/ch07_microservices_library.php
+// sample CURL requests (from another shell):
+// curl -X POST -F 'translate={"lang_from":"en","lang_to":"it","phrase":"Hello, how are you today?"}' http://localhost:9999
+// curl -X POST -F 'distance={"city_from":"Paris","city_to":"Rome","iso2_from":"fr","iso2_to":"it","units":"km"}' http://localhost:9999
+
 include __DIR__ . '/../../vendor/autoload.php';
 use Cookbook\REST\GenAiConnect;
 use Laminas\Diactoros\ServerRequestFactory;
@@ -35,11 +41,24 @@ try {
             throw new BadFunctionCallException('Invalid service');
         }
         $ai = new GenAiConnect($config);
-        $value = json_decode(current($data), TRUE);
+        $json = current($data);
+        if (!json_validate($json)) {
+            http_response_code(400);
+            error_log(__FILE__ . ':' . var_export($json, TRUE));
+            throw new RuntimeException('Invalid JSON');
+        }
+        $value = json_decode($json, TRUE, flags:JSON_THROW_ON_ERROR);
+        if (!is_array($value)) {
+            http_response_code(400);
+            throw new RuntimeException('Invalid request');
+        }
+        foreach ($data as $key => $val) $data[$key] = trim(strip_tags($val));
         require $micro_services[$service];
+        $output = $service($ai, $value);
+        $arr = json_decode($output, TRUE, flags:JSON_THROW_ON_ERROR);
         $response = [
             'success' => TRUE,
-            'message' => $service($ai, $value)
+            'message' => $arr['choices'][0]['message']['content'] ?? 'No response'
         ];
     }
 } catch (Throwable $t) {

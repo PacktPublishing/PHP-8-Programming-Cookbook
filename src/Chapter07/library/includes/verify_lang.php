@@ -1,10 +1,11 @@
 <?php
 #[verify_lang(
     "Verifies ISO 639-1 language codes",
+    "Language name is passed by reference",
     "@param string lang : ISO 639-1 code to check",
     "@return bool : TRUE is ISO 639-1 code found; FALSE otherwise"
 )]    
-function verify_lang(string $code, string &$lang = '')
+function verify_lang(string $code, string &$txt)
 {
     $codes = [
         'ab' => 'Abkhazian',
@@ -191,11 +192,6 @@ function verify_lang(string $code, string &$lang = '')
         'za' => 'Zhuang',
         'zu' => 'Zulu',
     ];
-    $lang = '';
-    $ok = FALSE;
-    if (isset($codes[strtolower($code)])) {
-        $lang = $codes[strtolower($code)];
-        $ok = TRUE;
-    }
-    return $ok;
+    $txt = $codes[strtolower($code)] ?? '';
+    return isset($codes[strtolower($code)]);
 }

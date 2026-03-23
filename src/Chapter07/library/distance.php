@@ -13,30 +13,36 @@ define('DISTANCE_UNITS', ['km','miles']);
 )]    
 function distance(GenAiConnect $connect, $args)
 {
-    require_once __DIR__ . '/verify_iso2.php';
+    require_once __DIR__ . '/includes/verify_iso2.php';
+    $usage = 'USAGE: '
+            . 'city_from : City to start from,'
+            . 'city_to : Destination city, '
+            . 'iso2_from : ISO2 code of from country, '
+            . 'iso2_to   : ISO2 code of destination country, '
+            . 'units     : km | miles (default km)';
     $city_from = $args['city_from'] ?? '';
     $city_to  = $args['city_to'] ?? '';
     $iso2_from = $args['iso2_from'] ?? 'Unknown';
     $iso2_to  = $args['iso2_to'] ?? 'Unknown';
-    $units = $args['units'] ?? '';
+    $units = $args['units'] ?? 'km';
     if (empty($city_from)) {
-        throw new \InvalidArgumentException('Need to supply a source city.');
+        throw new \InvalidArgumentException('SOURCE CITY MISSING: ' . $usage);
     }
     if (empty($city_to)) {
-        throw new \InvalidArgumentException('Need to supply a destination city.');
+        throw new \InvalidArgumentException('DESTINATION CITY MISSING: ' . $usage);
     }
     if (!verify_iso2($iso2_from)) {
-        throw new \InvalidArgumentException("Invalid source ISO2 code: $iso2_from");
+        throw new \InvalidArgumentException("INVALID SOURCE ISO2 CODE: $iso2_from: " . $usage);
     }
     if (!verify_iso2($iso2_to)) {
-        throw new \InvalidArgumentException("Invalid destination ISO2 code: $iso2_to");
+        throw new \InvalidArgumentException("INVALID DESTINATION ISO2 CODE: $iso2_to: " . $usage);
     }
     if (!in_array($units, DISTANCE_UNITS)) {
-        throw new \InvalidArgumentException('Unit must be one of: ' . implode(',', DISTANCE_UNITS));
+        throw new \InvalidArgumentException('UNIT MUST BE ONE OF: ' . implode(',', DISTANCE_UNITS) . ' ' . $usage);
     }
     $prompt = "Give me the distance in $units "
             . "from: $city_from, $iso2_from, "
             . "to: $city_to, $iso2_to. "
             . 'Return only the distance with no explanation.';
-    return $connect->makeGenAIcall($prompt);
+    return $connect->genAIcall($prompt);
 }
