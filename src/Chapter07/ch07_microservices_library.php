@@ -29,38 +29,45 @@ try {
     if (strtolower($request->getMethod()) !== 'post') {
         http_response_code(405);
         throw new UnexpectedValueException('Unsupported HTTP method');
-    } else {
-        $data = $request->getParsedBody();
-        if (empty($data)) {
-            http_response_code(406);
-            throw new InvalidArgumentException('Invalid arguments');
-        }
-        $service = strtolower(key($data));
-        if (!isset($micro_services[$service])) {
-            http_response_code(406);
-            throw new BadFunctionCallException('Invalid service');
-        }
-        $ai = new GenAiConnect($config);
-        $json = current($data);
-        if (!json_validate($json)) {
-            http_response_code(400);
-            error_log(__FILE__ . ':' . var_export($json, TRUE));
-            throw new RuntimeException('Invalid JSON');
-        }
-        $value = json_decode($json, TRUE, flags:JSON_THROW_ON_ERROR);
-        if (!is_array($value)) {
-            http_response_code(400);
-            throw new RuntimeException('Invalid request');
-        }
-        foreach ($data as $key => $val) $data[$key] = trim(strip_tags($val));
-        require $micro_services[$service];
-        $output = $service($ai, $value);
-        $arr = json_decode($output, TRUE, flags:JSON_THROW_ON_ERROR);
-        $response = [
-            'success' => TRUE,
-            'message' => $arr['choices'][0]['message']['content'] ?? 'No response'
-        ];
     }
+    // grab POST data
+    $data = $request->getParsedBody();
+    if (empty($data)) {
+        http_response_code(406);
+        throw new InvalidArgumentException('Invalid arguments');
+    }
+    // determine the service requested
+    $service = strtolower(key($data));
+    if (!isset($micro_services[$service])) {
+        http_response_code(406);
+        throw new BadFunctionCallException('Invalid service');
+    }
+    // validate the JSON request
+    $json = current($data);
+    if (!json_validate($json)) {
+        http_response_code(400);
+        error_log(__FILE__ . ':' . var_export($json, TRUE));
+        throw new RuntimeException('Invalid JSON');
+    }
+    // extract a PHP array from the JSON request
+    $value = json_decode($json, TRUE, flags:JSON_THROW_ON_ERROR);
+    if (!is_array($value)) {
+        http_response_code(400);
+        throw new RuntimeException('Invalid request');
+    }
+    // sanitize the data
+    foreach ($data as $key => $val) $data[$key] = trim(strip_tags($val));
+    // load the microservice
+    require $micro_services[$service];
+    // make the GenAI call
+    $ai = new GenAiConnect($config);
+    $output = $service($ai, $value);
+    // process results
+    $arr = json_decode($output, TRUE, flags:JSON_THROW_ON_ERROR);
+    $response = [
+        'success' => TRUE,
+        'message' => $arr['choices'][0]['message']['content'] ?? 'No response'
+    ];
 } catch (Throwable $t) {
     error_log(__FILE__ . ':' . get_class($t) . ':' . $t->getMessage());
     if ($t instanceof InvalidArgumentException) {

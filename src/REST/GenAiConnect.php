@@ -3,6 +3,7 @@ namespace Cookbook\REST;
 use Exception;
 class GenAiConnect
 {
+    public const ERR_TRANS = 'Unknown transmission error.';
     public function __construct(protected array $config)
     {}
     public function genAIcall(string $prompt) : string
@@ -38,12 +39,17 @@ class GenAiConnect
         $error    = curl_error($ch);
         curl_close($ch);
         if (!empty($error)) {
-            throw new Exception(sprintf('ERROR %s [%s]', __LINE__, $error));
+            error_log(__METHOD__ . ':' . $error);
+            throw new Exception(sprintf('%s [%s]', static::ERR_TRANS, __LINE__));
         }
         if ($httpCode !== 200) {
             throw new Exception(sprintf('ERROR %s [HTTP:%s]', __LINE__, $httpCode));
         }
         $response = (string) $result;
         return $response;
+    }
+    public function __invoke(string $prompt)
+    {
+        return $this->genAiCall($prompt);
     }
 }

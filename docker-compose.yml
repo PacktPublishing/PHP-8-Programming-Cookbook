@@ -1,4 +1,4 @@
-    services:
+services:
   nginx:
     container_name: nginx
     hostname: nginx
@@ -31,7 +31,7 @@
       context: ./docker
       dockerfile: Dockerfile.MySQL
     volumes:
-     - .:/repo
+     - ".:/repo"
      - "./docker/secrets.sh:/tmp/secrets.sh"
      - "./docker/mysql.startup.sh:/tmp/startup.sh"
     working_dir: /repo
