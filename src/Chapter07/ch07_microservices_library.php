@@ -8,11 +8,11 @@
 include __DIR__ . '/../../vendor/autoload.php';
 use Cookbook\REST\GenAiConnect;
 use Laminas\Diactoros\ServerRequestFactory;
-$services_list = glob(__DIR__ . '/library/*.php');
+$services_list = glob(__DIR__ . '/../REST/Library/*.php');
 // load microservices (defined as functions)
 $micro_services = [];
 foreach ($services_list as $fn) {
-    $micro_services[substr(basename($fn), 0, -4)] = $fn;
+    $micro_services[strtolower(substr(basename($fn), 0, -4))] = $fn;
 }
 // create GenAiConnect instance
 $config = [
@@ -59,9 +59,10 @@ try {
     foreach ($data as $key => $val) $data[$key] = trim(strip_tags($val));
     // load the microservice
     require $micro_services[$service];
+    $svc_name = '\\Cookbook\\REST\\Library\\' . $service;
     // make the GenAI call
     $ai = new GenAiConnect($config);
-    $output = $service($ai, $value);
+    $output = (new $svc_name())($ai, $value);
     // process results
     $arr = json_decode($output, TRUE, flags:JSON_THROW_ON_ERROR);
     $response = [
@@ -70,17 +71,10 @@ try {
     ];
 } catch (Throwable $t) {
     error_log(__FILE__ . ':' . get_class($t) . ':' . $t->getMessage());
-    if ($t instanceof InvalidArgumentException) {
-        $response = [
-            'success' => FALSE,
-            'error'   => $t->getMessage()
-        ];
-    } else {
-        $response = [
-            'success' => FALSE,
-            'error'   => $t->getMessage()
-        ];
-    }
+    $response = [
+        'success' => FALSE,
+        'error'   => $t->getMessage()
+    ];
 } finally {
     echo json_encode($response);
 }
