@@ -8,11 +8,13 @@
 include __DIR__ . '/../../vendor/autoload.php';
 use Cookbook\REST\GenAiConnect;
 use Laminas\Diactoros\ServerRequestFactory;
-$services_list = glob(__DIR__ . '/../REST/Library/*.php');
+$services_list = new FilesystemIterator(__DIR__ . '/../REST/Library/');
 // load microservices (defined as functions)
 $micro_services = [];
-foreach ($services_list as $fn) {
-    $micro_services[strtolower(substr(basename($fn), 0, -4))] = $fn;
+foreach ($services_list as $fn => $obj) {
+    if ($obj->getExtension() === 'php') {
+        $micro_services[strtolower(substr($obj->getBasename(), 0, -4))] = $fn;
+    }
 }
 // create GenAiConnect instance
 $config = [

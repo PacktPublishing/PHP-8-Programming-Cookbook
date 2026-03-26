@@ -1,5 +1,5 @@
 <?php
-namespace Cookbook\REST\Library;
+namespace Cookbook\REST;
 use Cookbook\REST\GenAiConnect;
 interface MicroserviceInterface
 {

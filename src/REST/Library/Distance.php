@@ -1,8 +1,9 @@
 <?php
 namespace Cookbook\REST\Library;
 use Cookbook\REST\GenAiConnect;
+use Cookbook\REST\MicroserviceInterface;
 use Cookbook\REST\Library\Traits\VerifyIso2Trait;
-class distance implements MicroserviceInterface
+class Distance implements MicroserviceInterface
 {
     use VerifyIso2Trait;
     public const DISTANCE_UNITS = ['km','miles'];

@@ -4,6 +4,7 @@ use Exception;
 class GenAiConnect
 {
     public const ERR_TRANS = 'Unknown transmission error.';
+    public const CALL_LOG  = __DIR__ . '/../Chapter07/api_call.log';
     public function __construct(protected array $config)
     {}
     public function genAIcall(string $prompt) : string
@@ -38,6 +39,7 @@ class GenAiConnect
         $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
         $error    = curl_error($ch);
         curl_close($ch);
+        file_put_contents(static::CALL_LOG, __METHOD__ . ':' . var_export($result, TRUE) . PHP_EOL);
         if (!empty($error)) {
             error_log(__METHOD__ . ':' . $error);
             throw new Exception(sprintf('%s [%s]', static::ERR_TRANS, __LINE__));

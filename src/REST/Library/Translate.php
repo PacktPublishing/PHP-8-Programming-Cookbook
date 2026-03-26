@@ -1,8 +1,9 @@
 <?php
 namespace Cookbook\REST\Library;
 use Cookbook\REST\GenAiConnect;
+use Cookbook\REST\MicroserviceInterface;
 use Cookbook\REST\Library\Traits\VerifyLangTrait;
-class translate implements MicroserviceInterface
+class Translate implements MicroserviceInterface
 {
     use VerifyLangTrait;
     public const TRANSLATE_MAX_LEN = 1024;
