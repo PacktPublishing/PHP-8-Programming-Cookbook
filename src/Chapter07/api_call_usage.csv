@@ -1,0 +1,16 @@
+Timestamp,Model,"Hate Filtered","Self Harm Filtered","Sexual Filtered","Violence Filtered","Jailbreak Filtered","Jailbreak Detected","Profanity Filtered","Profanity Detected","Prompt Tokens","Completion Tokens","Total Tokens","Audio Tokens","Cached Tokens","Completion Audio Tokens","Completion Reasoning Tokens"
+1774579337,gpt-4.1-nano,false,false,false,false,false,false,false,false,33,5,38,0,0,0,0
+1774579393,gpt-4.1-nano,false,false,false,false,false,false,false,false,33,9,42,0,0,0,0
+1774600605,gpt-4.1-nano,false,false,false,false,false,false,false,false,33,20,53,0,0,0,0
+1774600640,gpt-4.1-nano,false,false,false,false,false,false,false,false,36,3,39,0,0,0,0
+1774600681,gpt-4.1-nano,false,false,false,false,false,false,false,false,37,3,40,0,0,0,0
+1774600731,gpt-4.1-nano,false,false,false,false,false,false,false,false,33,5,38,0,0,0,0
+1774600750,gpt-4.1-nano,false,false,false,false,false,false,false,false,33,10,43,0,0,0,0
+1774677111,gpt-4.1-nano,false,false,false,false,false,false,false,false,33,30,63,0,0,0,0
+1774677124,gpt-4.1-nano,false,false,false,false,false,false,false,false,36,3,39,0,0,0,0
+1774681532,gpt-4.1-nano,false,false,false,false,false,false,false,false,36,3,39,0,0,0,0
+1774681539,gpt-4.1-nano,false,false,false,false,false,false,false,false,33,16,49,0,0,0,0
+1774683210,gpt-4.1-nano,false,false,false,false,false,false,false,false,33,20,53,0,0,0,0
+1774683217,gpt-4.1-nano,false,false,false,false,false,false,false,false,36,3,39,0,0,0,0
+1774686228,gpt-4.1-nano,false,false,false,false,false,false,false,false,36,3,39,0,0,0,0
+1774686234,gpt-4.1-nano,false,false,false,false,false,false,false,false,33,25,58,0,0,0,0

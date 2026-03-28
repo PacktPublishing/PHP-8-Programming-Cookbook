@@ -39,7 +39,10 @@ class GenAiConnect
         $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
         $error    = curl_error($ch);
         curl_close($ch);
-        file_put_contents(static::CALL_LOG, __METHOD__ . ':' . var_export($result, TRUE) . PHP_EOL);
+        // method, timestamp, $result
+        $message  = sprintf('%s|%d|%s' . PHP_EOL, 
+                            __METHOD__, time(), $result);
+        file_put_contents(static::CALL_LOG, $message, FILE_APPEND);
         if (!empty($error)) {
             error_log(__METHOD__ . ':' . $error);
             throw new Exception(sprintf('%s [%s]', static::ERR_TRANS, __LINE__));

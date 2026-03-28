@@ -2,8 +2,8 @@
 // TO DEMO: ./admin.sh shell
 // php -S 0.0.0.0:9999 src/Chapter07/ch07_microservices_library.php
 // sample CURL requests (from another shell):
-// curl -X POST -F 'translate={"lang_from":"en","lang_to":"it","phrase":"Hello, how are you today?"}' http://localhost:9999
-// curl -X POST -F 'distance={"city_from":"Paris","city_to":"Rome","iso2_from":"fr","iso2_to":"it","units":"km"}' http://localhost:9999
+// curl -X POST -F 'translate={"lang_from":"en","lang_to":"km","phrase":"Hello, how are you today?"}' http://localhost:9999
+// curl -X POST -F 'distance={"city_from":"Bangkok","city_to":"Siem Reap","iso2_from":"th","iso2_to":"kh","units":"km"}' http://localhost:9999
 
 include __DIR__ . '/../../vendor/autoload.php';
 use Cookbook\REST\GenAiConnect;

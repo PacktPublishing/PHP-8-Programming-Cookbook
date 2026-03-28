@@ -1,70 +1,84 @@
 <?php
 namespace Cookbook\REST;
-use PDO;
+use ArrayObject;
 use Exception;
-use DateInterval;
-use Psr\Container\ContainerInterface;
+use SplFileObject;
 #[GenAiUsageTracker("Tracks GenAI token usage")]
 class GenAiUsageTracker
 {
-    public function __construct(ContainerInterface $container)
+    public const CSV_FN  = __DIR__ . '/../Chapter07/api_call_usage.csv';
+    public ?ArrayObject $logInfo = NULL;
+    public array $headers    = ['Timestamp','Model','Hate Filtered','Self Harm Filtered','Sexual Filtered','Violence Filtered','Jailbreak Filtered','Jailbreak Detected','Profanity Filtered','Profanity Detected','Prompt Tokens','Completion Tokens','Total Tokens','Audio Tokens','Cached Tokens','Completion Audio Tokens','Completion Reasoning Tokens'];
+    public string $log_regex = '!.*?\|(\d+)\|.*?\"model\"\:\"(.*?)\".*?\"hate\"\:\{\"filtered\"\:(.*?)\}\,\"self_harm\"\:\{\"filtered\"\:(.*?)\}\,\"sexual\"\:\{\"filtered\"\:(.*?)\}\,\"violence\"\:\{\"filtered\"\:(.*?)\}\,\"jailbreak\"\:\{\"filtered\"\:(.*?)\,\"detected\"\:(.*?)\}\,\"profanity\"\:\{\"filtered\"\:(.*?)\,\"detected\"\:(.*?)\}\}\}]\,\"usage\"\:\{\"prompt_tokens\"\:(.*?)\,\"completion_tokens\"\:(.*?)\,\"total_tokens\"\:(.*?)\,\"prompt_tokens_details\"\:\{\"audio_tokens\"\:(.*?)\,\"cached_tokens\"\:(.*?)\}\,\"completion_tokens_details\"\:\{\"audio_tokens\"\:(.*?)\,\"reasoning_tokens\"\:(.*?)\}.*!';
+    public string $csv_fn    = '';
+    public string $log_fn    = '';
+    public string $separator = ',';
+    public string $enclosure = '"';
+    public string $escape    = '\\';
+    public function __construct(public array $config = [])
     {
-        $this->ai_config = $container->get('ai_config');
+        $this->csv_fn    = $config['csv_fn']    ?? static::CSV_FN;
+        $this->log_fn    = $config['call_log']  ?? GenAiConnect::CALL_LOG;
+        $this->log_regex = $config['log_regex'] ?? $this->log_regex;
+        $this->headers   = $config['headers']   ?? $this->headers;
+        $this->separator = $config['separator'] ?? $this->separator;
+        $this->enclosure = $config['enclosure'] ?? $this->enclosure;
+        $this->escape    = $config['escape']    ?? $this->escape;
     }
-    #[GenAiRequest\__invoke(
-        "@param string \$request",
-        "@return string \$response")]
-    public function __invoke(string $request) : string
+    // parses log file info into array
+    public function parseLog() : iterable
     {
-        // get API key
-        $apiKey = trim(file_get_contents($this->ai_config['AI_KEY_FN']));
-        // set up GenAI API data
-        $data = [
-            'model' => $this->ai_config['AI_MODEL'],
-            'messages' => [
-                [
-                    'role' => 'user',
-                    'content' => [['type' => 'text', 'text' => $this->ai_config['AI_SYS_TEXT'] . ' ' . $request]],
-                ]
-            ]
-        ];
-        $json = json_encode($data);
-        // make the request to GenAI
-        $ch = curl_init($this->ai_config['AI_API_URL']);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($ch, CURLOPT_POST, true);
-        curl_setopt($ch, CURLOPT_POSTFIELDS, $json);
-        curl_setopt($ch, CURLOPT_HTTPHEADER, [
-            'Content-Type: application/json',
-            'Authorization: Bearer ' . $apiKey
-        ]);
-        // Set these to TRUE in production!!!
-        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);  // Don't verify the peer's SSL certificate
-        curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);  // Don't verify the certificate's name against host
-        // Make the call
-        $response = curl_exec($ch);
-        $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-        $error = curl_error($ch);
-        curl_close($ch);
-    
-        // track usage
-        
-        // handle errors
-        if (!empty($error)) {
-            throw new Exception('ERROR ' . __LINE__ . ' [' . $error . ']');
+        $log = new SplFileObject($this->log_fn, 'r');
+        $this->logInfo = new ArrayObject();
+        $log->rewind();
+        while (!$log->eof()) {
+            $line = $log->fgets();
+            if (preg_match($this->log_regex, $line, $match)) {
+                $this->logInfo[] = [
+                    'timestamp' => $match[1],
+                    'model'     => $match[2],                
+                    'hate_filtered' => $match[3],
+                    'self_harm_filtered' => $match[4],
+                    'sexual_filtered'    => $match[5],
+                    'violence_filtered'  => $match[6],
+                    'jailbreak_filtered' => $match[7],
+                    'jailbreak_detected' => $match[8],
+                    'profanity_filtered' => $match[9],
+                    'profanity_detected' => $match[10],
+                    'prompt_tokens'      => $match[11],
+                    'completion_tokens'  => $match[12],
+                    'total_tokens'       => $match[13],
+                    'audio_tokens'       => $match[14],
+                    'cached_tokens'      => $match[15],
+                    'completion_audio_tokens' => $match[16],
+                    'completion_reasoning_tokens' => $match[17],
+                ];
+            }
         }
-        
-        if ($httpCode !== 200) {
-            throw new Exception('ERROR ' . __LINE__ . ' [HTTP:' . $httpCode . '] ');
-        }
-        $text = json_decode($response, TRUE)['choices'][0]['message']['content'] ?? '';
-        if (empty($text)) {
-            throw new Exception(static::NO_RESPONSE);
-        }
-        return $text;
+        return $this->logInfo;
     }
-    protected function createKey(string $text)
+    // adds log entries to spreadsheet
+    public function updateCsv(bool $erase = FALSE) : int
     {
-        return md5($text);
+        if (!$this->parseLog()) {
+            $result = 0;
+        } else {
+            $write_headers = (file_exists($this->csv_fn)) ? FALSE : TRUE;
+            $csv = new SplFileObject($this->csv_fn, 'a');
+            if ($write_headers) {
+                $csv->fputcsv($this->headers, separator: $this->separator, enclosure: $this->enclosure, escape: $this->escape);
+            }
+            $count = 0;
+            foreach ($this->logInfo as $key => $row) {
+                $count++;
+                $csv->fputcsv(array_values($row), separator: $this->separator, enclosure: $this->enclosure, escape: $this->escape);
+            }
+            $result = $count;
+            if ($erase) {
+                unlink($this->log_fn);
+                touch($this->log_fn);
+            }
+        }
+        return $count;
     }
 }
