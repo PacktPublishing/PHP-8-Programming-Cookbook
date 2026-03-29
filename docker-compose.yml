@@ -46,6 +46,7 @@ services:
     hostname: php8
     image: unlikelysource/php8_img
     ports:
+    - 8081:8081
     - 8889:8889
     volumes:
      - ".:/repo"

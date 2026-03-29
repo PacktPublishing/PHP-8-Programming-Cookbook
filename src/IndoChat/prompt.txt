@@ -1,0 +1,21 @@
+Create a website that comprises an  HTML / JavaScript / jQuery frontend and a PHP 8.4 backend.
+The website needs to do the following:
+1. Provide an attractively styled main page to the User.
+2. Provide a login / signup option.
+3. If the User is a member, the User will provide their member name, email, password and preferred language.
+4. If the User it not a member, provide a signup page that requests their member name, email, password and preferred language.
+5. Add an entry to a MySQL database with this information + a field called "verified". 
+* The default for the "verified" field is FALSE.
+6. Send an email to the provided email address with a confirmation link.
+6. If the User clicks on the confirmation link in their email system, this website will mark them as confirmed.
+2. From a backend AJAX call, provide an HTML select element of Members to whom the User can send messages.
+* The return information will include the Member's name and Member's Language.
+3. Provide a set of radio buttons so the User can select his/her preferred User Language. For this demonstration provide choices for English and Khmer.
+3. When a Member is selected, open a chat textarea and establish a websockets connection to the PHP backend.
+4. Through the websockets connection allow the user to send and receive messages to and from the chosen Member.
+5. When the User sends a message in the User Language, have the backend send an API request to the chosen GenAI platform.
+* The API request will ask the chosen GenAI platform to translate the message from the User Language to the Member's Language.
+6. Allow messaging between User and Member to continue until the User presses the STOP button.
+7. When the Stop button is pressed, go back to step 1.
+
+Expand the website as follows:

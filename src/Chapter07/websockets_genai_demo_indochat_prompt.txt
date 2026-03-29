@@ -1,0 +1,20 @@
+Create a website that comprises an  HTML / JavaScript / jQuery frontend and a PHP 8.4 backend.
+The website needs to do the following:
+0. When a User opens the main page, establish a websockets connection to the backend.
+1. Display an attractively styled main page to the User.
+2. Provide a text input field to allow the User to enter a username which is stored in the session.
+3. Provide a set of radio buttons so the User can select his/her preferred User Language. For this demonstration provide choices for English and Khmer.
+4. Display an HTML select element that provides a list of usernames other users who currently have websockets connections to this website.
+* This list can be obtained by the frontend by making an AJAX call to the backend.
+* For the purposes of this demonstration assume that there will be two browser tabs open, each with a different username.
+* The name the User selects from this list we'll call the Chosen User.
+5. Once the User selects another user from the list of connected users, open a textarea in which the User can send a message to the Chosen User.
+* Have the backend make an API call to the preferred GenAI platform that requests the message be translated from the User's preferred language into the Chosen User's preferred language.
+* Display both the original and the translated message in the message textarea of both the User and the Chosen User.
+6. When the Chosen User responds:
+* Have the backend make an API call to the preferred GenAI platform that requests the message be translated from the Chosen User's preferred language into the User's preferred language.
+* Display both the original and the translated message in the message textarea of both the User and the Chosen User.
+7. Allow messaging between User and Chosen User to continue until the User presses the STOP button.
+8. When the Stop button is pressed, go back to step 1.
+
+

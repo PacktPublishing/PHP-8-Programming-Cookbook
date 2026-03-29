@@ -1,0 +1,11 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(composer install:*)",
+      "Bash(php -l server.php)",
+      "Bash(php -l api/users.php)",
+      "Bash(php -l index.php)",
+      "Bash(php -l config.php)"
+    ]
+  }
+}
