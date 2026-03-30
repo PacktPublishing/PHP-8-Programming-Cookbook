@@ -1,20 +1,20 @@
 <?php
-namespace Cookbook\REST;
+namespace Cookbook\IndoChat;
 
 use Ratchet\Server\IoServer;
 use Ratchet\Http\HttpServer;
 use Ratchet\WebSocket\WsServer;
 use Ratchet\MessageComponentInterface;
 use Ratchet\ConnectionInterface;
+use Cookbook\IndoChat\Platform\PlatformInterface;
 
 class ChatServer implements MessageComponentInterface
 {
     /** @var array<int, array{conn: ConnectionInterface, username: string|null, language: string}> */
     private array $clients = [];
-
     private string $usersFile;
-
-    public function __construct(string $usersFile)
+    private PlatformInterface $platform;
+    public function __construct(string $usersFile, PlatformInterface $platform)
     {
         $this->usersFile = $usersFile;
 
@@ -28,6 +28,7 @@ class ChatServer implements MessageComponentInterface
             echo "[WARNING] API_KEY is not set. Translation will not work.\n";
         }
 
+        $this->platform = $platform;
         echo "IndoChat WebSocket server started on port " . WS_PORT . "\n";
         echo "Press Ctrl+C to stop.\n\n";
     }
@@ -156,7 +157,6 @@ class ChatServer implements MessageComponentInterface
 
         $body = json_encode([
             'model'        => AI_MODEL,
-            'max_tokens'   => 1024,
             'instructions' => 'You are a professional translator. Return only the translated text — no explanations, no notes, no punctuation changes beyond what translation requires.',
             'input'        => "Translate from {$names[$fromLang]} to {$names[$toLang]}:\n\n{$text}",
         ]);
@@ -183,7 +183,7 @@ class ChatServer implements MessageComponentInterface
         }
 
         $result = json_decode($raw, true);
-        return $result['content'][0]['text'] ?? '[Translation failed]';
+        return $this->platform->get($result) ?? 'Translation failed';
     }
 
     // -------------------------------------------------------------------------

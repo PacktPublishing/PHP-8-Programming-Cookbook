@@ -4,19 +4,20 @@
 File structure                                                                                                                                                                      
                                                                                                                                                                                         
 IndoChat/
-├── composer.json
+├── async
+│   └── server.php
+├── ChatServer.php
 ├── config
 │   └── config.php
 ├── data
-├── public
-│   ├── index.php
-│   └── users.php
-├── secure
-│   └── api_key.txt
-├── src
-│   ├── ChatServer.php
-│   └── server.php
-└── vendor
+│   └── users.json
+├── Platform
+│   ├── OpenAi.php
+│   └── PlatformInterface.php
+└── public
+    ├── index.php
+    └── users.php
+
                                                                                                                                                                                         
   How to run                                                                                                                                                                            
                                                                                                                                                                                         
@@ -26,10 +27,34 @@ IndoChat/
   2. Configure settings in /config/config.php to match your preferred GenAI platform
 
   3. Start the WebSocket server from a terminal window:
-  php /path/to/IndoChat/src/server.php
+  cd /path/to/cookbook
+  # Linux/Mac
+  admin.sh shell php8
+  # Windows
+  admin.ps1 shell php8
+  # Async server
+  cd /path/to/cookbook
+  # Linux/Mac
+  admin.sh shell php8
+  # Windows
+  admin.ps1 shell php8
+  # Start backend async service
+  php /repo/src/IndoChat/async/server.php
                 
   4. Serve the frontend from another terminal windows:
-  php -S 0.0.0.0:8889 -t /path/to/IndoChat/public
+  cd /path/to/cookbook
+  # Linux/Mac
+  admin.sh shell php8
+  # Windows
+  admin.ps1 shell php8
+  # Async server
+  cd /path/to/cookbook
+  # Linux/Mac
+  admin.sh shell php8
+  # Windows
+  admin.ps1 shell php8
+  # Start "public" server
+  php -S 0.0.0.0:8889 -t /repo/src//IndoChat/public
                                                 
   Then open two browser tabs at http://localhost:8889:         
   - Tab 1 — enter username Bog, select English → Start Chatting       
