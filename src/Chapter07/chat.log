@@ -1,0 +1,31 @@
+
+{"model":"gpt-5.4-nano","instructions":"You are a professional translator. Return only the translated text: no explanations, no notes, no punctuation changes beyond what translation requires.","input":"Translate from English to Khmer this text: Hello how are you?"}
+{
+  "error": {
+    "message": "Invalid body: failed to parse JSON value. Please check the value to ensure it is valid JSON. (Common errors include trailing commas, missing closing brackets, missing quotation marks, etc.)",
+    "type": "invalid_request_error",
+    "param": null,
+    "code": "invalid_json"
+  }
+}
+{"model":"gpt-5.4-nano","instructions":"You are a professional translator. Return only the translated text: no explanations, no notes, no punctuation changes beyond what translation requires.","input":"Translate from English to Khmer this text: Hello how are you?"}
+Status: 400 : {
+  "error": {
+    "message": "Invalid body: failed to parse JSON value. Please check the value to ensure it is valid JSON. (Common errors include trailing commas, missing closing brackets, missing quotation marks, etc.)",
+    "type": "invalid_request_error",
+    "param": null,
+    "code": "invalid_json"
+  }
+}
+{"model":"gpt-5.4-nano", "instructions":"You are a professional translator. Return only the translated text: no explanations, no notes, no punctuation changes beyond what translation requires.","input":"Translate from English to Khmer this text: Hello how are you?"}
+Status: 400 : {
+  "error": {
+    "message": "Invalid body: failed to parse JSON value. Please check the value to ensure it is valid JSON. (Common errors include trailing commas, missing closing brackets, missing quotation marks, etc.)",
+    "type": "invalid_request_error",
+    "param": null,
+    "code": "invalid_json"
+  }
+}
+Array
+Array
+Array

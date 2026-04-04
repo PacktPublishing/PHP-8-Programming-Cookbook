@@ -1,16 +1,4 @@
 <?php
-$text = file(__DIR__ . '/data/war_and_peace.txt');
-$num = 0;
-$len = [];
-foreach ($text as $line) {
-    $line = trim($line);
-    if (!empty($line)) {
-        $len[] = strlen($line);
-    }
-    $num++;
-}
-echo 'Number Lines: ' . $num . PHP_EOL;
-echo 'Average Len : ' . (array_sum($len) / count($len)) . PHP_EOL;
-
-// Number Lines: 66035
-// Average Len : 61.808192133712
+$json = '{\u0022id\u0022:\u0022chatcmpl-llm-router-openai\u0022,\u0022object\u0022:\u0022chat.completion\u0022,\u0022created\u0022:1775283032,\u0022model\u0022:\u0022gpt-4.1-nano\u0022,\u0022choices\u0022:[{\u0022index\u0022:0,\u0022message\u0022:{\u0022role\u0022:\u0022assistant\u0022,\u0022content\u0022:\u0022616 km\u0022},\u0022finish_reason\u0022:\u0022stop\u0022,\u0022content_filter_results\u0022:{\u0022hate\u0022:{\u0022filtered\u0022:false},\u0022self_harm\u0022:{\u0022filtered\u0022:false},\u0022sexual\u0022:{\u0022filtered\u0022:false},\u0022violence\u0022:{\u0022filtered\u0022:false},\u0022jailbreak\u0022:{\u0022filtered\u0022:false,\u0022detected\u0022:false},\u0022profanity\u0022:{\u0022filtered\u0022:false,\u0022detected\u0022:false}}}],\u0022usage\u0022:{\u0022prompt_tokens\u0022:36,\u0022completion_tokens\u0022:3,\u0022total_tokens\u0022:39,\u0022prompt_tokens_details\u0022:{\u0022audio_tokens\u0022:0,\u0022cached_tokens\u0022:0},\u0022completion_tokens_details\u0022:{\u0022audio_tokens\u0022:0,\u0022reasoning_tokens\u0022:0}},\u0022system_fingerprint\u0022:\u0022\u0022}';
+$json = str_replace('\u0022', '"', $json);
+print_r(json_decode($json, associative: TRUE));

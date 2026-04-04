@@ -1,12 +1,16 @@
 <?php
-namespace Cookbook\REST;
+namespace Cookbook\Services;
 use Exception;
+use Psr\Container\ContainerInterface;
 class GenAiConnect
 {
     public const ERR_TRANS = 'Unknown transmission error.';
     public const CALL_LOG  = __DIR__ . '/../Chapter07/api_call.log';
-    public function __construct(protected array $config)
-    {}
+    public array $config = [];
+    public function __construct(ContainerInterface $container)
+    {
+        $this->config = $container->get('ai_config');
+    }
     public function genAIcall(string $prompt) : string
     {
         // $config is an array that contains the following keys:

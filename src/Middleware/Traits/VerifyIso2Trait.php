@@ -1,5 +1,5 @@
 <?php
-namespace Cookbook\REST\Library\Traits;
+namespace Cookbook\Middleware\Traits;
 trait VerifyIso2Trait
 {
     #[verify_iso2(

@@ -6,7 +6,9 @@
         "psr/container": "^2.0",
         "psr/simple-cache": "^3.0",
         "laminas/laminas-diactoros": "^3.8",
-        "cboden/ratchet": "^0.4.4"
+        "cboden/ratchet": "^0.4.4",
+        "psr/http-message": "^2.0",
+        "psr/http-server-middleware": "^1.0"
     },
     "autoload" : {
 		"psr-4" : {
