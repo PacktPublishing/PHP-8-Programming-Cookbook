@@ -14,3 +14,23 @@
  2026-04-04 07:01:04 :   distance : {"city_from":"Bangkok","city_to":"Siem Reap","iso2_from":"th","iso2_to":"kh","units":"km"} : 10.10.90.88
  2026-04-04 07:02:16 :   distance : {"city_from":"Bangkok","city_to":"Siem Reap","iso2_from":"th","iso2_to":"kh","units":"km"} : 10.10.90.88
  2026-04-04 07:03:44 :  translate : {"lang_from":"en","lang_to":"fr","phrase":"How do I get to Paris?"} : 10.10.90.88
+ 2026-04-04 11:20:02 :    Unknown :                        No Data : Command Line
+ 2026-04-04 11:22:01 :  translate : {"lang_from":"en","lang_to":"fr","phrase":"How do I get to Paris?"} : 10.10.90.88
+ 2026-04-04 11:22:36 :  translate : {"lang_from":"en","lang_to":"fr","phrase":"How do I get to Paris?"} : 10.10.90.88
+ 2026-04-04 11:23:35 :   distance : {"city_from":"Bangkok","city_to":"Siem Reap","iso2_from":"th","iso2_to":"kh","units":"km"} : 10.10.90.88
+ 2026-04-04 11:23:51 :  translate : {"lang_from":"en","lang_to":"fr","phrase":"How do I get to Paris?"} : 10.10.90.88
+ 2026-04-04 11:24:06 :   distance : {"city_from":"Bangkok","city_to":"Siem Reap","iso2_from":"th","iso2_to":"kh","units":"km"} : 10.10.90.88
+ 2026-04-04 11:25:27 :   distance : {"city_from":"Bangkok","city_to":"Siem Reap","iso2_from":"th","iso2_to":"kh","units":"km"} : 10.10.90.88
+ 2026-04-04 13:00:14 :  translate : {"lang_from":"en","lang_to":"fr","phrase":"How do I get to Paris?"} : 10.10.90.88
+ 2026-04-04 13:00:42 :  translate : {"lang_from":"en","lang_to":"fr","phrase":"How do I get to Paris?"} : 10.10.90.88
+ 2026-04-04 13:38:02 :  translate : {"lang_from":"en","lang_to":"fr","phrase":"How do I get to Paris?"} : 10.10.90.88
+ 2026-04-04 13:42:01 :  translate : {"lang_from":"en","lang_to":"it","phrase":"Hello, how are you today?"} : 127.0.0.1
+ 2026-04-04 13:43:19 :   distance : {"city_from":"Paris","city_to":"Rome","iso2_from":"fr","iso2_to":"it","units":"km"} : 127.0.0.1
+ 2026-04-04 13:44:38 :   distance : {"city_from":"Paris","city_to":"Rome","iso2_from":"fr","iso2_to":"it","units":"km" : 127.0.0.1
+ 2026-04-04 13:45:31 :   distance : {"city_from":"Paris","city_to":"Rome","iso2_from":"fr","iso2_to":"it","units":"km"} : 127.0.0.1
+ 2026-04-04 13:45:35 :   distance : {"city_from":"Paris","city_to":"Rome","iso2_from":"fr","iso2_to":"it","units":"km"} : 127.0.0.1
+ 2026-04-04 13:45:44 :   distance : {"city_from":"Paris","city_to":"Rome","iso2_from":"fr","iso2_to":"it","units":"km" : 127.0.0.1
+ 2026-04-04 13:46:05 :  noservice : {"city_from":"Paris","city_to":"Rome","iso2_from":"fr","iso2_to":"it","units":"km"} : 127.0.0.1
+ 2026-04-04 13:48:19 :  noservice : {"city_from":"Paris","city_to":"Rome","iso2_from":"fr","iso2_to":"it","units":"km"} : 127.0.0.1
+ 2026-04-04 13:48:25 :  noservice : {"city_from":"Paris","city_to":"Rome","iso2_from":"fr","iso2_to":"it","units":"km"} : 127.0.0.1
+ 2026-04-04 13:50:04 :   distance : {"city_from":"Paris","city_to":"Rome","iso2_from":"fr","iso2_to":"xx","units":"km"} : 127.0.0.1

@@ -6,7 +6,8 @@ use Cookbook\Middleware\BaseHandler;
 use Cookbook\Middleware\Traits\VerifyIso2Trait;
 use Laminas\Diactoros\Response\JsonResponse;
 use Psr\Http\Server\RequestHandlerInterface;
-use Psr\Http\Message\ {ResponseInterface,ServerRequestInterface};
+use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
 class Distance extends BaseHandler
 {
     use VerifyIso2Trait;
@@ -17,7 +18,7 @@ class Distance extends BaseHandler
         . 'iso2_from : ISO2 code of from country, '
         . 'iso2_to   : ISO2 code of destination country, '
         . 'units     : km | miles (default km)';
-    #[Cookbook\REST\Library\distance\__construct(
+    #[Cookbook\Middleware\Distance\handle(
         "@param GenAiConnect connect : GenAiConnect instance",
         "@param string city_from : City to start from",
         "@param string city_to   : Destination city",
@@ -58,7 +59,7 @@ class Distance extends BaseHandler
         $prompt = "Give me the distance in $units "
                 . "from: $city_from, $iso2_from, "
                 . "to: $city_to, $iso2_to. "
-                . 'Return only the distance with no explanation.';
+                . 'Return only the distance figure in km or miles as given with no additional explanation or text.';
         return (new JsonResponse($connect->genAIcall($prompt)))->withStatus(200);
     }
 }

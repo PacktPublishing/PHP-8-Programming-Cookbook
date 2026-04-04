@@ -3,8 +3,8 @@
 // php composer.phar require psr/http-server-middleware
 // php -S 0.0.0.0:8889 src/Chapter07/ch07_microservices_library.php
 // sample CURL requests (from a terminal window on your host):
-// curl -X POST -F 'action=translate' -F 'data={"lang_from":"en","lang_to":"fr","phrase":"How do I get to Paris?"}' http://localhost:8889
-// curl -X POST -F 'action=distance' -F 'data={"city_from":"Bangkok","city_to":"Siem Reap","iso2_from":"th","iso2_to":"kh","units":"km"}' http://localhost:8889
+// curl -X POST -F 'action=translate' -F 'data={"lang_from":"en","lang_to":"it","phrase":"Hello, how are you today?"}' http://localhost:8889
+// curl -X POST -F 'action=distance' -F 'data={"city_from":"Paris","city_to":"Rome","iso2_from":"fr","iso2_to":"it","units":"km"}' http://localhost:8889
 
 include __DIR__ . '/../../vendor/autoload.php';
 use Cookbook\Middleware\Logger;
@@ -26,11 +26,11 @@ $config = [
 ];
 // get service container instance
 $container = Container::getInstance();
-$container->add('ai_config', function () use ($config) { return $config; });
-$container->add('GenAiConnect', function () use ($container) { return new GenAiConnect($container); });
-$container->add('translate', function () use ($container) { return new Translate($container); });
-$container->add('distance', function () use ($container) { return new Distance($container); });
-$container->add('platform', function () { return new MonicaPlatform(); });
+$container->add('ai_config', fn () => $config);
+$container->add('GenAiConnect', fn () => new GenAiConnect($container));
+$container->add('translate', fn () => new Translate($container));
+$container->add('distance', fn () => new Distance($container));
+$container->add('platform', fn () => new MonicaPlatform());
 // build the pipe
 $pipe = [
     Logger::class => DoNothingHandler::class,
@@ -49,7 +49,9 @@ try {
             $response = $middleware->handle($request);
         }
     }
+    error_log($response->getBody());
     echo $container->get('platform')($response->getBody());
 } catch (Throwable $t) {
+    error_log(__FILE__ . ':' . get_class($t) . ':' . $t->getMessage());
     echo (new JsonResponse(['success' => false, 'message' => $t->getMessage()]))->withStatus(400)->getBody();
 }

@@ -6,7 +6,8 @@ use Cookbook\Middleware\BaseHandler;
 use Cookbook\Middleware\Traits\VerifyLangTrait;
 use Laminas\Diactoros\Response\JsonResponse;
 use Psr\Http\Server\RequestHandlerInterface;
-use Psr\Http\Message\ {ResponseInterface,ServerRequestInterface};
+use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
 class Translate extends BaseHandler
 {
     use VerifyLangTrait;
@@ -15,7 +16,7 @@ class Translate extends BaseHandler
         . 'lang_from : ISO 639-1 language code for source language'
         . 'lang_to   : ISO 639-1 language code for destination language'
         . 'phrase    : Sentence to translate';
-    #[Cookbook\REST\Library\translate\__invoke(
+    #[Cookbook\Middleware\Translate\handle(
         "@param GenAiConnect connect : GenAiConnect instance",
         "@param string lang_from : ISO 639-1 language code for source language",
         "@param string lang_to   : ISO 639-1 language code for destination language",

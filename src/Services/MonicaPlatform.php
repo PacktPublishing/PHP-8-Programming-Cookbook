@@ -8,7 +8,7 @@ class MonicaPlatform
     public const REGEX = '!\"content\"\:\"(.*?)"!';
     public function __invoke(string $json) : string
     {
-        $json = str_replace('\u0022', '"', $json);
+        $json = str_replace('\\u0022', '"', $json);
         if (!preg_match(self::REGEX, $json, $match)) {
             return json_encode(['success' => false, 'message' => 'No Content', 'return' => $json]);
         } else {
