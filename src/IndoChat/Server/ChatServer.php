@@ -1,5 +1,5 @@
 <?php
-namespace Cookbook\IndoChat;
+namespace Cookbook\IndoChat\Server;
 use Ratchet\Server\IoServer;
 use Ratchet\Http\HttpServer;
 use Ratchet\WebSocket\WsServer;
@@ -12,25 +12,31 @@ class ChatServer implements MessageComponentInterface
 {
     /** @var array<int, array{conn: ConnectionInterface, username: string|null, language: string}> */
     public const LANGS = ['en' => 'English', 'km' => 'Khmer'];
-    private array $clients = [];
-    private string $usersFile;
-    private PlatformInterface $platform;
+    public const DEF_LANG = 'en';
+    public const MAX_NAME_LEN = 30;
+    public array $clients = [];
+    public string $usersFile;
+    public PlatformInterface $platform;
     public function __construct(string $usersFile, PlatformInterface $platform)
     {
         $this->usersFile = $usersFile;
-
-        $dir = dirname($usersFile);
-        if (!is_dir($dir)) {
-            mkdir($dir, 0755, true);
+        if (file_exists($usersFile)) {
+            $msg = "Users file found at: $usersFile";
+        } else {
+            $dir = dirname($usersFile);
+            if (!file_exists($dir)) {
+                mkdir($dir, 0755, true);
+            }
+            touch($usersFile);
+            $msg = "Users file created at: $usersFile";
         }
-        file_put_contents($usersFile, '[]');
-
         if (empty(API_KEY)) {
             echo "[WARNING] API_KEY is not set. Translation will not work.\n";
         }
 
         $this->platform = $platform;
         echo "IndoChat WebSocket server started on port " . WS_PORT . "\n";
+        echo $msg . "\n";
         echo "Press Ctrl+C to stop.\n\n";
     }
 
@@ -77,11 +83,14 @@ class ChatServer implements MessageComponentInterface
 
     public function handleSetUser(ConnectionInterface $conn, array $data): void
     {
-        $username = trim($data['username'] ?? '');
-        $language = in_array($data['language'] ?? '', ['en', 'km'], true) ? $data['language'] : 'en';
+        $username = trim(strip_tags($data['username'] ?? ''));
+        $language = trim(strip_tags($data['language'] ?? self::DEF_LANG));
+        if (!in_array($language, array_keys(self::LANGS))) {
+            $language = self::DEF_LANG;
+        }
 
-        if ($username === '' || strlen($username) > 30) {
-            $this->send($conn, ['type' => 'error', 'message' => 'Username must be 1–30 characters.']);
+        if (empty($username) || strlen($username) > self::MAX_NAME_LEN) {
+            $this->send($conn, ['type' => 'error', 'message' => sprintf('Username must be 1 – %d characters.', self::MAX_NAME_LEN)]);
             return;
         }
 
@@ -100,16 +109,16 @@ class ChatServer implements MessageComponentInterface
         $this->writeUsersFile();
         $this->broadcastUsersList();
 
-        $langLabel = $language === 'km' ? 'Khmer' : 'English';
+        $langLabel = self::LANGS[$language];
         echo "[user_set]  #{$conn->resourceId} → {$username} ({$langLabel})\n";
     }
 
     public function handleSendMessage(ConnectionInterface $from, array $data): void
     {
         $toUsername = $data['to']      ?? '';
-        $message    = trim($data['message'] ?? '');
+        $message    = trim(htmlspecialchars($data['message'] ?? ''));
 
-        if ($message === '' || $toUsername === '') {
+        if (empty($message) || empty($toUsername)) {
             return;
         }
 
@@ -162,13 +171,13 @@ class ChatServer implements MessageComponentInterface
     public function translate(string $text, string $fromLang, string $toLang): string
     {
         if (empty(API_KEY)) {
-            echo "[translate] API_KEY not set\n");
+            echo "[translate] API_KEY not set\n";
             return '[Translation unavailable]';
         }
 
         $data = [
             'model'        => AI_MODEL,
-            'instructions' => 'You are a professional translator. Return only the translated text: no explanations, no notes, no punctuation changes beyond what translation requires.',
+            'instructions' => AI_INSTRUCT,
             'input'        => 'Translate from ' . self::LANGS[$fromLang] . ' to ' . self::LANGS[$toLang] . ' this text: ' . $text
         ];
         file_put_contents(API_LOG_FN, var_export($data, true) . PHP_EOL, FILE_APPEND);
@@ -198,6 +207,11 @@ class ChatServer implements MessageComponentInterface
     }
 
     // -------------------------------------------------------------------------
+
+    public function send(ConnectionInterface $conn, array $data): void
+    {
+        $conn->send(json_encode($data));
+    }
 
     public function findClientByUsername(string $username): ?array
     {
@@ -232,8 +246,4 @@ class ChatServer implements MessageComponentInterface
         }
     }
 
-    public function send(ConnectionInterface $conn, array $data): void
-    {
-        $conn->send(json_encode($data));
-    }
 }

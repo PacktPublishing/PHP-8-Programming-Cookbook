@@ -6,7 +6,8 @@ File structure
 IndoChat/
 ├── async
 │   └── server.php
-├── ChatServer.php
+├── Server
+│   └── ChatServer.php
 ├── config
 │   └── config.php
 ├── data
@@ -22,7 +23,7 @@ IndoChat/
   How to run                                                                                                                                                                            
                                                                                                                                                                                         
   1. Set your GenAI API key:                                                                                                                  
-  Save your API key into /path/to/IndoChat/secure/api_key.txt
+  Save your API key into /path/to/cookbook/secure/api_key.txt
                                                                                                                                                                                         
   2. Configure settings in /config/config.php to match your preferred GenAI platform
 
@@ -32,22 +33,10 @@ IndoChat/
   admin.sh shell php8
   # Windows
   admin.ps1 shell php8
-  # Async server
-  cd /path/to/cookbook
-  # Linux/Mac
-  admin.sh shell php8
-  # Windows
-  admin.ps1 shell php8
   # Start backend async service
   php /repo/src/IndoChat/async/server.php
                 
   4. Serve the frontend from another terminal windows:
-  cd /path/to/cookbook
-  # Linux/Mac
-  admin.sh shell php8
-  # Windows
-  admin.ps1 shell php8
-  # Async server
   cd /path/to/cookbook
   # Linux/Mac
   admin.sh shell php8
@@ -73,7 +62,6 @@ IndoChat/
  */
 require_once __DIR__ . '/../config/config.php';
 error_log(USERS_FILE);
-$wsPort = WS_PORT;
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -696,7 +684,7 @@ input[type=text]:focus {
 
 <script>
 /* ── Config ──────────────────────────────────────────────────────────────── */
-const WS_PORT = <?= (int)$wsPort ?>;
+const WS_PORT = <?= (int) WS_PORT ?>;
 const WS_HOST = window.location.hostname || 'localhost';
 
 /* ── State ───────────────────────────────────────────────────────────────── */

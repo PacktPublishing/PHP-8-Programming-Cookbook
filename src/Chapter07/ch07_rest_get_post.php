@@ -20,12 +20,12 @@ $start = microtime(TRUE);
 echo SimpleAPICall::send($data, EnumMethod::GET, EnumExt::CURL);
 echo $display($start);
 
-// HTTP GET request using Streams
+// HTTP POST request using Streams
 $start = microtime(TRUE);
 echo SimpleAPICall::send($data, EnumMethod::POST, EnumExt::STREAMS);
 echo $display($start);
 
-// HTTP GET request using cURL
+// HTTP POST request using cURL
 $start = microtime(TRUE);
 echo SimpleAPICall::send($data, EnumMethod::POST, EnumExt::CURL);
 echo $display($start);

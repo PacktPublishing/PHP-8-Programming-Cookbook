@@ -29,7 +29,7 @@ function buildArrays() : array
 
 #[Library\fetch(
     "Returns postcode information for the first element matching the search criteria",
-    "param array arr : the array produced by builCityArray()",
+    "param array arr : the array produced by buildArrays()",
     "param string|float needle: what you're look for",
     "param bool case : TRUE = case sensitive; FALSE = case insensitive",
     "param bool first : TRUE = return first value that matches; FALSE = return all elements that match",

@@ -29,3 +29,542 @@ Status: 400 : {
 Array
 Array
 Array
+array (
+  'model' => 'gpt-5.4-nano',
+  'instructions' => 'You are a professional translator. Return only the translated text: no explanations, no notes, no punctuation changes beyond what translation requires.',
+  'input' => 'Translate from English to Khmer this text: Good Morning Darling',
+)
+'{
+  "id": "resp_0e09c2eba92024ee0069d1dbe49b60819ea93afa9d603d6fec",
+  "object": "response",
+  "created_at": 1775360996,
+  "status": "completed",
+  "background": false,
+  "billing": {
+    "payer": "developer"
+  },
+  "completed_at": 1775360997,
+  "error": null,
+  "frequency_penalty": 0.0,
+  "incomplete_details": null,
+  "instructions": "You are a professional translator. Return only the translated text: no explanations, no notes, no punctuation changes beyond what translation requires.",
+  "max_output_tokens": null,
+  "max_tool_calls": null,
+  "model": "gpt-5.4-nano-2026-03-17",
+  "output": [
+    {
+      "id": "msg_0e09c2eba92024ee0069d1dbe52164819ebe9c9bfc6684e31a",
+      "type": "message",
+      "status": "completed",
+      "content": [
+        {
+          "type": "output_text",
+          "annotations": [],
+          "logprobs": [],
+          "text": "\\u179f\\u17bd\\u179f\\u17d2\\u178f\\u17b8\\u1796\\u17c1\\u179b\\u1796\\u17d2\\u179a\\u17b9\\u1780 \\u179f\\u17c6\\u178e\\u1796\\u17d2\\u179c\\u179a\\u1794\\u179f\\u17cb\\u1781\\u17d2\\u1789\\u17bb\\u17c6"
+        }
+      ],
+      "phase": "final_answer",
+      "role": "assistant"
+    }
+  ],
+  "parallel_tool_calls": true,
+  "presence_penalty": 0.0,
+  "previous_response_id": null,
+  "prompt_cache_key": null,
+  "prompt_cache_retention": null,
+  "reasoning": {
+    "effort": "none",
+    "summary": null
+  },
+  "safety_identifier": null,
+  "service_tier": "default",
+  "store": true,
+  "temperature": 1.0,
+  "text": {
+    "format": {
+      "type": "text"
+    },
+    "verbosity": "medium"
+  },
+  "tool_choice": "auto",
+  "tools": [],
+  "top_logprobs": 0,
+  "top_p": 0.98,
+  "truncation": "disabled",
+  "usage": {
+    "input_tokens": 47,
+    "input_tokens_details": {
+      "cached_tokens": 0
+    },
+    "output_tokens": 23,
+    "output_tokens_details": {
+      "reasoning_tokens": 0
+    },
+    "total_tokens": 70
+  },
+  "user": null,
+  "metadata": {}
+}'
+array (
+  'model' => 'gpt-5.4-nano',
+  'instructions' => 'You are a professional translator. Return only the translated text: no explanations, no notes, no punctuation changes beyond what translation requires.',
+  'input' => 'Translate from Khmer to English this text: Good Morning, how are you?',
+)
+'{
+  "id": "resp_079f078011757c2d0069d1dbfac46c81a39c96735fc3a5f738",
+  "object": "response",
+  "created_at": 1775361018,
+  "status": "completed",
+  "background": false,
+  "billing": {
+    "payer": "developer"
+  },
+  "completed_at": 1775361019,
+  "error": null,
+  "frequency_penalty": 0.0,
+  "incomplete_details": null,
+  "instructions": "You are a professional translator. Return only the translated text: no explanations, no notes, no punctuation changes beyond what translation requires.",
+  "max_output_tokens": null,
+  "max_tool_calls": null,
+  "model": "gpt-5.4-nano-2026-03-17",
+  "output": [
+    {
+      "id": "msg_079f078011757c2d0069d1dbfb4a7881a3b528dc5905422238",
+      "type": "message",
+      "status": "completed",
+      "content": [
+        {
+          "type": "output_text",
+          "annotations": [],
+          "logprobs": [],
+          "text": "Good morning, how are you?"
+        }
+      ],
+      "phase": "final_answer",
+      "role": "assistant"
+    }
+  ],
+  "parallel_tool_calls": true,
+  "presence_penalty": 0.0,
+  "previous_response_id": null,
+  "prompt_cache_key": null,
+  "prompt_cache_retention": null,
+  "reasoning": {
+    "effort": "none",
+    "summary": null
+  },
+  "safety_identifier": null,
+  "service_tier": "default",
+  "store": true,
+  "temperature": 1.0,
+  "text": {
+    "format": {
+      "type": "text"
+    },
+    "verbosity": "medium"
+  },
+  "tool_choice": "auto",
+  "tools": [],
+  "top_logprobs": 0,
+  "top_p": 0.98,
+  "truncation": "disabled",
+  "usage": {
+    "input_tokens": 51,
+    "input_tokens_details": {
+      "cached_tokens": 0
+    },
+    "output_tokens": 11,
+    "output_tokens_details": {
+      "reasoning_tokens": 0
+    },
+    "total_tokens": 62
+  },
+  "user": null,
+  "metadata": {}
+}'
+array (
+  'model' => 'gpt-5.4-nano',
+  'instructions' => 'You are a professional translator. Return only the translated text: no explanations, no notes, no punctuation changes beyond what translation requires.',
+  'input' => 'Translate from Khmer to English this text: អរុណសួស្តី! សុខសប្បាយជាទេ?',
+)
+'{
+  "id": "resp_088477932be0a8bc0069d1dc191f5081a38e890147a57134c5",
+  "object": "response",
+  "created_at": 1775361049,
+  "status": "completed",
+  "background": false,
+  "billing": {
+    "payer": "developer"
+  },
+  "completed_at": 1775361049,
+  "error": null,
+  "frequency_penalty": 0.0,
+  "incomplete_details": null,
+  "instructions": "You are a professional translator. Return only the translated text: no explanations, no notes, no punctuation changes beyond what translation requires.",
+  "max_output_tokens": null,
+  "max_tool_calls": null,
+  "model": "gpt-5.4-nano-2026-03-17",
+  "output": [
+    {
+      "id": "msg_088477932be0a8bc0069d1dc19ad8c81a3a14f14df46f970be",
+      "type": "message",
+      "status": "completed",
+      "content": [
+        {
+          "type": "output_text",
+          "annotations": [],
+          "logprobs": [],
+          "text": "Good morning! Are you well?"
+        }
+      ],
+      "phase": "final_answer",
+      "role": "assistant"
+    }
+  ],
+  "parallel_tool_calls": true,
+  "presence_penalty": 0.0,
+  "previous_response_id": null,
+  "prompt_cache_key": null,
+  "prompt_cache_retention": null,
+  "reasoning": {
+    "effort": "none",
+    "summary": null
+  },
+  "safety_identifier": null,
+  "service_tier": "default",
+  "store": true,
+  "temperature": 1.0,
+  "text": {
+    "format": {
+      "type": "text"
+    },
+    "verbosity": "medium"
+  },
+  "tool_choice": "auto",
+  "tools": [],
+  "top_logprobs": 0,
+  "top_p": 0.98,
+  "truncation": "disabled",
+  "usage": {
+    "input_tokens": 64,
+    "input_tokens_details": {
+      "cached_tokens": 0
+    },
+    "output_tokens": 11,
+    "output_tokens_details": {
+      "reasoning_tokens": 0
+    },
+    "total_tokens": 75
+  },
+  "user": null,
+  "metadata": {}
+}'
+array (
+  'model' => 'gpt-5.4-nano',
+  'instructions' => 'You are a professional translator. Return only the translated text: no explanations, no notes, no punctuation changes beyond what translation requires.',
+  'input' => 'Translate from English to Khmer this text: What time are you coming hone?',
+)
+'{
+  "id": "resp_069f62104120dce80069d1f05f8f30819fb0d6cfc42862fd1c",
+  "object": "response",
+  "created_at": 1775366239,
+  "status": "completed",
+  "background": false,
+  "billing": {
+    "payer": "developer"
+  },
+  "completed_at": 1775366240,
+  "error": null,
+  "frequency_penalty": 0.0,
+  "incomplete_details": null,
+  "instructions": "You are a professional translator. Return only the translated text: no explanations, no notes, no punctuation changes beyond what translation requires.",
+  "max_output_tokens": null,
+  "max_tool_calls": null,
+  "model": "gpt-5.4-nano-2026-03-17",
+  "output": [
+    {
+      "id": "msg_069f62104120dce80069d1f05ffd24819fb32938da49556517",
+      "type": "message",
+      "status": "completed",
+      "content": [
+        {
+          "type": "output_text",
+          "annotations": [],
+          "logprobs": [],
+          "text": "\\u178f\\u17be\\u17a2\\u17d2\\u1793\\u1780\\u1793\\u17b9\\u1784\\u1798\\u1780\\u1795\\u17d2\\u1791\\u17c7\\u1798\\u17c9\\u17c4\\u1784\\u1794\\u17c9\\u17bb\\u1793\\u17d2\\u1798\\u17b6\\u1793?"
+        }
+      ],
+      "phase": "final_answer",
+      "role": "assistant"
+    }
+  ],
+  "parallel_tool_calls": true,
+  "presence_penalty": 0.0,
+  "previous_response_id": null,
+  "prompt_cache_key": null,
+  "prompt_cache_retention": null,
+  "reasoning": {
+    "effort": "none",
+    "summary": null
+  },
+  "safety_identifier": null,
+  "service_tier": "default",
+  "store": true,
+  "temperature": 1.0,
+  "text": {
+    "format": {
+      "type": "text"
+    },
+    "verbosity": "medium"
+  },
+  "tool_choice": "auto",
+  "tools": [],
+  "top_logprobs": 0,
+  "top_p": 0.98,
+  "truncation": "disabled",
+  "usage": {
+    "input_tokens": 51,
+    "input_tokens_details": {
+      "cached_tokens": 0
+    },
+    "output_tokens": 21,
+    "output_tokens_details": {
+      "reasoning_tokens": 0
+    },
+    "total_tokens": 72
+  },
+  "user": null,
+  "metadata": {}
+}'
+array (
+  'model' => 'gpt-5.4-nano',
+  'instructions' => 'You are a professional translator. Return only the translated text: no explanations, no notes, no punctuation changes beyond what translation requires.',
+  'input' => 'Translate from English to Khmer this text: home',
+)
+'{
+  "id": "resp_01d24cba6bdbd85c0069d1f06be118819098f52d52daa90fed",
+  "object": "response",
+  "created_at": 1775366251,
+  "status": "completed",
+  "background": false,
+  "billing": {
+    "payer": "developer"
+  },
+  "completed_at": 1775366252,
+  "error": null,
+  "frequency_penalty": 0.0,
+  "incomplete_details": null,
+  "instructions": "You are a professional translator. Return only the translated text: no explanations, no notes, no punctuation changes beyond what translation requires.",
+  "max_output_tokens": null,
+  "max_tool_calls": null,
+  "model": "gpt-5.4-nano-2026-03-17",
+  "output": [
+    {
+      "id": "msg_01d24cba6bdbd85c0069d1f06c63f48190adfb3accfc1e82b2",
+      "type": "message",
+      "status": "completed",
+      "content": [
+        {
+          "type": "output_text",
+          "annotations": [],
+          "logprobs": [],
+          "text": "\\u1795\\u17d2\\u1791\\u17c7"
+        }
+      ],
+      "phase": "final_answer",
+      "role": "assistant"
+    }
+  ],
+  "parallel_tool_calls": true,
+  "presence_penalty": 0.0,
+  "previous_response_id": null,
+  "prompt_cache_key": null,
+  "prompt_cache_retention": null,
+  "reasoning": {
+    "effort": "none",
+    "summary": null
+  },
+  "safety_identifier": null,
+  "service_tier": "default",
+  "store": true,
+  "temperature": 1.0,
+  "text": {
+    "format": {
+      "type": "text"
+    },
+    "verbosity": "medium"
+  },
+  "tool_choice": "auto",
+  "tools": [],
+  "top_logprobs": 0,
+  "top_p": 0.98,
+  "truncation": "disabled",
+  "usage": {
+    "input_tokens": 45,
+    "input_tokens_details": {
+      "cached_tokens": 0
+    },
+    "output_tokens": 6,
+    "output_tokens_details": {
+      "reasoning_tokens": 0
+    },
+    "total_tokens": 51
+  },
+  "user": null,
+  "metadata": {}
+}'
+array (
+  'model' => 'gpt-5.4-nano',
+  'instructions' => 'You are a professional translator. Return only the translated text: no explanations, no notes, no punctuation changes beyond what translation requires.',
+  'input' => 'Translate from English to Khmer this text: Are you still there?',
+)
+'{
+  "id": "resp_016674429aacbbf20069d1fd6b7770819eb1d473baa26706ad",
+  "object": "response",
+  "created_at": 1775369579,
+  "status": "completed",
+  "background": false,
+  "billing": {
+    "payer": "developer"
+  },
+  "completed_at": 1775369580,
+  "error": null,
+  "frequency_penalty": 0.0,
+  "incomplete_details": null,
+  "instructions": "You are a professional translator. Return only the translated text: no explanations, no notes, no punctuation changes beyond what translation requires.",
+  "max_output_tokens": null,
+  "max_tool_calls": null,
+  "model": "gpt-5.4-nano-2026-03-17",
+  "output": [
+    {
+      "id": "msg_016674429aacbbf20069d1fd6c005c819eb331f32e6ac27275",
+      "type": "message",
+      "status": "completed",
+      "content": [
+        {
+          "type": "output_text",
+          "annotations": [],
+          "logprobs": [],
+          "text": "\\u178f\\u17be\\u17a2\\u17d2\\u1793\\u1780\\u1793\\u17c5\\u1791\\u17b8\\u1793\\u17c1\\u17c7\\u1791\\u17c0\\u178f\\u1791\\u17c1?"
+        }
+      ],
+      "phase": "final_answer",
+      "role": "assistant"
+    }
+  ],
+  "parallel_tool_calls": true,
+  "presence_penalty": 0.0,
+  "previous_response_id": null,
+  "prompt_cache_key": null,
+  "prompt_cache_retention": null,
+  "reasoning": {
+    "effort": "none",
+    "summary": null
+  },
+  "safety_identifier": null,
+  "service_tier": "default",
+  "store": true,
+  "temperature": 1.0,
+  "text": {
+    "format": {
+      "type": "text"
+    },
+    "verbosity": "medium"
+  },
+  "tool_choice": "auto",
+  "tools": [],
+  "top_logprobs": 0,
+  "top_p": 0.98,
+  "truncation": "disabled",
+  "usage": {
+    "input_tokens": 49,
+    "input_tokens_details": {
+      "cached_tokens": 0
+    },
+    "output_tokens": 15,
+    "output_tokens_details": {
+      "reasoning_tokens": 0
+    },
+    "total_tokens": 64
+  },
+  "user": null,
+  "metadata": {}
+}'
+array (
+  'model' => 'gpt-5.4-nano',
+  'instructions' => 'You are a professional translator. Return only the translated text: no explanations, no notes, no punctuation changes beyond what translation requires.',
+  'input' => 'Translate from Khmer to English this text: មែនហើយ។ នឹងមកដល់ផ្ទះឆាប់ៗនេះ។',
+)
+'{
+  "id": "resp_092188bb7d9b9e460069d1fd838514819f9b848d87e7c54688",
+  "object": "response",
+  "created_at": 1775369603,
+  "status": "completed",
+  "background": false,
+  "billing": {
+    "payer": "developer"
+  },
+  "completed_at": 1775369604,
+  "error": null,
+  "frequency_penalty": 0.0,
+  "incomplete_details": null,
+  "instructions": "You are a professional translator. Return only the translated text: no explanations, no notes, no punctuation changes beyond what translation requires.",
+  "max_output_tokens": null,
+  "max_tool_calls": null,
+  "model": "gpt-5.4-nano-2026-03-17",
+  "output": [
+    {
+      "id": "msg_092188bb7d9b9e460069d1fd83f9e8819fa2b55f6fa528109d",
+      "type": "message",
+      "status": "completed",
+      "content": [
+        {
+          "type": "output_text",
+          "annotations": [],
+          "logprobs": [],
+          "text": "Yes. I\\u2019ll be there at the house soon."
+        }
+      ],
+      "phase": "final_answer",
+      "role": "assistant"
+    }
+  ],
+  "parallel_tool_calls": true,
+  "presence_penalty": 0.0,
+  "previous_response_id": null,
+  "prompt_cache_key": null,
+  "prompt_cache_retention": null,
+  "reasoning": {
+    "effort": "none",
+    "summary": null
+  },
+  "safety_identifier": null,
+  "service_tier": "default",
+  "store": true,
+  "temperature": 1.0,
+  "text": {
+    "format": {
+      "type": "text"
+    },
+    "verbosity": "medium"
+  },
+  "tool_choice": "auto",
+  "tools": [],
+  "top_logprobs": 0,
+  "top_p": 0.98,
+  "truncation": "disabled",
+  "usage": {
+    "input_tokens": 63,
+    "input_tokens_details": {
+      "cached_tokens": 0
+    },
+    "output_tokens": 15,
+    "output_tokens_details": {
+      "reasoning_tokens": 0
+    },
+    "total_tokens": 78
+  },
+  "user": null,
+  "metadata": {}
+}'

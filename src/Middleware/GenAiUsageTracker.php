@@ -1,14 +1,16 @@
 <?php
-namespace Cookbook\REST;
+namespace Cookbook\Middleware;
 use ArrayObject;
 use Exception;
 use SplFileObject;
+use DateTime;
+use Cookbook\Services\GenAiConnect;
 #[GenAiUsageTracker("Tracks GenAI token usage")]
 class GenAiUsageTracker
 {
     public const CSV_FN  = __DIR__ . '/../Chapter07/api_call_usage.csv';
     public ?ArrayObject $logInfo = NULL;
-    public array $headers    = ['Timestamp','Model','Hate Filtered','Self Harm Filtered','Sexual Filtered','Violence Filtered','Jailbreak Filtered','Jailbreak Detected','Profanity Filtered','Profanity Detected','Prompt Tokens','Completion Tokens','Total Tokens','Audio Tokens','Cached Tokens','Completion Audio Tokens','Completion Reasoning Tokens'];
+    public array $headers    = ['Timestamp','Y','M','D','H','Model','Hate Filtered','Self Harm Filtered','Sexual Filtered','Violence Filtered','Jailbreak Filtered','Jailbreak Detected','Profanity Filtered','Profanity Detected','Prompt Tokens','Completion Tokens','Total Tokens','Audio Tokens','Cached Tokens','Completion Audio Tokens','Completion Reasoning Tokens'];
     public string $log_regex = '!.*?\|(\d+)\|.*?\"model\"\:\"(.*?)\".*?\"hate\"\:\{\"filtered\"\:(.*?)\}\,\"self_harm\"\:\{\"filtered\"\:(.*?)\}\,\"sexual\"\:\{\"filtered\"\:(.*?)\}\,\"violence\"\:\{\"filtered\"\:(.*?)\}\,\"jailbreak\"\:\{\"filtered\"\:(.*?)\,\"detected\"\:(.*?)\}\,\"profanity\"\:\{\"filtered\"\:(.*?)\,\"detected\"\:(.*?)\}\}\}]\,\"usage\"\:\{\"prompt_tokens\"\:(.*?)\,\"completion_tokens\"\:(.*?)\,\"total_tokens\"\:(.*?)\,\"prompt_tokens_details\"\:\{\"audio_tokens\"\:(.*?)\,\"cached_tokens\"\:(.*?)\}\,\"completion_tokens_details\"\:\{\"audio_tokens\"\:(.*?)\,\"reasoning_tokens\"\:(.*?)\}.*!';
     public string $csv_fn    = '';
     public string $log_fn    = '';
@@ -34,9 +36,18 @@ class GenAiUsageTracker
         while (!$log->eof()) {
             $line = $log->fgets();
             if (preg_match($this->log_regex, $line, $match)) {
+                $date = new DateTime('@' . $match[1] ?? '');
+                $y = $date->format('Y');
+                $m = $date->format('m');
+                $d = $date->format('d');
+                $h = $date->format('H');
                 $this->logInfo[] = [
                     'timestamp' => $match[1],
-                    'model'     => $match[2],                
+                    'y' => $y,
+                    'm' => $m,
+                    'd' => $d,
+                    'h' => $h,
+                    'model' => $match[2],                
                     'hate_filtered' => $match[3],
                     'self_harm_filtered' => $match[4],
                     'sexual_filtered'    => $match[5],
@@ -58,13 +69,14 @@ class GenAiUsageTracker
         return $this->logInfo;
     }
     // adds log entries to spreadsheet
-    public function updateCsv(bool $erase = FALSE) : int
+    public function updateCsv(bool $eraseLog = FALSE, bool $appendCsv = TRUE) : int
     {
         if (!$this->parseLog()) {
             $result = 0;
         } else {
             $write_headers = (file_exists($this->csv_fn)) ? FALSE : TRUE;
-            $csv = new SplFileObject($this->csv_fn, 'a');
+            $mode = ($appendCsv) ? 'a' : 'w';
+            $csv = new SplFileObject($this->csv_fn, $mode);
             if ($write_headers) {
                 $csv->fputcsv($this->headers, separator: $this->separator, enclosure: $this->enclosure, escape: $this->escape);
             }
@@ -74,9 +86,8 @@ class GenAiUsageTracker
                 $csv->fputcsv(array_values($row), separator: $this->separator, enclosure: $this->enclosure, escape: $this->escape);
             }
             $result = $count;
-            if ($erase) {
+            if ($eraseLog) {
                 unlink($this->log_fn);
-                touch($this->log_fn);
             }
         }
         return $count;
