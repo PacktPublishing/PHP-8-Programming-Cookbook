@@ -1,13 +1,10 @@
 <?php
 include __DIR__ . '/../../vendor/autoload.php';
-use Cookbook\Chapter01\Converter\Convert;
-$fn = [
-    __DIR__ . '/test_file/test_seven.php',
-    __DIR__ . '/test_file/Test/Seven.php',
-];
-$convert = new Convert(include __DIR__ . '/config/config.php');
-foreach ($fn as $item) {
-	echo "\nConverting: $item\n";
-	echo "****************************************\n";
-	echo $convert->convert($item);
-}
+use Rector\Config\RectorConfig;
+use Rector\Set\ValueObject\LevelSetList;
+use Rector\Set\ValueObject\SetList;
+
+return RectorConfig::configure()
+    ->withPaths([__DIR__ . '/test_file'])
+    ->withSets([LevelSetList::UP_TO_PHP_84 ])
+    ->withSets([SetList::CODE_QUALITY, SetList::DEAD_CODE, SetList::TYPE_DECLARATION]);

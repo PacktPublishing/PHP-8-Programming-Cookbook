@@ -14,5 +14,9 @@
 		"psr-4" : {
 			"Cookbook\\" : "src/"
 		}
-	}
+	},
+    "require-dev": {
+        "rector/rector": "^2.4",
+        "phpstan/phpstan": "^2.1"
+    }
 }

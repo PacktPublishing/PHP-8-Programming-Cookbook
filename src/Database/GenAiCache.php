@@ -9,8 +9,8 @@ class GenAiCache implements CacheInterface
 {
     public const TABLE  = 'gen_ai_cache';
     public ?PDO $pdo = NULL;
-    public string $findSQL  = 'SELECT cache_key,request_text FROM %s WHERE cache_key = ?';
-    public string $saveSQL  = 'INSERT INTO %s (cache_key, request_text) VALUES (?,?)';
+    public string $findSQL  = 'SELECT cache_key,response FROM %s WHERE cache_key = ?';
+    public string $saveSQL  = 'INSERT INTO %s (cache_key, response) VALUES (?,?)';
     public string $delSQL   = 'DELETE FROM %s WHERE cache_key = ?';
     public string $clearSQL = 'DELETE FROM %s';
     public function __construct(ContainerInterface $container)
@@ -21,7 +21,7 @@ class GenAiCache implements CacheInterface
     {
         $stmt = $this->pdo->prepare(sprintf($this->findSQL, static::TABLE));
         $result = $stmt->execute([$key]);
-        $text = base64_decode($stmt->fetchAll(PDO::FETCH_ASSOC)[0]['request_text'] ?? '');
+        $text = base64_decode($stmt->fetchAll(PDO::FETCH_ASSOC)[0]['response'] ?? '');
         return $text;
     }
     public function set(string $key, mixed $value, DateInterval|int|null $ttl = null): bool
