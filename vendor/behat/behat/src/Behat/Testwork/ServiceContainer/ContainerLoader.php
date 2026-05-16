@@ -1,0 +1,154 @@
+<?php
+
+/*
+ * This file is part of the Behat Testwork.
+ * (c) Konstantin Kudryashov <ever.zet@gmail.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
+namespace Behat\Testwork\ServiceContainer;
+
+use Behat\Testwork\ServiceContainer\Configuration\ConfigurationTree;
+use Behat\Testwork\ServiceContainer\Exception\ExtensionException;
+use Symfony\Component\Config\Definition\Processor;
+use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\DependencyInjection\ParameterBag\ParameterBag;
+
+/**
+ * Loads Symfony DI container with testwork extension services.
+ *
+ * @author Konstantin Kudryashov <ever.zet@gmail.com>
+ */
+final class ContainerLoader
+{
+    /**
+     * @var ConfigurationTree
+     */
+    private $configuration;
+    /**
+     * @var Processor
+     */
+    private $processor;
+
+    /**
+     * Initialize extension.
+     */
+    public function __construct(
+        private readonly ExtensionManager $extensionManager,
+        ?ConfigurationTree $configuration = null,
+        ?Processor $processor = null,
+    ) {
+        $this->configuration = $configuration ?: new ConfigurationTree();
+        $this->processor = $processor ?: new Processor();
+    }
+
+    /**
+     * Loads container extension.
+     */
+    public function load(ContainerBuilder $container, array $configs): void
+    {
+        $configs = $this->initializeExtensions($container, $configs);
+        $config = $this->processConfig($configs);
+
+        $this->loadExtensions($container, $config);
+    }
+
+    /**
+     * Processes config against extensions.
+     *
+     * @return array
+     */
+    private function processConfig(array $configs)
+    {
+        $tree = $this->configuration->getConfigTree($this->extensionManager->getExtensions());
+
+        return $this->processor->process($tree, $configs);
+    }
+
+    /**
+     * Initializes extensions using provided config.
+     *
+     * @return array
+     */
+    private function initializeExtensions(ContainerBuilder $container, array $configs)
+    {
+        $extensions = [];
+        foreach ($configs as $i => $config) {
+            $extensions[$i] = [];
+            if (array_key_exists('extensions', $config)) {
+                if (null === $config['extensions']) {
+                    $extensions = []; // Disable all extensions
+                    break;
+                }
+                foreach ($config['extensions'] as $extensionLocator => $extensionConfig) {
+                    $extensions[$i][$extensionLocator] = $extensionConfig;
+                }
+            }
+        }
+
+        foreach (array_keys($configs) as $i) {
+            unset($configs[$i]['extensions']);
+        }
+
+        foreach ($extensions as $i => $extensionConfigs) {
+            foreach ($extensionConfigs as $extensionLocator => $extensionConfig) {
+                $extension = $this->extensionManager->activateExtension($extensionLocator);
+                $configs[$i][$extension->getConfigKey()] = $extensionConfig;
+            }
+        }
+
+        $this->extensionManager->initializeExtensions();
+
+        $container->setParameter('extensions', $this->extensionManager->getExtensionClasses());
+
+        return $configs;
+    }
+
+    /**
+     * Loads all extensions into container using provided config.
+     *
+     * @throws ExtensionException
+     */
+    private function loadExtensions(ContainerBuilder $container, array $config): void
+    {
+        // Load default extensions first
+        foreach ($this->extensionManager->getExtensions() as $extension) {
+            $extensionConfig = [];
+            if (isset($config[$extension->getConfigKey()])) {
+                $extensionConfig = $config[$extension->getConfigKey()];
+                unset($config[$extension->getConfigKey()]);
+            }
+
+            $this->loadExtension($container, $extension, $extensionConfig);
+        }
+
+        // Load activated extensions
+        foreach ($config as $extensionConfigKey => $extensionConfig) {
+            if (null === $extension = $this->extensionManager->getExtension($extensionConfigKey)) {
+                throw new ExtensionException(
+                    sprintf('None of the activated extensions use `%s` config section.', $extensionConfigKey),
+                    $extensionConfigKey
+                );
+            }
+
+            $this->loadExtension($container, $extension, $extensionConfig);
+        }
+    }
+
+    /**
+     * Loads extension configuration.
+     */
+    private function loadExtension(ContainerBuilder $container, Extension $extension, array $config): void
+    {
+        $tempContainer = new ContainerBuilder(new ParameterBag([
+            'paths.base' => $container->getParameter('paths.base'),
+            'extensions' => $container->getParameter('extensions'),
+        ]));
+        $tempContainer->addObjectResource($extension);
+        $extension->load($container, $config);
+        $container->merge($tempContainer);
+        $container->addCompilerPass($extension);
+    }
+}

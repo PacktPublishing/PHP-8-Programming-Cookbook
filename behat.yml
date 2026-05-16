@@ -1,0 +1,7 @@
+default:
+  suites:
+    default:
+      paths:
+        - src/Chapter13/test/features
+      contexts:
+        - Cookbook\Chapter13\test\Features\Bootstrap\FeatureContext

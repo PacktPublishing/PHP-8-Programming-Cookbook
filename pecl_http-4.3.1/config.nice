@@ -1,0 +1,12 @@
+#! /bin/sh
+#
+# Created by configure
+
+'./configure' \
+'--with-php-config=/usr/local/opt/php/bin/php-config' \
+'--with-http-zlib-dir=/usr/local/opt/zlib' \
+'--with-http-libcurl-dir=/usr/local/opt/curl' \
+'--with-http-libevent-dir=/usr/local/opt/libevent' \
+'--with-http-libicu-dir=/usr/local/opt/icu4c' \
+'--with-http-libidn2-dir=/usr/local/opt/libidn2' \
+"$@"

@@ -1,0 +1,161 @@
+// config.w32 for pecl/http
+// $Id$
+
+ARG_ENABLE("http", "whether to enable extended HTTP support", "no");
+
+function check_for_main_ext(ext, header)
+{
+	if (!header) {
+		header = "php_"+ ext +".h";
+	}
+
+	/* When in configure, we're always in the root of PHP source */
+	var ext_path = "ext\\" + ext;
+
+	STDOUT.Write("Checking for ext/"+ ext +" ...  ");
+
+	if (FSO.FileExists(ext_path + "\\" + header)) {
+		STDOUT.WriteLine(ext_path);
+		return ext_path;
+	}
+
+	STDOUT.WriteLine("<not found>");
+	return false;
+}
+
+function check_for_pecl_ext(ext, header)
+{
+	if (!header) {
+		header = "php_"+ ext +".h";
+	}
+
+	var g;
+	var s = ext +"\\"+ header;
+
+	STDOUT.Write("Checking for pecl/"+ ext +" ...  ");
+	if (	(g = glob(configure_module_dirname +"\\..\\"+ s)) ||
+			(g = glob(configure_module_dirname +"\\..\\..\\..\\pecl\\"+ s))) {
+		var f = g[0].substr(0, g[0].length - header.length - 1);
+		STDOUT.WriteLine(f);
+		return f;
+	}
+	STDOUT.WriteLine("<not found>");
+	return false;
+}
+
+if (PHP_HTTP != "no") {
+
+	var PHP_HTTP_SRC_ARRAY = glob(configure_module_dirname + "/src/*.c");
+	var PHP_HTTP_SOURCES="";
+	for (var i=0; i<PHP_HTTP_SRC_ARRAY.length; ++i) {
+		var basename = FSO.GetFileName(PHP_HTTP_SRC_ARRAY[i]);
+		PHP_HTTP_SOURCES = PHP_HTTP_SOURCES + " " + basename;
+	}
+	//EXTENSION("http");
+	ADD_SOURCES(configure_module_dirname + "/src", PHP_HTTP_SOURCES, "http");
+	EXTENSION("http", "src/php_http.c");
+	AC_DEFINE("HAVE_HTTP", 1, "Have extended HTTP support");
+	AC_DEFINE("HTTP_SHARED_DEPS", 1, "Depend on shared extensions");
+
+	AC_DEFINE("HAVE_GETHOSTNAME", 1);
+
+	if (PHP_DEBUG != "no") {
+		ADD_FLAG("CFLAGS_HTTP", "/W3");
+	}
+
+	if (CHECK_HEADER_ADD_INCLUDE('zlib.h', 'CFLAGS_HTTP', '..\\zlib;' + php_usual_include_suspects)) {
+		AC_DEFINE('HTTP_HAVE_ZLIB', 1, "Have zlib library");
+		AC_DEFINE('PHP_HTTP_HAVE_ZLIB', 1, "");
+		ADD_FLAG("LDFLAGS_HTTP", "/FORCE:MULTIPLE");
+	} else {
+		WARNING("zlib encoding functions not enabled; libraries and headers not found");
+	}
+
+	if (typeof(PHP_HASH) != "undefined" && PHP_HASH != "no") {
+		var f;
+
+		if ((f = check_for_pecl_ext("hash")) || (f = check_for_main_ext("hash"))) {
+			AC_DEFINE("PHP_HTTP_HAVE_EXT_HASH", 1, "");
+			ADD_FLAG("CFLAGS_HTTP", '/I "' + f + '" /DHTTP_HAVE_PHP_HASH_H=1');
+			ADD_EXTENSION_DEP("http", "hash", true);
+		}
+	}
+
+	if (PHP_SESSION != "no") {
+		ADD_EXTENSION_DEP("http", "session", true);
+	}
+
+	if (PHP_ICONV != "no") {
+		AC_DEFINE("PHP_HTTP_HAVE_EXT_ICONV", 1, "");
+		ADD_EXTENSION_DEP("http", "iconv", true);
+	}
+
+	if (PHP_INTL != "no") {
+		ADD_EXTENSION_DEP("http", "intl", true);
+		AC_DEFINE("HAVE_IDNA2008", 1, "");
+		AC_DEFINE("HAVE_UIDNA_IDNTOASCII", 1, "");
+		AC_DEFINE("HAVE_UIDNA_NAMETOASCII_UTF8", 1, "");
+		AC_DEFINE("PHP_HTTP_HAVE_LIBICU", 1, "");
+		AC_DEFINE("PHP_HTTP_HAVE_IDNA2003", 1, "");
+		AC_DEFINE("PHP_HTTP_HAVE_IDNA2008", 1, "");
+		ADD_FLAG("LIBS_HTTP", "icuuc.lib icudt.lib icuin.lib icuio.lib");
+		/* Compat for ICU before 58.1.*/
+		if (CHECK_LIB("icule.lib", "http", PHP_HTTP)) {
+			ADD_FLAG("LIBS_HTTP", "icule.lib");
+		}
+		if (CHECK_LIB("iculx.lib", "http", PHP_HTTP)) {
+			ADD_FLAG("LIBS_HTTP", "iculx.lib");
+		}
+	}
+
+	if (PHP_CURL != "no") {
+		ADD_EXTENSION_DEP("http", "curl", true);
+	}
+
+
+	CURL_LIB="libcurl_a.lib;libcurl.lib;" + (PHP_DEBUG != "no" ? "libcurld.lib":"libcurl.lib");
+	if (CHECK_HEADER_ADD_INCLUDE("curl/curl.h", "CFLAGS_HTTP") &&
+			CHECK_HEADER_ADD_INCLUDE("openssl/crypto.h", "CFLAGS_HTTP") &&
+			CHECK_LIB(CURL_LIB, "http", PHP_HTTP) &&
+			CHECK_LIB("wldap32.lib", "http", PHP_HTTP) &&
+			CHECK_LIB("libssh2.lib;libssh2_a.lib", "http", PHP_HTTP) &&
+			CHECK_LIB("nghttp2.lib;nghttp2_a.lib", "http", PHP_HTTP) &&
+			CHECK_LIB("normaliz.lib", "http", PHP_HTTP) &&
+			CHECK_LIB("libssl.lib;ssleay32.lib", "http", PHP_HTTP) &&
+			CHECK_LIB("libcrypto.lib;libeay32.lib", "http", PHP_HTTP) &&
+			CHECK_LIB("crypt32.lib;libeay32.lib", "http", PHP_HTTP) &&
+			CHECK_LIB("zlib.lib;zlib_a.lib", "http", PHP_HTTP) &&
+			ADD_EXTENSION_DEP("http", "raphf", true) &&
+			CHECK_LIB("winmm.lib", "http", PHP_HTTP)) {
+		AC_DEFINE("PHP_HTTP_HAVE_LIBCURL", 1, "Have CURL library");
+		AC_DEFINE("PHP_HTTP_HAVE_SSL", 1, "Have SSL");
+		AC_DEFINE("PHP_HTTP_HAVE_LIBCURL_SSL", 1);
+		AC_DEFINE("PHP_HTTP_HAVE_LIBCURL_OPENSSL", 1);
+		AC_DEFINE("PHP_HTTP_HAVE_EXT_RAPHF", 1, "");
+		AC_DEFINE("PHP_HTTP_HAVE_CLIENT", 1, "Have HTTP client support");
+		AC_DEFINE("PHP_HAVE_CURL_MULTI_STRERROR", 1, "");
+		AC_DEFINE("PHP_HAVE_CURL_SHARE_STRERROR", 1, "");
+		AC_DEFINE("PHP_HAVE_CURL_EASY_STRERROR", 1, "");
+		AC_DEFINE("PHP_HAVE_CURL_EASY_RESET", 1, "");
+		AC_DEFINE("PHP_HAVE_CURL_GETFORMDATA", 1, "");
+		AC_DEFINE("PHP_HAVE_CURL_FORMGET", 1, "");
+		AC_DEFINE("PHP_HAVE_CURL_MULTI_SETOPT", 1, "");
+		AC_DEFINE("PHP_HAVE_CURL_MULTI_TIMEOUT", 1, "");
+ 		ADD_FLAG("CFLAGS_HTTP", "/I" + configure_module_dirname + " ");
+
+		if (CHECK_HEADER_ADD_INCLUDE("event.h", "CFLAGS_HTTP") &&
+			CHECK_HEADER_ADD_INCLUDE("event2/event.h", "CFLAGS_HTTP") &&
+			CHECK_LIB("libevent.lib", "http", PHP_HTTP) &&
+			CHECK_LIB("libevent_core.lib", "http", PHP_HTTP) &&
+			CHECK_LIB("libevent_extras.lib", "http", PHP_HTTP)) {
+
+			AC_DEFINE("PHP_HTTP_HAVE_LIBEVENT", 1);
+			AC_DEFINE("PHP_HTTP_HAVE_LIBEVENT2", 1);
+			AC_DEFINE("PHP_HTTP_LIBEVENT_VERSION", "2.0.21 or greater");
+		} else {
+			WARNING("http module: libevent not enabled; libraries or headers not found");
+		}
+	} else {
+		WARNING("curl convenience functions not enabled; libraries and headers not found");
+	}
+}

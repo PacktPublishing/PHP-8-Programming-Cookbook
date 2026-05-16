@@ -12,6 +12,13 @@
 		"psr-4" : {
 			"Cookbook\\" : "src/"
 		}
-	}
+	},
+    "require-dev": {
+        "behat/behat": "^3.29"
+    },
+    "autoload-dev": {
+      "psr-4": {
+        "Cookbook\\Chapter13\\": "src/Chapter13/"
+      }
+    }
 }
-

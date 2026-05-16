@@ -1,0 +1,75 @@
+<?php
+
+/*
+ * This file is part of the Behat Testwork.
+ * (c) Konstantin Kudryashov <ever.zet@gmail.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
+namespace Behat\Testwork\Tester\Runtime;
+
+use Behat\Testwork\Environment\EnvironmentManager;
+use Behat\Testwork\Specification\GroupedSpecificationIterator;
+use Behat\Testwork\Tester\Exercise;
+use Behat\Testwork\Tester\Result\IntegerTestResult;
+use Behat\Testwork\Tester\Result\TestResult;
+use Behat\Testwork\Tester\Result\TestResults;
+use Behat\Testwork\Tester\Result\TestWithSetupResult;
+use Behat\Testwork\Tester\Setup\Setup;
+use Behat\Testwork\Tester\Setup\SuccessfulSetup;
+use Behat\Testwork\Tester\Setup\SuccessfulTeardown;
+use Behat\Testwork\Tester\Setup\Teardown;
+use Behat\Testwork\Tester\SuiteTester;
+
+/**
+ * Tester executing exercises in the runtime.
+ *
+ * @author Konstantin Kudryashov <ever.zet@gmail.com>
+ *
+ * @template TSpec
+ *
+ * @implements Exercise<TSpec>
+ */
+final class RuntimeExercise implements Exercise
+{
+    /**
+     * Initializes tester.
+     *
+     * @param SuiteTester<TSpec> $suiteTester
+     */
+    public function __construct(
+        private readonly EnvironmentManager $envManager,
+        private readonly SuiteTester $suiteTester,
+    ) {
+    }
+
+    public function setUp(array $iterators, $skip): Setup
+    {
+        return new SuccessfulSetup();
+    }
+
+    public function test(array $iterators, $skip = false): TestResult
+    {
+        $results = [];
+        foreach (GroupedSpecificationIterator::group($iterators) as $iterator) {
+            $environment = $this->envManager->buildEnvironment($iterator->getSuite());
+
+            $setup = $this->suiteTester->setUp($environment, $iterator, $skip);
+            $localSkip = !$setup->isSuccessful() || $skip;
+            $testResult = $this->suiteTester->test($environment, $iterator, $localSkip);
+            $teardown = $this->suiteTester->tearDown($environment, $iterator, $localSkip, $testResult);
+
+            $integerResult = new IntegerTestResult($testResult->getResultCode());
+            $results[] = new TestWithSetupResult($setup, $integerResult, $teardown);
+        }
+
+        return new TestResults($results);
+    }
+
+    public function tearDown(array $iterators, $skip, TestResult $result): Teardown
+    {
+        return new SuccessfulTeardown();
+    }
+}

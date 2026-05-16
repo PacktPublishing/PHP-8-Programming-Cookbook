@@ -1,6 +1,9 @@
 <?php
 require __DIR__ . '/../../vendor/autoload.php';
-use Cookbook\Database\{PostCode, Connect};
+
+use Cookbook\Iterator\Database\{PostCode};
+use Cookbook\Iterator\Database\Connect;
+
 $config = require __DIR__ . '/../../config/db.config.php';
 $post   = new PostCode(Connect::getConnection($config['ch02']));
 $city   = trim(strip_tags($_GET['city'] ?? $argv[1] ?? ''));

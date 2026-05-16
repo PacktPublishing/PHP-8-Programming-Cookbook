@@ -1,8 +1,10 @@
 <?php
 require __DIR__ . '/../../vendor/autoload.php';
-use Cookbook\Database\PostCode;
-use Cookbook\Database\Connect;
+
+use Cookbook\Iterator\Database\Connect;
+use Cookbook\Iterator\Database\PostCode;
 use Cookbook\Iterator\LargeFile;
+
 $config = require __DIR__ . '/../../config/db.config.php';
 $csv_fn = __DIR__ . '/../../data/US.txt';   // NOTE: tab-delimited
 $expected = 0;

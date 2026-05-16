@@ -1,0 +1,276 @@
+/* config.h.in.  Generated from configure.ac by autoheader.  */
+
+/* Whether to build http as dynamic module */
+#undef COMPILE_DL_HTTP
+
+/* Define to 1 if you have the <arpa/inet.h> header file. */
+#undef HAVE_ARPA_INET_H
+
+/* Define to 1 if you have the <dlfcn.h> header file. */
+#undef HAVE_DLFCN_H
+
+/* Have extended HTTP support */
+#undef HAVE_HTTP
+
+/* Define to 1 if you have the 'inet_pton' function. */
+#undef HAVE_INET_PTON
+
+/* Define to 1 if you have the <inttypes.h> header file. */
+#undef HAVE_INTTYPES_H
+
+/* Define to 1 if you have the 'iswalnum' function. */
+#undef HAVE_ISWALNUM
+
+/* Define to 1 if you have the 'nsl' library (-lnsl). */
+#undef HAVE_LIBNSL
+
+/* Define to 1 if you have the 'mbrtowc' function. */
+#undef HAVE_MBRTOWC
+
+/* Define to 1 if <wchar.h> declares mbstate_t. */
+#undef HAVE_MBSTATE_T
+
+/* Define to 1 if you have the 'mbtowc' function. */
+#undef HAVE_MBTOWC
+
+/* Define to 1 if you have the <netdb.h> header file. */
+#undef HAVE_NETDB_H
+
+/* Define to 1 if you have the <stdint.h> header file. */
+#undef HAVE_STDINT_H
+
+/* Define to 1 if you have the <stdio.h> header file. */
+#undef HAVE_STDIO_H
+
+/* Define to 1 if you have the <stdlib.h> header file. */
+#undef HAVE_STDLIB_H
+
+/* Define to 1 if you have the <strings.h> header file. */
+#undef HAVE_STRINGS_H
+
+/* Define to 1 if you have the <string.h> header file. */
+#undef HAVE_STRING_H
+
+/* Define to 1 if you have the <sys/stat.h> header file. */
+#undef HAVE_SYS_STAT_H
+
+/* Define to 1 if you have the <sys/types.h> header file. */
+#undef HAVE_SYS_TYPES_H
+
+/* */
+#undef HAVE_UIDNA_IDNTOASCII
+
+/* */
+#undef HAVE_UIDNA_NAMETOASCII_UTF8
+
+/* Define to 1 if you have the <unistd.h> header file. */
+#undef HAVE_UNISTD_H
+
+/* Define to 1 if you have the <wchar.h> header file. */
+#undef HAVE_WCHAR_H
+
+/* Define to 1 if you have the <wctype.h> header file. */
+#undef HAVE_WCTYPE_H
+
+/* Define to the address where bug reports for this package should be sent. */
+/* #undef PACKAGE_BUGREPORT */
+
+/* Define to the full name of this package. */
+/* #undef PACKAGE_NAME */
+
+/* Define to the full name and version of this package. */
+/* #undef PACKAGE_STRING */
+
+/* Define to the one symbol short name of this package. */
+/* #undef PACKAGE_TARNAME */
+
+/* Define to the home page for this package. */
+/* #undef PACKAGE_URL */
+
+/* Define to the version of this package. */
+/* #undef PACKAGE_VERSION */
+
+/* */
+#undef PHP_HTTP_CAINFO
+
+/* */
+#undef PHP_HTTP_CAPATH
+
+/* */
+#undef PHP_HTTP_HAVE_CLIENT
+
+/* */
+#undef PHP_HTTP_HAVE_CURLOPT_TLS13_CIPHERS
+
+/* */
+#undef PHP_HTTP_HAVE_CURL_LOCK_DATA_SSL_SESSION
+
+/* */
+#undef PHP_HTTP_HAVE_CURL_VERSION_TLSAUTH_SRP
+
+/* */
+#undef PHP_HTTP_HAVE_EXT_ICONV
+
+/* */
+#undef PHP_HTTP_HAVE_EXT_RAPHF
+
+/* */
+#undef PHP_HTTP_HAVE_IDNA2003
+
+/* */
+#undef PHP_HTTP_HAVE_IDNA2008
+
+/* */
+#undef PHP_HTTP_HAVE_LIBBROTLI
+
+/* */
+#undef PHP_HTTP_HAVE_LIBBROTLICOMMON
+
+/* */
+#undef PHP_HTTP_HAVE_LIBBROTLIDEC
+
+/* */
+#undef PHP_HTTP_HAVE_LIBBROTLIENC
+
+/* */
+#undef PHP_HTTP_HAVE_LIBCURL
+
+/* */
+#undef PHP_HTTP_HAVE_LIBCURL_ALT_SVC
+
+/* */
+#undef PHP_HTTP_HAVE_LIBCURL_ARES
+
+/* */
+#undef PHP_HTTP_HAVE_LIBCURL_AXTLS
+
+/* */
+#undef PHP_HTTP_HAVE_LIBCURL_CAINFO
+
+/* */
+#undef PHP_HTTP_HAVE_LIBCURL_CAPATH
+
+/* */
+#undef PHP_HTTP_HAVE_LIBCURL_GNUTLS
+
+/* */
+#undef PHP_HTTP_HAVE_LIBCURL_GSKIT
+
+/* */
+#undef PHP_HTTP_HAVE_LIBCURL_HSTS
+
+/* */
+#undef PHP_HTTP_HAVE_LIBCURL_HTTP
+
+/* */
+#undef PHP_HTTP_HAVE_LIBCURL_HTTP2
+
+/* */
+#undef PHP_HTTP_HAVE_LIBCURL_MBEDTLS
+
+/* */
+#undef PHP_HTTP_HAVE_LIBCURL_NSS
+
+/* */
+#undef PHP_HTTP_HAVE_LIBCURL_OPENSSL
+
+/* */
+#undef PHP_HTTP_HAVE_LIBCURL_POLARSSL
+
+/* */
+#undef PHP_HTTP_HAVE_LIBCURL_SECURETRANSPORT
+
+/* */
+#undef PHP_HTTP_HAVE_LIBCURL_SHARE_SSL
+
+/* */
+#undef PHP_HTTP_HAVE_LIBCURL_SSL
+
+/* */
+#undef PHP_HTTP_HAVE_LIBCURL_TLS13_CIPHERS
+
+/* */
+#undef PHP_HTTP_HAVE_LIBCURL_TLSAUTH_TYPE
+
+/* */
+#undef PHP_HTTP_HAVE_LIBCURL_WOLFSSL
+
+/* */
+#undef PHP_HTTP_HAVE_LIBEVENT
+
+/* */
+#undef PHP_HTTP_HAVE_LIBEVENT2
+
+/* */
+#undef PHP_HTTP_HAVE_LIBICU
+
+/* */
+#undef PHP_HTTP_HAVE_LIBIDN
+
+/* */
+#undef PHP_HTTP_HAVE_LIBIDN2
+
+/* */
+#undef PHP_HTTP_HAVE_LIBIDNKIT
+
+/* */
+#undef PHP_HTTP_HAVE_LIBIDNKIT2
+
+/* */
+#undef PHP_HTTP_HAVE_PHP_RAPHF_H
+
+/* */
+#undef PHP_HTTP_HAVE_ZLIB
+
+/* */
+#undef PHP_HTTP_ICU_I18N_VERSION
+
+/* */
+#undef PHP_HTTP_LIBBROTLICOMMON_VERSION
+
+/* */
+#undef PHP_HTTP_LIBBROTLIDEC_VERSION
+
+/* */
+#undef PHP_HTTP_LIBBROTLIENC_VERSION
+
+/* */
+#undef PHP_HTTP_LIBCURL_VERSION
+
+/* */
+#undef PHP_HTTP_LIBEVENT_VERSION
+
+/* */
+#undef PHP_HTTP_LIBICU_VERSION
+
+/* */
+#undef PHP_HTTP_LIBIDN2_VERSION
+
+/* */
+#undef PHP_HTTP_LIBIDNKIT2_VERSION
+
+/* */
+#undef PHP_HTTP_LIBIDNKIT_VERSION
+
+/* */
+#undef PHP_HTTP_LIBIDN_VERSION
+
+/* */
+#undef PHP_HTTP_ZLIB_VERSION
+
+/* Define to 1 if all of the C89 standard headers exist (not just the ones
+   required in a freestanding environment). This macro is provided for
+   backward compatibility; new code need not use it. */
+#undef STDC_HEADERS
+
+/* missing event_assign() in libevent1 */
+#undef event_assign
+
+/* missing event_base_new() in libevent1 */
+#undef event_base_new
+
+/* Define to a type if <wchar.h> does not define. */
+#undef mbstate_t
+
+/* Define to 'long int' if <sys/types.h> does not define. */
+#undef off_t

@@ -1,0 +1,1 @@
+{"version":1,"defects":{"SimpleCalculatorTest::test_add_two_numbers_using_plus_operator":7},"times":{"SampleTest::testExample":0.006,"SimpleCalculatorTest::test_add_two_numbers_using_plus_operator":0.005}}

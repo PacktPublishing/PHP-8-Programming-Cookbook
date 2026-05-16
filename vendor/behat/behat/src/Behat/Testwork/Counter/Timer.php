@@ -1,0 +1,102 @@
+<?php
+
+/*
+ * This file is part of the Behat Testwork.
+ * (c) Konstantin Kudryashov <ever.zet@gmail.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
+namespace Behat\Testwork\Counter;
+
+use Behat\Testwork\Counter\Exception\TimerException;
+use Stringable;
+
+/**
+ * Provides time counting functionality.
+ *
+ * @author Konstantin Kudryashov <ever.zet@gmail.com>
+ */
+final class Timer implements Stringable
+{
+    /**
+     * @var float|null
+     */
+    private $starTime;
+    /**
+     * @var float|null
+     */
+    private $stopTime;
+
+    /**
+     * Starts timer.
+     */
+    public function start(): void
+    {
+        $this->starTime = microtime(true);
+    }
+
+    /**
+     * Stops timer.
+     *
+     * @throws TimerException If timer has not been started
+     */
+    public function stop(): void
+    {
+        if (!$this->starTime) {
+            throw new TimerException('You can not stop timer that has not been started.');
+        }
+
+        $this->stopTime = microtime(true);
+    }
+
+    /**
+     * @return float
+     *
+     * @throws TimerException If timer has not been started
+     */
+    public function getTime()
+    {
+        if (!$this->starTime) {
+            throw new TimerException('You can not get time from timer that never been started.');
+        }
+
+        $stopTime = $this->stopTime;
+        if (!$this->stopTime) {
+            $stopTime = microtime(true);
+        }
+
+        return $stopTime - $this->starTime;
+    }
+
+    /**
+     * Returns number of minutes passed.
+     */
+    public function getMinutes(): int
+    {
+        return intval(floor($this->getTime() / 60));
+    }
+
+    /**
+     * Returns number of seconds passed.
+     */
+    public function getSeconds(): float
+    {
+        return round($this->getTime() - ($this->getMinutes() * 60), 3);
+    }
+
+    /**
+     * Returns string representation of time passed.
+     *
+     * @return string
+     */
+    public function __toString()
+    {
+        if (!$this->starTime || !$this->stopTime) {
+            return '0m0s';
+        }
+
+        return sprintf('%dm%.2fs', $this->getMinutes(), $this->getSeconds());
+    }
+}

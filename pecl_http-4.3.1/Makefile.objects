@@ -1,0 +1,105 @@
+-include src/php_http.dep
+src/php_http.lo: /Users/rainiersarabia/Packt/cookbook/lab/packt/pecl_http-4.3.1/src/php_http.c
+	$(LIBTOOL) --tag=CC --mode=compile $(CC) -I. -I/Users/rainiersarabia/Packt/cookbook/lab/packt/pecl_http-4.3.1 $(COMMON_FLAGS) $(CFLAGS_CLEAN) $(EXTRA_CFLAGS)   -DZEND_COMPILE_DL_EXT=1 -c /Users/rainiersarabia/Packt/cookbook/lab/packt/pecl_http-4.3.1/src/php_http.c -o src/php_http.lo  -MMD -MF src/php_http.dep -MT src/php_http.lo
+-include src/php_http_buffer.dep
+src/php_http_buffer.lo: /Users/rainiersarabia/Packt/cookbook/lab/packt/pecl_http-4.3.1/src/php_http_buffer.c
+	$(LIBTOOL) --tag=CC --mode=compile $(CC) -I. -I/Users/rainiersarabia/Packt/cookbook/lab/packt/pecl_http-4.3.1 $(COMMON_FLAGS) $(CFLAGS_CLEAN) $(EXTRA_CFLAGS)   -DZEND_COMPILE_DL_EXT=1 -c /Users/rainiersarabia/Packt/cookbook/lab/packt/pecl_http-4.3.1/src/php_http_buffer.c -o src/php_http_buffer.lo  -MMD -MF src/php_http_buffer.dep -MT src/php_http_buffer.lo
+-include src/php_http_client.dep
+src/php_http_client.lo: /Users/rainiersarabia/Packt/cookbook/lab/packt/pecl_http-4.3.1/src/php_http_client.c
+	$(LIBTOOL) --tag=CC --mode=compile $(CC) -I. -I/Users/rainiersarabia/Packt/cookbook/lab/packt/pecl_http-4.3.1 $(COMMON_FLAGS) $(CFLAGS_CLEAN) $(EXTRA_CFLAGS)   -DZEND_COMPILE_DL_EXT=1 -c /Users/rainiersarabia/Packt/cookbook/lab/packt/pecl_http-4.3.1/src/php_http_client.c -o src/php_http_client.lo  -MMD -MF src/php_http_client.dep -MT src/php_http_client.lo
+-include src/php_http_client_curl.dep
+src/php_http_client_curl.lo: /Users/rainiersarabia/Packt/cookbook/lab/packt/pecl_http-4.3.1/src/php_http_client_curl.c
+	$(LIBTOOL) --tag=CC --mode=compile $(CC) -I. -I/Users/rainiersarabia/Packt/cookbook/lab/packt/pecl_http-4.3.1 $(COMMON_FLAGS) $(CFLAGS_CLEAN) $(EXTRA_CFLAGS)   -DZEND_COMPILE_DL_EXT=1 -c /Users/rainiersarabia/Packt/cookbook/lab/packt/pecl_http-4.3.1/src/php_http_client_curl.c -o src/php_http_client_curl.lo  -MMD -MF src/php_http_client_curl.dep -MT src/php_http_client_curl.lo
+-include src/php_http_client_curl_event.dep
+src/php_http_client_curl_event.lo: /Users/rainiersarabia/Packt/cookbook/lab/packt/pecl_http-4.3.1/src/php_http_client_curl_event.c
+	$(LIBTOOL) --tag=CC --mode=compile $(CC) -I. -I/Users/rainiersarabia/Packt/cookbook/lab/packt/pecl_http-4.3.1 $(COMMON_FLAGS) $(CFLAGS_CLEAN) $(EXTRA_CFLAGS)   -DZEND_COMPILE_DL_EXT=1 -c /Users/rainiersarabia/Packt/cookbook/lab/packt/pecl_http-4.3.1/src/php_http_client_curl_event.c -o src/php_http_client_curl_event.lo  -MMD -MF src/php_http_client_curl_event.dep -MT src/php_http_client_curl_event.lo
+-include src/php_http_client_curl_user.dep
+src/php_http_client_curl_user.lo: /Users/rainiersarabia/Packt/cookbook/lab/packt/pecl_http-4.3.1/src/php_http_client_curl_user.c
+	$(LIBTOOL) --tag=CC --mode=compile $(CC) -I. -I/Users/rainiersarabia/Packt/cookbook/lab/packt/pecl_http-4.3.1 $(COMMON_FLAGS) $(CFLAGS_CLEAN) $(EXTRA_CFLAGS)   -DZEND_COMPILE_DL_EXT=1 -c /Users/rainiersarabia/Packt/cookbook/lab/packt/pecl_http-4.3.1/src/php_http_client_curl_user.c -o src/php_http_client_curl_user.lo  -MMD -MF src/php_http_client_curl_user.dep -MT src/php_http_client_curl_user.lo
+-include src/php_http_client_request.dep
+src/php_http_client_request.lo: /Users/rainiersarabia/Packt/cookbook/lab/packt/pecl_http-4.3.1/src/php_http_client_request.c
+	$(LIBTOOL) --tag=CC --mode=compile $(CC) -I. -I/Users/rainiersarabia/Packt/cookbook/lab/packt/pecl_http-4.3.1 $(COMMON_FLAGS) $(CFLAGS_CLEAN) $(EXTRA_CFLAGS)   -DZEND_COMPILE_DL_EXT=1 -c /Users/rainiersarabia/Packt/cookbook/lab/packt/pecl_http-4.3.1/src/php_http_client_request.c -o src/php_http_client_request.lo  -MMD -MF src/php_http_client_request.dep -MT src/php_http_client_request.lo
+-include src/php_http_client_response.dep
+src/php_http_client_response.lo: /Users/rainiersarabia/Packt/cookbook/lab/packt/pecl_http-4.3.1/src/php_http_client_response.c
+	$(LIBTOOL) --tag=CC --mode=compile $(CC) -I. -I/Users/rainiersarabia/Packt/cookbook/lab/packt/pecl_http-4.3.1 $(COMMON_FLAGS) $(CFLAGS_CLEAN) $(EXTRA_CFLAGS)   -DZEND_COMPILE_DL_EXT=1 -c /Users/rainiersarabia/Packt/cookbook/lab/packt/pecl_http-4.3.1/src/php_http_client_response.c -o src/php_http_client_response.lo  -MMD -MF src/php_http_client_response.dep -MT src/php_http_client_response.lo
+-include src/php_http_cookie.dep
+src/php_http_cookie.lo: /Users/rainiersarabia/Packt/cookbook/lab/packt/pecl_http-4.3.1/src/php_http_cookie.c
+	$(LIBTOOL) --tag=CC --mode=compile $(CC) -I. -I/Users/rainiersarabia/Packt/cookbook/lab/packt/pecl_http-4.3.1 $(COMMON_FLAGS) $(CFLAGS_CLEAN) $(EXTRA_CFLAGS)   -DZEND_COMPILE_DL_EXT=1 -c /Users/rainiersarabia/Packt/cookbook/lab/packt/pecl_http-4.3.1/src/php_http_cookie.c -o src/php_http_cookie.lo  -MMD -MF src/php_http_cookie.dep -MT src/php_http_cookie.lo
+-include src/php_http_curl.dep
+src/php_http_curl.lo: /Users/rainiersarabia/Packt/cookbook/lab/packt/pecl_http-4.3.1/src/php_http_curl.c
+	$(LIBTOOL) --tag=CC --mode=compile $(CC) -I. -I/Users/rainiersarabia/Packt/cookbook/lab/packt/pecl_http-4.3.1 $(COMMON_FLAGS) $(CFLAGS_CLEAN) $(EXTRA_CFLAGS)   -DZEND_COMPILE_DL_EXT=1 -c /Users/rainiersarabia/Packt/cookbook/lab/packt/pecl_http-4.3.1/src/php_http_curl.c -o src/php_http_curl.lo  -MMD -MF src/php_http_curl.dep -MT src/php_http_curl.lo
+-include src/php_http_encoding.dep
+src/php_http_encoding.lo: /Users/rainiersarabia/Packt/cookbook/lab/packt/pecl_http-4.3.1/src/php_http_encoding.c
+	$(LIBTOOL) --tag=CC --mode=compile $(CC) -I. -I/Users/rainiersarabia/Packt/cookbook/lab/packt/pecl_http-4.3.1 $(COMMON_FLAGS) $(CFLAGS_CLEAN) $(EXTRA_CFLAGS)   -DZEND_COMPILE_DL_EXT=1 -c /Users/rainiersarabia/Packt/cookbook/lab/packt/pecl_http-4.3.1/src/php_http_encoding.c -o src/php_http_encoding.lo  -MMD -MF src/php_http_encoding.dep -MT src/php_http_encoding.lo
+-include src/php_http_encoding_brotli.dep
+src/php_http_encoding_brotli.lo: /Users/rainiersarabia/Packt/cookbook/lab/packt/pecl_http-4.3.1/src/php_http_encoding_brotli.c
+	$(LIBTOOL) --tag=CC --mode=compile $(CC) -I. -I/Users/rainiersarabia/Packt/cookbook/lab/packt/pecl_http-4.3.1 $(COMMON_FLAGS) $(CFLAGS_CLEAN) $(EXTRA_CFLAGS)   -DZEND_COMPILE_DL_EXT=1 -c /Users/rainiersarabia/Packt/cookbook/lab/packt/pecl_http-4.3.1/src/php_http_encoding_brotli.c -o src/php_http_encoding_brotli.lo  -MMD -MF src/php_http_encoding_brotli.dep -MT src/php_http_encoding_brotli.lo
+-include src/php_http_encoding_zlib.dep
+src/php_http_encoding_zlib.lo: /Users/rainiersarabia/Packt/cookbook/lab/packt/pecl_http-4.3.1/src/php_http_encoding_zlib.c
+	$(LIBTOOL) --tag=CC --mode=compile $(CC) -I. -I/Users/rainiersarabia/Packt/cookbook/lab/packt/pecl_http-4.3.1 $(COMMON_FLAGS) $(CFLAGS_CLEAN) $(EXTRA_CFLAGS)   -DZEND_COMPILE_DL_EXT=1 -c /Users/rainiersarabia/Packt/cookbook/lab/packt/pecl_http-4.3.1/src/php_http_encoding_zlib.c -o src/php_http_encoding_zlib.lo  -MMD -MF src/php_http_encoding_zlib.dep -MT src/php_http_encoding_zlib.lo
+-include src/php_http_env.dep
+src/php_http_env.lo: /Users/rainiersarabia/Packt/cookbook/lab/packt/pecl_http-4.3.1/src/php_http_env.c
+	$(LIBTOOL) --tag=CC --mode=compile $(CC) -I. -I/Users/rainiersarabia/Packt/cookbook/lab/packt/pecl_http-4.3.1 $(COMMON_FLAGS) $(CFLAGS_CLEAN) $(EXTRA_CFLAGS)   -DZEND_COMPILE_DL_EXT=1 -c /Users/rainiersarabia/Packt/cookbook/lab/packt/pecl_http-4.3.1/src/php_http_env.c -o src/php_http_env.lo  -MMD -MF src/php_http_env.dep -MT src/php_http_env.lo
+-include src/php_http_env_request.dep
+src/php_http_env_request.lo: /Users/rainiersarabia/Packt/cookbook/lab/packt/pecl_http-4.3.1/src/php_http_env_request.c
+	$(LIBTOOL) --tag=CC --mode=compile $(CC) -I. -I/Users/rainiersarabia/Packt/cookbook/lab/packt/pecl_http-4.3.1 $(COMMON_FLAGS) $(CFLAGS_CLEAN) $(EXTRA_CFLAGS)   -DZEND_COMPILE_DL_EXT=1 -c /Users/rainiersarabia/Packt/cookbook/lab/packt/pecl_http-4.3.1/src/php_http_env_request.c -o src/php_http_env_request.lo  -MMD -MF src/php_http_env_request.dep -MT src/php_http_env_request.lo
+-include src/php_http_env_response.dep
+src/php_http_env_response.lo: /Users/rainiersarabia/Packt/cookbook/lab/packt/pecl_http-4.3.1/src/php_http_env_response.c
+	$(LIBTOOL) --tag=CC --mode=compile $(CC) -I. -I/Users/rainiersarabia/Packt/cookbook/lab/packt/pecl_http-4.3.1 $(COMMON_FLAGS) $(CFLAGS_CLEAN) $(EXTRA_CFLAGS)   -DZEND_COMPILE_DL_EXT=1 -c /Users/rainiersarabia/Packt/cookbook/lab/packt/pecl_http-4.3.1/src/php_http_env_response.c -o src/php_http_env_response.lo  -MMD -MF src/php_http_env_response.dep -MT src/php_http_env_response.lo
+-include src/php_http_etag.dep
+src/php_http_etag.lo: /Users/rainiersarabia/Packt/cookbook/lab/packt/pecl_http-4.3.1/src/php_http_etag.c
+	$(LIBTOOL) --tag=CC --mode=compile $(CC) -I. -I/Users/rainiersarabia/Packt/cookbook/lab/packt/pecl_http-4.3.1 $(COMMON_FLAGS) $(CFLAGS_CLEAN) $(EXTRA_CFLAGS)   -DZEND_COMPILE_DL_EXT=1 -c /Users/rainiersarabia/Packt/cookbook/lab/packt/pecl_http-4.3.1/src/php_http_etag.c -o src/php_http_etag.lo  -MMD -MF src/php_http_etag.dep -MT src/php_http_etag.lo
+-include src/php_http_exception.dep
+src/php_http_exception.lo: /Users/rainiersarabia/Packt/cookbook/lab/packt/pecl_http-4.3.1/src/php_http_exception.c
+	$(LIBTOOL) --tag=CC --mode=compile $(CC) -I. -I/Users/rainiersarabia/Packt/cookbook/lab/packt/pecl_http-4.3.1 $(COMMON_FLAGS) $(CFLAGS_CLEAN) $(EXTRA_CFLAGS)   -DZEND_COMPILE_DL_EXT=1 -c /Users/rainiersarabia/Packt/cookbook/lab/packt/pecl_http-4.3.1/src/php_http_exception.c -o src/php_http_exception.lo  -MMD -MF src/php_http_exception.dep -MT src/php_http_exception.lo
+-include src/php_http_filter.dep
+src/php_http_filter.lo: /Users/rainiersarabia/Packt/cookbook/lab/packt/pecl_http-4.3.1/src/php_http_filter.c
+	$(LIBTOOL) --tag=CC --mode=compile $(CC) -I. -I/Users/rainiersarabia/Packt/cookbook/lab/packt/pecl_http-4.3.1 $(COMMON_FLAGS) $(CFLAGS_CLEAN) $(EXTRA_CFLAGS)   -DZEND_COMPILE_DL_EXT=1 -c /Users/rainiersarabia/Packt/cookbook/lab/packt/pecl_http-4.3.1/src/php_http_filter.c -o src/php_http_filter.lo  -MMD -MF src/php_http_filter.dep -MT src/php_http_filter.lo
+-include src/php_http_header.dep
+src/php_http_header.lo: /Users/rainiersarabia/Packt/cookbook/lab/packt/pecl_http-4.3.1/src/php_http_header.c
+	$(LIBTOOL) --tag=CC --mode=compile $(CC) -I. -I/Users/rainiersarabia/Packt/cookbook/lab/packt/pecl_http-4.3.1 $(COMMON_FLAGS) $(CFLAGS_CLEAN) $(EXTRA_CFLAGS)   -DZEND_COMPILE_DL_EXT=1 -c /Users/rainiersarabia/Packt/cookbook/lab/packt/pecl_http-4.3.1/src/php_http_header.c -o src/php_http_header.lo  -MMD -MF src/php_http_header.dep -MT src/php_http_header.lo
+-include src/php_http_header_parser.dep
+src/php_http_header_parser.lo: /Users/rainiersarabia/Packt/cookbook/lab/packt/pecl_http-4.3.1/src/php_http_header_parser.c
+	$(LIBTOOL) --tag=CC --mode=compile $(CC) -I. -I/Users/rainiersarabia/Packt/cookbook/lab/packt/pecl_http-4.3.1 $(COMMON_FLAGS) $(CFLAGS_CLEAN) $(EXTRA_CFLAGS)   -DZEND_COMPILE_DL_EXT=1 -c /Users/rainiersarabia/Packt/cookbook/lab/packt/pecl_http-4.3.1/src/php_http_header_parser.c -o src/php_http_header_parser.lo  -MMD -MF src/php_http_header_parser.dep -MT src/php_http_header_parser.lo
+-include src/php_http_info.dep
+src/php_http_info.lo: /Users/rainiersarabia/Packt/cookbook/lab/packt/pecl_http-4.3.1/src/php_http_info.c
+	$(LIBTOOL) --tag=CC --mode=compile $(CC) -I. -I/Users/rainiersarabia/Packt/cookbook/lab/packt/pecl_http-4.3.1 $(COMMON_FLAGS) $(CFLAGS_CLEAN) $(EXTRA_CFLAGS)   -DZEND_COMPILE_DL_EXT=1 -c /Users/rainiersarabia/Packt/cookbook/lab/packt/pecl_http-4.3.1/src/php_http_info.c -o src/php_http_info.lo  -MMD -MF src/php_http_info.dep -MT src/php_http_info.lo
+-include src/php_http_message.dep
+src/php_http_message.lo: /Users/rainiersarabia/Packt/cookbook/lab/packt/pecl_http-4.3.1/src/php_http_message.c
+	$(LIBTOOL) --tag=CC --mode=compile $(CC) -I. -I/Users/rainiersarabia/Packt/cookbook/lab/packt/pecl_http-4.3.1 $(COMMON_FLAGS) $(CFLAGS_CLEAN) $(EXTRA_CFLAGS)   -DZEND_COMPILE_DL_EXT=1 -c /Users/rainiersarabia/Packt/cookbook/lab/packt/pecl_http-4.3.1/src/php_http_message.c -o src/php_http_message.lo  -MMD -MF src/php_http_message.dep -MT src/php_http_message.lo
+-include src/php_http_message_body.dep
+src/php_http_message_body.lo: /Users/rainiersarabia/Packt/cookbook/lab/packt/pecl_http-4.3.1/src/php_http_message_body.c
+	$(LIBTOOL) --tag=CC --mode=compile $(CC) -I. -I/Users/rainiersarabia/Packt/cookbook/lab/packt/pecl_http-4.3.1 $(COMMON_FLAGS) $(CFLAGS_CLEAN) $(EXTRA_CFLAGS)   -DZEND_COMPILE_DL_EXT=1 -c /Users/rainiersarabia/Packt/cookbook/lab/packt/pecl_http-4.3.1/src/php_http_message_body.c -o src/php_http_message_body.lo  -MMD -MF src/php_http_message_body.dep -MT src/php_http_message_body.lo
+-include src/php_http_message_parser.dep
+src/php_http_message_parser.lo: /Users/rainiersarabia/Packt/cookbook/lab/packt/pecl_http-4.3.1/src/php_http_message_parser.c
+	$(LIBTOOL) --tag=CC --mode=compile $(CC) -I. -I/Users/rainiersarabia/Packt/cookbook/lab/packt/pecl_http-4.3.1 $(COMMON_FLAGS) $(CFLAGS_CLEAN) $(EXTRA_CFLAGS)   -DZEND_COMPILE_DL_EXT=1 -c /Users/rainiersarabia/Packt/cookbook/lab/packt/pecl_http-4.3.1/src/php_http_message_parser.c -o src/php_http_message_parser.lo  -MMD -MF src/php_http_message_parser.dep -MT src/php_http_message_parser.lo
+-include src/php_http_misc.dep
+src/php_http_misc.lo: /Users/rainiersarabia/Packt/cookbook/lab/packt/pecl_http-4.3.1/src/php_http_misc.c
+	$(LIBTOOL) --tag=CC --mode=compile $(CC) -I. -I/Users/rainiersarabia/Packt/cookbook/lab/packt/pecl_http-4.3.1 $(COMMON_FLAGS) $(CFLAGS_CLEAN) $(EXTRA_CFLAGS)   -DZEND_COMPILE_DL_EXT=1 -c /Users/rainiersarabia/Packt/cookbook/lab/packt/pecl_http-4.3.1/src/php_http_misc.c -o src/php_http_misc.lo  -MMD -MF src/php_http_misc.dep -MT src/php_http_misc.lo
+-include src/php_http_negotiate.dep
+src/php_http_negotiate.lo: /Users/rainiersarabia/Packt/cookbook/lab/packt/pecl_http-4.3.1/src/php_http_negotiate.c
+	$(LIBTOOL) --tag=CC --mode=compile $(CC) -I. -I/Users/rainiersarabia/Packt/cookbook/lab/packt/pecl_http-4.3.1 $(COMMON_FLAGS) $(CFLAGS_CLEAN) $(EXTRA_CFLAGS)   -DZEND_COMPILE_DL_EXT=1 -c /Users/rainiersarabia/Packt/cookbook/lab/packt/pecl_http-4.3.1/src/php_http_negotiate.c -o src/php_http_negotiate.lo  -MMD -MF src/php_http_negotiate.dep -MT src/php_http_negotiate.lo
+-include src/php_http_object.dep
+src/php_http_object.lo: /Users/rainiersarabia/Packt/cookbook/lab/packt/pecl_http-4.3.1/src/php_http_object.c
+	$(LIBTOOL) --tag=CC --mode=compile $(CC) -I. -I/Users/rainiersarabia/Packt/cookbook/lab/packt/pecl_http-4.3.1 $(COMMON_FLAGS) $(CFLAGS_CLEAN) $(EXTRA_CFLAGS)   -DZEND_COMPILE_DL_EXT=1 -c /Users/rainiersarabia/Packt/cookbook/lab/packt/pecl_http-4.3.1/src/php_http_object.c -o src/php_http_object.lo  -MMD -MF src/php_http_object.dep -MT src/php_http_object.lo
+-include src/php_http_options.dep
+src/php_http_options.lo: /Users/rainiersarabia/Packt/cookbook/lab/packt/pecl_http-4.3.1/src/php_http_options.c
+	$(LIBTOOL) --tag=CC --mode=compile $(CC) -I. -I/Users/rainiersarabia/Packt/cookbook/lab/packt/pecl_http-4.3.1 $(COMMON_FLAGS) $(CFLAGS_CLEAN) $(EXTRA_CFLAGS)   -DZEND_COMPILE_DL_EXT=1 -c /Users/rainiersarabia/Packt/cookbook/lab/packt/pecl_http-4.3.1/src/php_http_options.c -o src/php_http_options.lo  -MMD -MF src/php_http_options.dep -MT src/php_http_options.lo
+-include src/php_http_params.dep
+src/php_http_params.lo: /Users/rainiersarabia/Packt/cookbook/lab/packt/pecl_http-4.3.1/src/php_http_params.c
+	$(LIBTOOL) --tag=CC --mode=compile $(CC) -I. -I/Users/rainiersarabia/Packt/cookbook/lab/packt/pecl_http-4.3.1 $(COMMON_FLAGS) $(CFLAGS_CLEAN) $(EXTRA_CFLAGS)   -DZEND_COMPILE_DL_EXT=1 -c /Users/rainiersarabia/Packt/cookbook/lab/packt/pecl_http-4.3.1/src/php_http_params.c -o src/php_http_params.lo  -MMD -MF src/php_http_params.dep -MT src/php_http_params.lo
+-include src/php_http_querystring.dep
+src/php_http_querystring.lo: /Users/rainiersarabia/Packt/cookbook/lab/packt/pecl_http-4.3.1/src/php_http_querystring.c
+	$(LIBTOOL) --tag=CC --mode=compile $(CC) -I. -I/Users/rainiersarabia/Packt/cookbook/lab/packt/pecl_http-4.3.1 $(COMMON_FLAGS) $(CFLAGS_CLEAN) $(EXTRA_CFLAGS)   -DZEND_COMPILE_DL_EXT=1 -c /Users/rainiersarabia/Packt/cookbook/lab/packt/pecl_http-4.3.1/src/php_http_querystring.c -o src/php_http_querystring.lo  -MMD -MF src/php_http_querystring.dep -MT src/php_http_querystring.lo
+-include src/php_http_url.dep
+src/php_http_url.lo: /Users/rainiersarabia/Packt/cookbook/lab/packt/pecl_http-4.3.1/src/php_http_url.c
+	$(LIBTOOL) --tag=CC --mode=compile $(CC) -I. -I/Users/rainiersarabia/Packt/cookbook/lab/packt/pecl_http-4.3.1 $(COMMON_FLAGS) $(CFLAGS_CLEAN) $(EXTRA_CFLAGS)   -DZEND_COMPILE_DL_EXT=1 -c /Users/rainiersarabia/Packt/cookbook/lab/packt/pecl_http-4.3.1/src/php_http_url.c -o src/php_http_url.lo  -MMD -MF src/php_http_url.dep -MT src/php_http_url.lo
+-include src/php_http_version.dep
+src/php_http_version.lo: /Users/rainiersarabia/Packt/cookbook/lab/packt/pecl_http-4.3.1/src/php_http_version.c
+	$(LIBTOOL) --tag=CC --mode=compile $(CC) -I. -I/Users/rainiersarabia/Packt/cookbook/lab/packt/pecl_http-4.3.1 $(COMMON_FLAGS) $(CFLAGS_CLEAN) $(EXTRA_CFLAGS)   -DZEND_COMPILE_DL_EXT=1 -c /Users/rainiersarabia/Packt/cookbook/lab/packt/pecl_http-4.3.1/src/php_http_version.c -o src/php_http_version.lo  -MMD -MF src/php_http_version.dep -MT src/php_http_version.lo
+$(phplibdir)/http.la: ./http.la
+	$(LIBTOOL) --tag=CC --mode=install cp ./http.la $(phplibdir)
+
+./http.la: $(shared_objects_http) $(HTTP_SHARED_DEPENDENCIES)
+	$(LIBTOOL) --tag=CC --mode=link $(CC) -shared $(COMMON_FLAGS) $(CFLAGS_CLEAN) $(EXTRA_CFLAGS) $(LDFLAGS)  -o $@ -export-dynamic -avoid-version -prefer-pic -module -rpath $(phplibdir) $(EXTRA_LDFLAGS) $(shared_objects_http) $(HTTP_SHARED_LIBADD)
+
