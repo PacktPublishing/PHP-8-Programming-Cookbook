@@ -71,9 +71,8 @@ class GenAiUsageTracker
     // adds log entries to spreadsheet
     public function updateCsv(bool $eraseLog = FALSE, bool $appendCsv = TRUE) : int
     {
-        if (!$this->parseLog()) {
-            $result = 0;
-        } else {
+        $count = 0;
+        if (!empty($this->parseLog())) {
             $write_headers = (file_exists($this->csv_fn)) ? FALSE : TRUE;
             $mode = ($appendCsv) ? 'a' : 'w';
             $csv = new SplFileObject($this->csv_fn, $mode);
@@ -85,7 +84,6 @@ class GenAiUsageTracker
                 $count++;
                 $csv->fputcsv(array_values($row), separator: $this->separator, enclosure: $this->enclosure, escape: $this->escape);
             }
-            $result = $count;
             if ($eraseLog) {
                 unlink($this->log_fn);
             }

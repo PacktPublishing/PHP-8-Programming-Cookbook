@@ -12,9 +12,9 @@ class SimpleAPICall
     {
         return match (TRUE) {
             ($method === EnumMethod::GET && $ext === EnumExt::STREAMS) => static::streamsGet($data),
-            ($method === EnumMethod::GET && $ext === EnumExt::CURL) => static::streamsGet($data),
+            ($method === EnumMethod::GET && $ext === EnumExt::CURL) => static::curlGet($data),
             ($method === EnumMethod::POST && $ext === EnumExt::STREAMS) => static::streamsPost($data),
-            ($method === EnumMethod::POST && $ext === EnumExt::CURL) => static::streamsPost($data),
+            ($method === EnumMethod::POST && $ext === EnumExt::CURL) => static::curlPost($data),
             default => static::streamsGet($data)
         };
     }
@@ -24,7 +24,7 @@ class SimpleAPICall
     }
     public static function curlGet(array $data) : string
     {
-        $ch = curl_init(static::API_ENDPOINT . '/api/?' . http_build_query($data));
+        $ch = curl_init(static::API_GET_URL . '?' . http_build_query($data));
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         // Set these to TRUE in production!!!
         curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);  // Don't verify the peer's SSL certificate
@@ -71,7 +71,7 @@ class SimpleAPICall
     public static function curlPost(array $data) : string
     {
         $send = http_build_query($data);
-        $ch = curl_init(static::API_ENDPOINT);
+        $ch = curl_init(static::API_POST_URL);
         curl_setopt_array($ch, [
             CURLOPT_POST            => true,
             CURLOPT_HTTPHEADER      => [

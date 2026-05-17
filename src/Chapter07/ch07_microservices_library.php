@@ -12,7 +12,6 @@ use Cookbook\Middleware\Translate;
 use Cookbook\Middleware\Distance;
 use Cookbook\Middleware\DispatchHandler;
 use Cookbook\Middleware\NotFoundHandler;
-use Cookbook\Middleware\DoNothingHandler;
 use Cookbook\Services\Container;
 use Cookbook\Services\GenAiConnect;
 use Cookbook\Services\MonicaPlatform;
@@ -33,16 +32,16 @@ $container->add('distance', fn () => new Distance($container));
 $container->add('platform', fn () => new MonicaPlatform());
 // build the pipe
 $pipe = [
-    Logger::class => DoNothingHandler::class,
-    DispatchHandler::class => NotFoundHandler::class,
+    Logger::class,
+    DispatchHandler::class,
 ];
 // build a PSR-7 Request object
 $request  = ServerRequestFactory::fromGlobals();
 try {
     // run the pipe
-    foreach ($pipe as $key => $val) {
-        $middleware = new $key($container);
-        $handler    = (!empty($val)) ? new $val($container) : NULL;
+    $handler = new NotFoundHandler($container);
+    foreach ($pipe as $key => $class) {
+        $middleware = new $class($container);
         if (method_exists($middleware, 'process')) {
             $response = $middleware->process($request, $handler);
         } else {

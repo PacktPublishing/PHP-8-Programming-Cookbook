@@ -34,3 +34,12 @@
  2026-04-04 13:48:19 :  noservice : {"city_from":"Paris","city_to":"Rome","iso2_from":"fr","iso2_to":"it","units":"km"} : 127.0.0.1
  2026-04-04 13:48:25 :  noservice : {"city_from":"Paris","city_to":"Rome","iso2_from":"fr","iso2_to":"it","units":"km"} : 127.0.0.1
  2026-04-04 13:50:04 :   distance : {"city_from":"Paris","city_to":"Rome","iso2_from":"fr","iso2_to":"xx","units":"km"} : 127.0.0.1
+ 2026-05-17 04:48:58 :  translate : {"lang_from":"en","lang_to":"it","phrase":"Hello, how are you today?"} : 10.10.90.88
+ 2026-05-17 05:19:27 :  translate : {"lang_from":"en","lang_to":"it","phrase":"Hello, how are you today?"} : 10.10.90.88
+ 2026-05-17 05:21:05 :  translate : {"lang_from":"en","lang_to":"it","phrase":"Hello, how are you today?"} : 10.10.90.88
+ 2026-05-17 05:21:25 :  translate : {"lang_from":"en","lang_to":"it","phrase":"Hello, how are you today?"} : 10.10.90.88
+ 2026-05-17 05:22:09 :  translate : {"lang_from":"en","lang_to":"it","phrase":"Hello, how are you today?"} : 10.10.90.88
+ 2026-05-17 05:22:30 :  translate : {"lang_from":"en","lang_to":"it","phrase":"Hello, how are you today?"} : 10.10.90.88
+ 2026-05-17 05:23:10 :    nothing : {"lang_from":"en","lang_to":"it","phrase":"Hello, how are you today?"} : 10.10.90.88
+ 2026-05-17 05:37:04 :    nothing : {"lang_from":"en","lang_to":"it","phrase":"Hello, how are you today?"} : 10.10.90.88
+ 2026-05-17 05:49:06 :   distance : {"city_from":"Paris","city_to":"Rome","iso2_from":"fr","iso2_to":"xx","units":"km"} : 10.10.90.88
